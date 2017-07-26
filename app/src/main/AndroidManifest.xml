@@ -21,6 +21,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".sync.RealTimeBusInformationService"
+            android:exported="false"/>
+
+        <service
+            android:name=".sync.TimeTableBusInformationService"
+            android:exported="false"/>
+
+        <service
+            android:name=".sync.FullTimetableBusInformationService"
+            android:exported="false"/>
+
+        <service
+            android:name=".sync.BusStopInformationService"
+            android:exported="false"/>
+
+        <service
+            android:name=".sync.RouteInformationService"
+            android:exported="false"/>
+
+        <service
+            android:name=".sync.OperatorInformationService"
+            android:exported="false"/>
+
+        <service
+            android:name=".sync.RouteListInformationService"
+            android:exported="false"/>
     </application>
 
 </manifest>
