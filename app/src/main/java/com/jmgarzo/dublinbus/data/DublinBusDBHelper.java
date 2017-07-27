@@ -48,6 +48,25 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
 
         db.execSQL(SQL_CREATE_BUS_STOP_TABLE);
 
+        final String SQL_CREATE_ROUTE_TABLE =
+                "CREATE TABLE " + DublinBusContract.RouteEntry.TABLE_NAME + " ( " +
+                        DublinBusContract.RouteEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                        DublinBusContract.RouteEntry.TIMESTAMP + " TEXT NOT NULL, " +
+                        DublinBusContract.RouteEntry.NAME + " TEXT NOT NULL, " +
+                        DublinBusContract.RouteEntry.DIRECTION + " TEXT NOT NULL, " +
+                        DublinBusContract.RouteEntry.OPERATOR + " INTEGER NOT NULL, " +
+                        DublinBusContract.RouteEntry.ORIGIN + " TEXT NOT NULL, " +
+                        DublinBusContract.RouteEntry.ORIGIN_LOCALIZED + " TEXT NOT NULL, " +
+                        DublinBusContract.RouteEntry.DESTINATION + " TEXT NOT NULL, " +
+                        DublinBusContract.RouteEntry.DESTINATION_LOCALIZED + " TEXT NOT NULL, " +
+                        DublinBusContract.RouteEntry.LAST_UPDATED + " TEXT NOT NULL, " +
+                        " FOREIGN KEY (" + DublinBusContract.RouteEntry.OPERATOR + ") REFERENCES " +
+                        DublinBusContract.OperatorEntry.TABLE_NAME + " (" + DublinBusContract.OperatorEntry._ID + ") ON DELETE CASCADE " +
+                        ");";
+
+        db.execSQL(SQL_CREATE_ROUTE_TABLE);
+
+
     }
 
     @Override

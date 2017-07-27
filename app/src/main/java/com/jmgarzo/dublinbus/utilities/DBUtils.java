@@ -51,4 +51,31 @@ public class DBUtils {
 
 
 
+    public static final String[] ROUTE_COLUMNS = {
+            DublinBusContract.RouteEntry._ID,
+            DublinBusContract.RouteEntry.TIMESTAMP,
+            DublinBusContract.RouteEntry.NAME,
+            DublinBusContract.RouteEntry.DIRECTION,
+            DublinBusContract.RouteEntry.OPERATOR,
+            DublinBusContract.RouteEntry.ORIGIN,
+            DublinBusContract.RouteEntry.ORIGIN_LOCALIZED,
+            DublinBusContract.RouteEntry.DESTINATION,
+            DublinBusContract.RouteEntry.DESTINATION_LOCALIZED,
+            DublinBusContract.RouteEntry.LAST_UPDATED
+    };
+
+
+    public static final int COL_ROUTE_ID = 0;
+    public static final int COL_ROUTE_TIMESTAMP = 1;
+    public static final int COL_ROUTE_NAME = 2;
+    public static final int COL_ROUTE_DIRECTION = 3;
+    public static final int COL_ROUTE_OPERATOR = 4;
+    public static final int COL_ROUTE_ORIGIN = 5;
+    public static final int COL_ROUTE_ORIGIN_LOCALIZED = 6;
+    public static final int COL_ROUTE_DESTINATION = 7;
+    public static final int COL_ROUTE_DESTINATION_LOCALIZED = 8;
+    public static final int COL_ROUTE_LAST_UPDATE = 9;
+
+
+
 }

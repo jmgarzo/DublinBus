@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
+import com.jmgarzo.dublinbus.objects.Route;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -232,29 +233,28 @@ public class NetworkUtilities {
     //3.4.5 Retrieve Route Information
     //http://[rtpiserver]/routeinformation?routeid=[route]&operator=[operator]&operator=[operator]&format=[format]
 
-    public static String getRouteInformation(){
+    public static ArrayList<Route>  getRouteInformation(){
         String response="";
+        ArrayList<Route> routeList = null;
 
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(ROUTE_INFORMATION_PATH)
                 .appendQueryParameter(ROUTER_ID_PARAM,"39")
                 .appendQueryParameter(OPERATOR_PARAM, DUBLIN_BUS_OPERATOR_PARAM)
                 .build();
-
         URL url = null;
         try {
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
         try {
             response = getResponseFromHttpUrl(url);
+            routeList = JsonUtilities.getRouteFromJson(response);
         } catch (IOException e) {
             Log.e(LOG_TAG, e.toString());
         }
-
-        return response;
+        return routeList;
     }
 
 

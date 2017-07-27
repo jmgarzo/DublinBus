@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
+import com.jmgarzo.dublinbus.objects.Route;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +24,7 @@ public class JsonUtilities {
     private static final String OPERATOR_REFERENCE = "operatorreference";
     private static final String OPERATOR_NAME = "operatorname";
     private static final String OPERATOR_DESCRIPTION="operatordescription";
+    private static final String OPERATOR_RESULTS = "results";
 
     //BUS STOP FIELDS
     private static final String BUS_STOP_NUMBER="stopid";
@@ -34,6 +36,21 @@ public class JsonUtilities {
     private static final String BUS_STOP_LATITUDE="latitude";
     private static final String BUS_STOP_LONGITUDE="longitude";
     private static final String BUS_STOP_LAST_UPDATED="lastupdated";
+    private static final String BUS_STOP_RESULTS = "results";
+
+
+    //ROUTE FIELDS
+    private static final String ROUTE_TIMESTAMP="timestamp";
+    private static final String ROUTE_NAME = "route";
+    private static final String ROUTE_OPERATOR = "operator";
+    private static final String ROUTE_ORIGIN = "origin";
+    private static final String ROUTE_ORIGIN_LOCALIZED="originlocalized";
+    private static final String ROUTE_DESTINATION="destination";
+    private static final String ROUTE_DESTINATION_LOCALIZED="destinationlocalized";
+    private static final String ROUTE_LAST_UPDATED ="lastupdated";
+    private static final String ROUTE_RESULTS = "results";
+
+
 
 
 
@@ -41,7 +58,6 @@ public class JsonUtilities {
 
     public static ArrayList<Operator> getOperatorsFromJson(String jsonStr) {
 
-        final String OPERATOR_RESULTS = "results";
 
         ArrayList<Operator> operatorList = null;
 
@@ -73,14 +89,14 @@ public class JsonUtilities {
 
     public static ArrayList<BusStop> getBusStopsFromJson(String jsonStr) {
 
-        final String OPERATOR_RESULTS = "results";
+
 
         ArrayList<BusStop> busStopList = null;
 
         JSONObject busStopJson = null;
         try {
             busStopJson = new JSONObject(jsonStr);
-            JSONArray busStopArray = busStopJson.getJSONArray(OPERATOR_RESULTS);
+            JSONArray busStopArray = busStopJson.getJSONArray(BUS_STOP_RESULTS);
             busStopList = new ArrayList<>();
             for (int i = 0; i < busStopArray.length(); i++) {
                 JSONObject jsonBusStop = busStopArray.getJSONObject(i);
@@ -105,5 +121,47 @@ public class JsonUtilities {
         }
 
         return busStopList;
+    }
+
+
+    public static ArrayList<Route> getRouteFromJson(String jsonStr) {
+
+        final String OPERATOR_RESULTS = "results";
+
+        ArrayList<Route> routeList = null;
+
+        JSONObject routeJson = null;
+        try {
+            routeJson = new JSONObject(jsonStr);
+            String name = routeJson.getString(ROUTE_NAME);
+            String timestamp = routeJson.getString(ROUTE_TIMESTAMP);
+
+            JSONArray routeArray = routeJson.getJSONArray(ROUTE_RESULTS);
+            routeList = new ArrayList<>();
+            for (int i = 0; i < routeArray.length(); i++) {
+                JSONObject jsonRoute = routeArray.getJSONObject(i);
+
+                Route route = new Route();
+
+                route.setTimestamp(timestamp);
+                route.setName(name);
+                //TODO: Maybe, I should delete this field
+                route.setDirection("");
+                //TODO: query to save operator_id
+                route.setOperator(1);
+                route.setOrigin(jsonRoute.getString(ROUTE_ORIGIN));
+                route.setOriginLocalized(jsonRoute.getString(ROUTE_ORIGIN_LOCALIZED));
+                route.setDestination(jsonRoute.getString(ROUTE_DESTINATION));
+                route.setDestinationLocalized(jsonRoute.getString(ROUTE_DESTINATION_LOCALIZED));
+                route.setLastUpdated(jsonRoute.getString(ROUTE_LAST_UPDATED));
+
+                routeList.add(route);
+            }
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, e.toString());
+        }
+
+        return routeList;
     }
 }

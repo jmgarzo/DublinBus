@@ -22,6 +22,8 @@ public class DublinBusProvider extends ContentProvider {
 
     static final int BUS_STOP = 200;
 
+    static final int ROUTE = 300;
+
 
 
     private DublinBusDBHelper mOpenHelper;
@@ -34,6 +36,9 @@ public class DublinBusProvider extends ContentProvider {
         matcher.addURI(DublinBusContract.CONTENT_AUTHORITY, DublinBusContract.PATH_OPERATOR, OPERATOR);
 
         matcher.addURI(DublinBusContract.CONTENT_AUTHORITY, DublinBusContract.PATH_BUS_STOP, BUS_STOP);
+
+        matcher.addURI(DublinBusContract.CONTENT_AUTHORITY, DublinBusContract.PATH_ROUTE, ROUTE);
+
 
 
         return matcher;
@@ -78,6 +83,19 @@ public class DublinBusProvider extends ContentProvider {
                 );
                 break;
             }
+
+            case ROUTE: {
+                returnCursor = mOpenHelper.getReadableDatabase().query(
+                        DublinBusContract.RouteEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
             }
@@ -95,6 +113,8 @@ public class DublinBusProvider extends ContentProvider {
                 return DublinBusContract.OperatorEntry.CONTENT_DIR_TYPE;
             case BUS_STOP:
                 return DublinBusContract.BusStopEntry.CONTENT_DIR_TYPE;
+            case ROUTE:
+                return DublinBusContract.RouteEntry.CONTENT_DIR_TYPE;
         }
 
         return null;
@@ -130,6 +150,18 @@ public class DublinBusProvider extends ContentProvider {
                 }
                 break;
             }
+
+            case ROUTE: {
+                long id = db.insert(DublinBusContract.RouteEntry.TABLE_NAME,
+                        null,
+                        contentValues);
+                if (id > 0) {
+                    returnUri = ContentUris.withAppendedId(DublinBusContract.RouteEntry.CONTENT_URI, id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into: " + uri);
+                }
+                break;
+            }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
             }
@@ -156,6 +188,15 @@ public class DublinBusProvider extends ContentProvider {
             case BUS_STOP: {
                 numDeleted = db.delete(
                         DublinBusContract.BusStopEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs
+                );
+                break;
+            }
+
+            case ROUTE: {
+                numDeleted = db.delete(
+                        DublinBusContract.RouteEntry.TABLE_NAME,
                         selection,
                         selectionArgs
                 );
@@ -197,6 +238,14 @@ public class DublinBusProvider extends ContentProvider {
                 break;
             }
 
+            case ROUTE: {
+                numUpdates = db.update(DublinBusContract.RouteEntry.TABLE_NAME,
+                        contentValues,
+                        selection,
+                        selectionArgs);
+                break;
+            }
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -229,9 +278,7 @@ public class DublinBusProvider extends ContentProvider {
                     db.endTransaction();
                 }
 
-                if (numInserted > 0) {
-                    getContext().getContentResolver().notifyChange(uri, null);
-                }
+
                 break;
             }
                 case BUS_STOP: {
@@ -251,11 +298,30 @@ public class DublinBusProvider extends ContentProvider {
                     } finally {
                         db.endTransaction();
                     }
-                    if (numInserted > 0) {
-                        getContext().getContentResolver().notifyChange(uri, null);
-                    }
+
                     break;
                 }
+
+            case ROUTE: {
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        if (value == null) {
+                            throw new IllegalArgumentException("Cannot have null content values");
+                        }
+                        long id = db.insert(DublinBusContract.RouteEntry.TABLE_NAME, null, value);
+                        if (id != -1) {
+                            numInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+
+                } finally {
+                    db.endTransaction();
+                }
+
+                break;
+            }
 
             default:
                 return super.bulkInsert(uri, values);

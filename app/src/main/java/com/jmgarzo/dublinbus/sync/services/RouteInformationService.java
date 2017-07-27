@@ -19,6 +19,6 @@ public class RouteInformationService extends IntentService{
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
-//        SyncTasks.getRouteInformation();
+        SyncTasks.syncRoute(this);
     }
 }
