@@ -22,32 +22,37 @@
             </intent-filter>
         </activity>
 
+        <provider
+            android:name=".data.DublinBusProvider"
+            android:authorities="@string/content_authority"
+            android:exported="false" />
+
         <service
-            android:name=".sync.RealTimeBusInformationService"
+            android:name=".sync.services.RealTimeBusInformationService"
             android:exported="false"/>
 
         <service
-            android:name=".sync.TimeTableBusInformationService"
+            android:name=".sync.services.TimeTableBusInformationService"
             android:exported="false"/>
 
         <service
-            android:name=".sync.FullTimetableBusInformationService"
+            android:name=".sync.services.FullTimetableBusInformationService"
             android:exported="false"/>
 
         <service
-            android:name=".sync.BusStopInformationService"
+            android:name=".sync.services.BusStopInformationService"
             android:exported="false"/>
 
         <service
-            android:name=".sync.RouteInformationService"
+            android:name=".sync.services.RouteInformationService"
             android:exported="false"/>
 
         <service
-            android:name=".sync.OperatorInformationService"
+            android:name=".sync.services.OperatorInformationService"
             android:exported="false"/>
 
         <service
-            android:name=".sync.RouteListInformationService"
+            android:name=".sync.services.RouteListInformationService"
             android:exported="false"/>
     </application>
 

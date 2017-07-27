@@ -1,8 +1,10 @@
-package com.jmgarzo.dublinbus.sync;
+package com.jmgarzo.dublinbus.sync.services;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+
+import com.jmgarzo.dublinbus.sync.SyncTasks;
 
 /**
  * Created by jmgarzo on 25/07/17.
@@ -15,7 +17,7 @@ public class RealTimeBusInformationService extends IntentService {
     }
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        SyncTasks.getRealTimeBusInformation(this);
+//        SyncTasks.getRealTimeBusInformation(this);
 
     }
 }

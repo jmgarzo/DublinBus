@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jmgarzo.dublinbus.sync.RouteListInformationService;
+import com.jmgarzo.dublinbus.sync.services.OperatorInformationService;
+import com.jmgarzo.dublinbus.sync.services.RouteListInformationService;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -44,11 +45,11 @@ public class MainActivityFragment extends Fragment {
 //        Intent intentRouteInformationService = new Intent(getActivity(), RouteInformationService.class);
 //        getContext().startService(intentRouteInformationService);
 
-//        Intent intentOperatorInformationService = new Intent(getActivity(), OperatorInformationService.class);
-//        getContext().startService(intentOperatorInformationService);
+        Intent intentOperatorInformationService = new Intent(getActivity(), OperatorInformationService.class);
+        getContext().startService(intentOperatorInformationService);
 
-        Intent intentRouteListInformationService = new Intent(getActivity(), RouteListInformationService.class);
-        getContext().startService(intentRouteListInformationService);
+//        Intent intentRouteListInformationService = new Intent(getActivity(), RouteListInformationService.class);
+//        getContext().startService(intentRouteListInformationService);
 
 
         return rootView;

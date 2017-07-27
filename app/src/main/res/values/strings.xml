@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">DublinBus</string>
     <string name="action_settings">Settings</string>
+
+    <string name="content_authority">com.jmgarzo.dublinbus</string>
+
 </resources>
