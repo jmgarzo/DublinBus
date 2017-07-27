@@ -58,7 +58,6 @@ public class DublinBusContract {
         public static final String TABLE_NAME = "route";
         public static final String TIMESTAMP = "timestamp";
         public static final String NAME = "name";
-        public static final String DIRECTION = "direction";
         public static final String OPERATOR = "operator";
         public static final String ORIGIN = "origin";
         public static final String ORIGIN_LOCALIZED = "origin_localized";

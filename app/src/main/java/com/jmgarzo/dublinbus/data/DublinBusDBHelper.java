@@ -53,7 +53,6 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
                         DublinBusContract.RouteEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
                         DublinBusContract.RouteEntry.TIMESTAMP + " TEXT NOT NULL, " +
                         DublinBusContract.RouteEntry.NAME + " TEXT NOT NULL, " +
-                        DublinBusContract.RouteEntry.DIRECTION + " TEXT NOT NULL, " +
                         DublinBusContract.RouteEntry.OPERATOR + " INTEGER NOT NULL, " +
                         DublinBusContract.RouteEntry.ORIGIN + " TEXT NOT NULL, " +
                         DublinBusContract.RouteEntry.ORIGIN_LOCALIZED + " TEXT NOT NULL, " +

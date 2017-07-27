@@ -145,8 +145,7 @@ public class JsonUtilities {
 
                 route.setTimestamp(timestamp);
                 route.setName(name);
-                //TODO: Maybe, I should delete this field
-                route.setDirection("");
+
                 //TODO: query to save operator_id
                 route.setOperator(1);
                 route.setOrigin(jsonRoute.getString(ROUTE_ORIGIN));

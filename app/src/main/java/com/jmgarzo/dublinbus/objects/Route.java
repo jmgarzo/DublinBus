@@ -15,7 +15,6 @@ public class Route {
     private long id;
     private String timestamp;
     private String name;
-    private String direction;
     private long operator;
     private String origin;
     private String originLocalized;
@@ -47,14 +46,6 @@ public class Route {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDirection() {
-        return direction;
-    }
-
-    public void setDirection(String direction) {
-        this.direction = direction;
     }
 
     public long getOperator() {
@@ -114,7 +105,6 @@ public class Route {
 
         contentValues.put(DublinBusContract.RouteEntry.TIMESTAMP,getTimestamp());
         contentValues.put(DublinBusContract.RouteEntry.NAME,getName());
-        contentValues.put(DublinBusContract.RouteEntry.DIRECTION,getDirection());
         contentValues.put(DublinBusContract.RouteEntry.OPERATOR,getOperator());
         contentValues.put(DublinBusContract.RouteEntry.ORIGIN,getOrigin());
         contentValues.put(DublinBusContract.RouteEntry.ORIGIN_LOCALIZED,getOriginLocalized());
@@ -130,7 +120,6 @@ public class Route {
         id = cursor.getInt(DBUtils.COL_ROUTE_ID);
         timestamp = cursor.getString(DBUtils.COL_ROUTE_TIMESTAMP);
         name = cursor.getString(DBUtils.COL_ROUTE_NAME);
-        direction = cursor.getString(DBUtils.COL_ROUTE_DIRECTION);
         operator = cursor.getLong(DBUtils.COL_ROUTE_OPERATOR);
         origin = cursor.getString(DBUtils.COL_ROUTE_ORIGIN);
         originLocalized = cursor.getString(DBUtils.COL_ROUTE_ORIGIN_LOCALIZED);
