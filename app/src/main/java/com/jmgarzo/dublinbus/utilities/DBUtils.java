@@ -9,7 +9,7 @@ import com.jmgarzo.dublinbus.data.DublinBusContract;
 public class DBUtils {
 
 
-    public static final String[] MOVIE_COLUMNS = {
+    public static final String[] OPERATOR_COLUMNS = {
             DublinBusContract.OperatorEntry._ID,
             DublinBusContract.OperatorEntry.REFERENCE,
             DublinBusContract.OperatorEntry.NAME,
@@ -21,6 +21,34 @@ public class DBUtils {
     public static final int COL_OPERATOR_REFERENCE = 1;
     public static final int COL_OPERATOR_NAME = 2;
     public static final int COL_OPERATOR_DESCRIPTION = 3;
+
+
+
+
+    public static final String[] BUS_STOP_COLUMNS = {
+            DublinBusContract.BusStopEntry._ID,
+            DublinBusContract.BusStopEntry.NUMBER,
+            DublinBusContract.BusStopEntry.DISPLAY_STOP_ID,
+            DublinBusContract.BusStopEntry.SHORT_NAME,
+            DublinBusContract.BusStopEntry.SHORT_NAME_LOCALIZED,
+            DublinBusContract.BusStopEntry.FULL_NAME,
+            DublinBusContract.BusStopEntry.FULL_NAME_LOCALIZED,
+            DublinBusContract.BusStopEntry.LATITUDE,
+            DublinBusContract.BusStopEntry.LONGITUDE,
+            DublinBusContract.BusStopEntry.LAST_UPDATED
+    };
+
+    public static final int COL_BUS_STOP_ID = 0;
+    public static final int COL_BUS_STOP_NUMBER = 1;
+    public static final int COL_BUS_STOP_DISPLAY_STOP_ID = 2;
+    public static final int COL_BUS_STOP_SHORTNAME = 3;
+    public static final int COL_BUS_STOP_SHORT_NAME_LOCALIZED = 4;
+    public static final int COL_BUS_STOP_FULL_NAME = 5;
+    public static final int COL_BUS_STOP_FULL_NAME_LOCALIZED = 6;
+    public static final int COL_BUS_STOP_LATITUDE = 6;
+    public static final int COL_BUS_STOP_LONGITUDE = 8;
+    public static final int COL_BUS_STOP_LAST_UPDATED = 9;
+
 
 
 }

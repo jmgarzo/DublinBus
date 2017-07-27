@@ -66,7 +66,7 @@ public class Operator implements Parcelable {
         return contentValues;
     }
 
-    private void cursorToMovie(Cursor cursor) {
+    private void cursorToOperator(Cursor cursor) {
 
         id = cursor.getInt(DBUtils.COL_OPERATOR_ID);
         reference = cursor.getString(DBUtils.COL_OPERATOR_REFERENCE);

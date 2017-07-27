@@ -31,6 +31,23 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
 
         db.execSQL(SQL_CREATE_OPERATOR_TABLE);
 
+
+        final String SQL_CREATE_BUS_STOP_TABLE =
+                "CREATE TABLE " + DublinBusContract.BusStopEntry.TABLE_NAME + " ( " +
+                        DublinBusContract.BusStopEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                        DublinBusContract.BusStopEntry.NUMBER + " TEXT NOT NULL, " +
+                        DublinBusContract.BusStopEntry.DISPLAY_STOP_ID + " TEXT NOT NULL, " +
+                        DublinBusContract.BusStopEntry.SHORT_NAME + " TEXT NOT NULL, " +
+                        DublinBusContract.BusStopEntry.SHORT_NAME_LOCALIZED + " TEXT NOT NULL, " +
+                        DublinBusContract.BusStopEntry.FULL_NAME + " TEXT NOT NULL, " +
+                        DublinBusContract.BusStopEntry.FULL_NAME_LOCALIZED + " TEXT NOT NULL, " +
+                        DublinBusContract.BusStopEntry.LATITUDE + " TEXT NOT NULL, " +
+                        DublinBusContract.BusStopEntry.LONGITUDE + " TEXT NOT NULL, " +
+                        DublinBusContract.BusStopEntry.LAST_UPDATED + " TEXT NOT NULL " +
+                        " );";
+
+        db.execSQL(SQL_CREATE_BUS_STOP_TABLE);
+
     }
 
     @Override

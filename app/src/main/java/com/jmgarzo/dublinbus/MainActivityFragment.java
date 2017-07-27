@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jmgarzo.dublinbus.sync.services.BusStopInformationService;
 import com.jmgarzo.dublinbus.sync.services.OperatorInformationService;
 import com.jmgarzo.dublinbus.sync.services.RouteListInformationService;
 
@@ -39,14 +40,14 @@ public class MainActivityFragment extends Fragment {
 //        Intent intentFullTimetableBusInformation = new Intent(getActivity(), FullTimetableBusInformationService.class);
 //        getContext().startService(intentFullTimetableBusInformation);
 
-//        Intent intentBusStopInformationService = new Intent(getActivity(), BusStopInformationService.class);
-//        getContext().startService(intentBusStopInformationService);
+        Intent intentBusStopInformationService = new Intent(getActivity(), BusStopInformationService.class);
+        getContext().startService(intentBusStopInformationService);
 
 //        Intent intentRouteInformationService = new Intent(getActivity(), RouteInformationService.class);
 //        getContext().startService(intentRouteInformationService);
 
-        Intent intentOperatorInformationService = new Intent(getActivity(), OperatorInformationService.class);
-        getContext().startService(intentOperatorInformationService);
+//        Intent intentOperatorInformationService = new Intent(getActivity(), OperatorInformationService.class);
+//        getContext().startService(intentOperatorInformationService);
 
 //        Intent intentRouteListInformationService = new Intent(getActivity(), RouteListInformationService.class);
 //        getContext().startService(intentRouteListInformationService);

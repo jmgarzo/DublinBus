@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
 
 import java.io.IOException;
@@ -198,13 +199,14 @@ public class NetworkUtilities {
     //3.4.4 Retrieve Bus Stop Information
     //http://[rtpiserver]/busstopinformation?stopid=[stopid]&stopname=[stopnamestopname]&format=[format]
 
-    public static String getBusStopInformation(){
+    public static ArrayList<BusStop> getBusStopInformation(){
 
         String response="";
-
+        ArrayList<BusStop> busStopList = null;
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(BUS_STOP_INFORMATION_PATH)
-                .appendQueryParameter(STOP_ID_PARAM, "7025")
+//                .appendQueryParameter(STOP_ID_PARAM, "7025")
+                .appendQueryParameter(OPERATOR_PARAM,DUBLIN_BUS_OPERATOR_PARAM)
                 .appendQueryParameter(FORMAT_PARAM, JSON_VALUE_PARAM)
                 .build();
 
@@ -214,15 +216,15 @@ public class NetworkUtilities {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
         try {
             response = getResponseFromHttpUrl(url);
+            busStopList = JsonUtilities.getBusStopsFromJson(response);
         } catch (IOException e) {
             Log.e(LOG_TAG, e.toString());
         }
 
 
-        return response;
+        return busStopList;
     }
 
 

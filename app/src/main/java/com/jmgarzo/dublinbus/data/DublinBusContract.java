@@ -15,6 +15,7 @@ public class DublinBusContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_OPERATOR="operator";
+    public static final String PATH_BUS_STOP = "bus_stop";
 
 
     public static final class OperatorEntry implements BaseColumns {
@@ -31,4 +32,27 @@ public class DublinBusContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
     }
+
+    public static final class BusStopEntry implements BaseColumns {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_BUS_STOP).build();
+        public static final String TABLE_NAME = "bus_stop";
+        public static final String _ID = "_id";
+        public static final String NUMBER ="number";
+        public static final String DISPLAY_STOP_ID="display_stop_id";
+        public static final String SHORT_NAME ="short_name";
+        public static final String SHORT_NAME_LOCALIZED ="short_name_localized";
+        public static final String FULL_NAME="full_name";
+        public static final String FULL_NAME_LOCALIZED = "full_name_localized";
+        public static final String LATITUDE = "latitude";
+        public static final String LONGITUDE = "longitude";
+        public static final String LAST_UPDATED = "last_updated";
+
+
+        public static final String CONTENT_DIR_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+    }
+
+
 }
