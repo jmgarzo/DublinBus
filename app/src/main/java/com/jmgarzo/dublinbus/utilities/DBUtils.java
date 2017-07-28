@@ -1,6 +1,10 @@
 package com.jmgarzo.dublinbus.utilities;
 
+import android.content.Context;
+import android.database.Cursor;
+
 import com.jmgarzo.dublinbus.data.DublinBusContract;
+import com.jmgarzo.dublinbus.data.DublinBusProvider;
 
 /**
  * Created by jmgarzo on 27/07/17.
@@ -74,6 +78,22 @@ public class DBUtils {
     public static final int COL_ROUTE_DESTINATION_LOCALIZED = 7;
     public static final int COL_ROUTE_LAST_UPDATE = 8;
 
+
+    public static long getOperator(Context contect, String operatorReference){
+        Cursor cursor = contect.getContentResolver().query(
+                DublinBusContract.OperatorEntry.CONTENT_URI,
+                DBUtils.OPERATOR_COLUMNS,
+                DublinBusContract.OperatorEntry.REFERENCE + " = ? ",
+                new String[]{operatorReference},
+                null
+        );
+        Long result = null;
+        if(cursor.moveToFirst()) {
+            result = cursor.getLong(DBUtils.COL_OPERATOR_ID);
+        }
+
+        return result;
+    }
 
 
 }

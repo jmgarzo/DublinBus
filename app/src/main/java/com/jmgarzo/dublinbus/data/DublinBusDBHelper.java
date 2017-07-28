@@ -64,8 +64,6 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
                         ");";
 
         db.execSQL(SQL_CREATE_ROUTE_TABLE);
-
-
     }
 
     @Override

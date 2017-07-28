@@ -233,7 +233,7 @@ public class NetworkUtilities {
     //3.4.5 Retrieve Route Information
     //http://[rtpiserver]/routeinformation?routeid=[route]&operator=[operator]&operator=[operator]&format=[format]
 
-    public static ArrayList<Route>  getRouteInformation(){
+    public static ArrayList<Route>  getRouteInformation(Context context){
         String response="";
         ArrayList<Route> routeList = null;
 
@@ -250,7 +250,7 @@ public class NetworkUtilities {
         }
         try {
             response = getResponseFromHttpUrl(url);
-            routeList = JsonUtilities.getRouteFromJson(response);
+            routeList = JsonUtilities.getRouteFromJson(context,response);
         } catch (IOException e) {
             Log.e(LOG_TAG, e.toString());
         }

@@ -40,6 +40,8 @@ public class MainActivityFragment extends Fragment {
 
 //        Intent intentFullTimetableBusInformation = new Intent(getActivity(), FullTimetableBusInformationService.class);
 //        getContext().startService(intentFullTimetableBusInformation);
+        Intent intentOperatorInformationService = new Intent(getActivity(), OperatorInformationService.class);
+        getContext().startService(intentOperatorInformationService);
 
         Intent intentBusStopInformationService = new Intent(getActivity(), BusStopInformationService.class);
         getContext().startService(intentBusStopInformationService);

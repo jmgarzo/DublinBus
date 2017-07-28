@@ -1,5 +1,6 @@
 package com.jmgarzo.dublinbus.utilities;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.jmgarzo.dublinbus.objects.BusStop;
@@ -124,7 +125,7 @@ public class JsonUtilities {
     }
 
 
-    public static ArrayList<Route> getRouteFromJson(String jsonStr) {
+    public static ArrayList<Route> getRouteFromJson(Context context, String jsonStr) {
 
         final String OPERATOR_RESULTS = "results";
 
@@ -139,6 +140,8 @@ public class JsonUtilities {
             JSONArray routeArray = routeJson.getJSONArray(ROUTE_RESULTS);
             routeList = new ArrayList<>();
             for (int i = 0; i < routeArray.length(); i++) {
+
+
                 JSONObject jsonRoute = routeArray.getJSONObject(i);
 
                 Route route = new Route();
@@ -146,8 +149,10 @@ public class JsonUtilities {
                 route.setTimestamp(timestamp);
                 route.setName(name);
 
+                Long operator = DBUtils.getOperator(context,jsonRoute.getString(ROUTE_OPERATOR));
+
                 //TODO: query to save operator_id
-                route.setOperator(1);
+                route.setOperator(operator);
                 route.setOrigin(jsonRoute.getString(ROUTE_ORIGIN));
                 route.setOriginLocalized(jsonRoute.getString(ROUTE_ORIGIN_LOCALIZED));
                 route.setDestination(jsonRoute.getString(ROUTE_DESTINATION));

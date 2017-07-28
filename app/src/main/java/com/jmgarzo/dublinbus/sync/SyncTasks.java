@@ -66,7 +66,7 @@ public class SyncTasks {
 
     synchronized public static void syncRoute(Context context) {
         try {
-            ArrayList<Route> routeList = NetworkUtilities.getRouteInformation();
+            ArrayList<Route> routeList = NetworkUtilities.getRouteInformation(context);
 
             if (routeList != null && routeList.size() > 0) {
                 ContentValues[] contentValues = new ContentValues[routeList.size()];
