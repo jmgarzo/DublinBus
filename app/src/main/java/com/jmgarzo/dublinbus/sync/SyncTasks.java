@@ -8,6 +8,7 @@ import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
 import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.utilities.DBUtils;
 import com.jmgarzo.dublinbus.utilities.NetworkUtilities;
 
 import java.util.ArrayList;
@@ -80,6 +81,26 @@ public class SyncTasks {
                 //TODO: Mirar a ver si quiero borrar todo lo anterior antes de insertar
                 contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
                         contentValues);
+
+
+                for (int j = 0 ; j< routeList.size(); j++){
+                    Route route = routeList.get(j);
+                    long routeId = DBUtils.getRouteId(context,route.getName(),route.getDestination());
+
+                    ArrayList<String> stopsList = route.getStops();
+                    if(stopsList!=null && stopsList.size() >0){
+                        for(int k = 0; k < stopsList.size();k++){
+                            Long stopId = DBUtils.getBusStopId(context,stopsList.get(k));
+
+                            ContentValues cv = new ContentValues();
+                            cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID.toString(),routeId);
+                            cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID,stopId);
+
+                            contentResolver.insert(DublinBusContract.RouteBusStopEntry.CONTENT_URI,cv);
+                        }
+                    }
+
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

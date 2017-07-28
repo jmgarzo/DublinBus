@@ -6,6 +6,8 @@ import android.database.Cursor;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
+import java.util.ArrayList;
+
 /**
  * Created by jmgarzo on 27/07/17.
  */
@@ -21,6 +23,7 @@ public class Route {
     private String destination;
     private String destinationLocalized;
     private String lastUpdated;
+    private ArrayList<String> stops;
 
     public Route(){}
 
@@ -96,9 +99,13 @@ public class Route {
         this.lastUpdated = lastUpdated;
     }
 
+    public ArrayList<String> getStops() {
+        return stops;
+    }
 
-
-
+    public void setStops(ArrayList<String> stops) {
+        this.stops = stops;
+    }
 
     public ContentValues getContentValues() {
         ContentValues contentValues = new ContentValues();

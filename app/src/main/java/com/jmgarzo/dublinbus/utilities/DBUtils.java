@@ -5,6 +5,7 @@ import android.database.Cursor;
 
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.data.DublinBusProvider;
+import com.jmgarzo.dublinbus.objects.BusStop;
 
 /**
  * Created by jmgarzo on 27/07/17.
@@ -90,6 +91,38 @@ public class DBUtils {
         Long result = null;
         if(cursor.moveToFirst()) {
             result = cursor.getLong(DBUtils.COL_OPERATOR_ID);
+        }
+
+        return result;
+    }
+
+    public static long getRouteId(Context context,String routeName,String routeDestination){
+        Long result = null;
+        String selection = DublinBusContract.RouteEntry.NAME + " = ? AND "  +
+                DublinBusContract.RouteEntry.DESTINATION + " = ? " ;
+
+        Cursor cursor = context.getContentResolver().query(
+                DublinBusContract.RouteEntry.CONTENT_URI,
+                DBUtils.ROUTE_COLUMNS,
+                selection,
+                new String[]{routeName,routeDestination},
+                null);
+        if(cursor.moveToFirst()){
+            result = cursor.getLong(DBUtils.COL_ROUTE_ID);
+        }
+        return result;
+    }
+
+    public static long getBusStopId(Context context, String stopNumber){
+        Long result = null;
+
+        Cursor cursor = context.getContentResolver().query(DublinBusContract.BusStopEntry.CONTENT_URI,
+                DBUtils.BUS_STOP_COLUMNS,
+                DublinBusContract.BusStopEntry.NUMBER + " =? ",
+                new String[]{stopNumber},
+                null);
+        if(cursor.moveToFirst()){
+            result = cursor.getLong(DBUtils.COL_BUS_STOP_ID);
         }
 
         return result;

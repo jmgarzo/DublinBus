@@ -50,6 +50,7 @@ public class JsonUtilities {
     private static final String ROUTE_DESTINATION_LOCALIZED="destinationlocalized";
     private static final String ROUTE_LAST_UPDATED ="lastupdated";
     private static final String ROUTE_RESULTS = "results";
+    private static final String ROUTE_STOPS = "stops";
 
 
 
@@ -130,6 +131,7 @@ public class JsonUtilities {
         final String OPERATOR_RESULTS = "results";
 
         ArrayList<Route> routeList = null;
+        ArrayList<String> stopsList = null;
 
         JSONObject routeJson = null;
         try {
@@ -158,6 +160,17 @@ public class JsonUtilities {
                 route.setDestination(jsonRoute.getString(ROUTE_DESTINATION));
                 route.setDestinationLocalized(jsonRoute.getString(ROUTE_DESTINATION_LOCALIZED));
                 route.setLastUpdated(jsonRoute.getString(ROUTE_LAST_UPDATED));
+
+                JSONArray stopsArray = jsonRoute.getJSONArray(ROUTE_STOPS);
+                stopsList = new ArrayList<>();
+
+                for (int j = 0; j < stopsArray.length(); j++) {
+
+                    JSONObject jsonStop = stopsArray.getJSONObject(j);
+                    stopsList.add(jsonStop.getString(BUS_STOP_NUMBER));
+                }
+                route.setStops(stopsList);
+
 
                 routeList.add(route);
             }
