@@ -7,9 +7,11 @@ import android.util.Log;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
 import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.objects.RouteInformation;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -290,8 +292,9 @@ public class NetworkUtilities {
 
     //3.4.7 Route List Information
     //http://[rtpiserver]/routelistinformation? operator=[operator]&format=[format]
-    public static String getRouteListInformation(){
+    public static ArrayList<RouteInformation> getRouteListInformation(Context context){
 
+        ArrayList<RouteInformation> routeInformationList =null;
         String response="";
 
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
@@ -308,11 +311,12 @@ public class NetworkUtilities {
 
         try {
             response = getResponseFromHttpUrl(url);
+            routeInformationList = JsonUtilities.getRouteInformationFromJson(response);
         } catch (IOException e) {
             Log.e(LOG_TAG, e.toString());
         }
 
-        return response;
+        return routeInformationList;
     }
 
 }

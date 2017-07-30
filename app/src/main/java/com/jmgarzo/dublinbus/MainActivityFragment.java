@@ -30,6 +30,9 @@ public class MainActivityFragment extends Fragment {
 
         tvAnswer = getActivity().findViewById(R.id.tv_prueba);
 
+        Intent intentRouteListInformationService = new Intent(getActivity(), RouteListInformationService.class);
+        getContext().startService(intentRouteListInformationService);
+
 //        Intent intentRealTimeBusInformation = new Intent(getActivity(), RealTimeBusInformationService.class);
 //        getContext().startService(intentRealTimeBusInformation);
         //tvAnswer.setText(sAnswer);
@@ -52,8 +55,7 @@ public class MainActivityFragment extends Fragment {
 //        Intent intentOperatorInformationService = new Intent(getActivity(), OperatorInformationService.class);
 //        getContext().startService(intentOperatorInformationService);
 
-//        Intent intentRouteListInformationService = new Intent(getActivity(), RouteListInformationService.class);
-//        getContext().startService(intentRouteListInformationService);
+
 
 
         return rootView;

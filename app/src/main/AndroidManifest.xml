@@ -29,31 +29,30 @@
 
         <service
             android:name=".sync.services.RealTimeBusInformationService"
-            android:exported="false"/>
-
+            android:exported="false" />
         <service
             android:name=".sync.services.TimeTableBusInformationService"
-            android:exported="false"/>
-
+            android:exported="false" />
         <service
             android:name=".sync.services.FullTimetableBusInformationService"
-            android:exported="false"/>
-
+            android:exported="false" />
         <service
             android:name=".sync.services.BusStopInformationService"
-            android:exported="false"/>
-
+            android:exported="false" />
         <service
             android:name=".sync.services.RouteInformationService"
-            android:exported="false"/>
-
+            android:exported="false" />
         <service
             android:name=".sync.services.OperatorInformationService"
-            android:exported="false"/>
-
+            android:exported="false" />
         <service
             android:name=".sync.services.RouteListInformationService"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <activity
+            android:name=".RouteActivity"
+            android:label="@string/title_activity_route"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

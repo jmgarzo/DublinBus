@@ -6,6 +6,7 @@ import android.util.Log;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
 import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.objects.RouteInformation;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +52,14 @@ public class JsonUtilities {
     private static final String ROUTE_LAST_UPDATED ="lastupdated";
     private static final String ROUTE_RESULTS = "results";
     private static final String ROUTE_STOPS = "stops";
+
+
+    //OPERATOR JSON FIELDS
+    private static final String ROUTE_INFORMATION_OPERATOR = "operator";
+    private static final String ROUTE_INFORMATION_ROUTE = "route";
+    private static final String ROUTE_INFORMATION_RESULTS = "results";
+
+
 
 
 
@@ -181,4 +190,34 @@ public class JsonUtilities {
 
         return routeList;
     }
+
+
+    public static ArrayList<RouteInformation> getRouteInformationFromJson(String jsonStr) {
+
+
+        ArrayList<RouteInformation> routeInformationList = null;
+
+        JSONObject routeInformationJson = null;
+        try {
+            routeInformationJson = new JSONObject(jsonStr);
+            JSONArray routeInformationArray = routeInformationJson.getJSONArray(ROUTE_INFORMATION_RESULTS);
+            routeInformationList = new ArrayList<>();
+            for (int i = 0; i < routeInformationArray.length(); i++) {
+                JSONObject jsonRouteInformation = routeInformationArray.getJSONObject(i);
+
+                RouteInformation routeInformation = new RouteInformation();
+
+                routeInformation.setOperator(jsonRouteInformation.getString(ROUTE_INFORMATION_OPERATOR));
+                routeInformation.setRoute(jsonRouteInformation.getString(ROUTE_INFORMATION_ROUTE));
+
+                routeInformationList.add(routeInformation);
+            }
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, e.toString());
+        }
+
+        return routeInformationList;
+    }
+
 }

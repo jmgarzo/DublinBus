@@ -8,6 +8,7 @@ import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
 import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.objects.RouteInformation;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 import com.jmgarzo.dublinbus.utilities.NetworkUtilities;
 
@@ -83,20 +84,20 @@ public class SyncTasks {
                         contentValues);
 
 
-                for (int j = 0 ; j< routeList.size(); j++){
+                for (int j = 0; j < routeList.size(); j++) {
                     Route route = routeList.get(j);
-                    long routeId = DBUtils.getRouteId(context,route.getName(),route.getDestination());
+                    long routeId = DBUtils.getRouteId(context, route.getName(), route.getDestination());
 
                     ArrayList<String> stopsList = route.getStops();
-                    if(stopsList!=null && stopsList.size() >0){
-                        for(int k = 0; k < stopsList.size();k++){
-                            Long stopId = DBUtils.getBusStopId(context,stopsList.get(k));
+                    if (stopsList != null && stopsList.size() > 0) {
+                        for (int k = 0; k < stopsList.size(); k++) {
+                            Long stopId = DBUtils.getBusStopId(context, stopsList.get(k));
 
                             ContentValues cv = new ContentValues();
-                            cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID.toString(),routeId);
-                            cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID,stopId);
+                            cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID.toString(), routeId);
+                            cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID, stopId);
 
-                            contentResolver.insert(DublinBusContract.RouteBusStopEntry.CONTENT_URI,cv);
+                            contentResolver.insert(DublinBusContract.RouteBusStopEntry.CONTENT_URI, cv);
                         }
                     }
 
@@ -106,4 +107,26 @@ public class SyncTasks {
             e.printStackTrace();
         }
     }
+
+    synchronized public static void syncRouteInformation(Context context) {
+        try {
+            ArrayList<RouteInformation> routeInformationList = NetworkUtilities.getRouteListInformation(context);
+
+            if (routeInformationList != null && routeInformationList.size() > 0) {
+                ContentValues[] contentValues = new ContentValues[routeInformationList.size()];
+                for (int i = 0; i < routeInformationList.size(); i++) {
+                    RouteInformation routeInformation = routeInformationList.get(i);
+                    contentValues[i] = routeInformation.getContentValues();
+                }
+
+                ContentResolver contentResolver = context.getContentResolver();
+
+                contentResolver.bulkInsert(DublinBusContract.RouteInformationEntry.CONTENT_URI,
+                        contentValues);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

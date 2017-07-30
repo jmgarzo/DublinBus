@@ -80,6 +80,16 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
                         ");";
         db.execSQL(SQL_CREATE_ROUTE_BUS_STOP_TABLE);
 
+
+        final String SQL_CREATE_ROUTE_INFORMATION_TABLE =
+                "CREATE TABLE " + DublinBusContract.RouteInformationEntry.TABLE_NAME + " ( " +
+                        DublinBusContract.RouteInformationEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                        DublinBusContract.RouteInformationEntry.OPERATOR + " TEXT NOT NULL, " +
+                        DublinBusContract.RouteInformationEntry.ROUTE + " TEXT NOT NULL " +
+                        " );";
+
+        db.execSQL(SQL_CREATE_ROUTE_INFORMATION_TABLE);
+
     }
 
     @Override

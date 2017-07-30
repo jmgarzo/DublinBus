@@ -80,6 +80,19 @@ public class DBUtils {
     public static final int COL_ROUTE_LAST_UPDATE = 8;
 
 
+
+    public static final String[] ROUTE_INFORMATION_COLUMNS = {
+            DublinBusContract.RouteInformationEntry._ID,
+            DublinBusContract.RouteInformationEntry.OPERATOR,
+            DublinBusContract.RouteInformationEntry.ROUTE,
+
+    };
+
+    public static final int COL_ROUTE_INFORMATION_ID = 0;
+    public static final int COL_ROUTE_INFORMATION_OPERATOR = 1;
+    public static final int COL_ROUTE_INFORMATION_ROUTE = 2;
+
+
     public static long getOperator(Context contect, String operatorReference){
         Cursor cursor = contect.getContentResolver().query(
                 DublinBusContract.OperatorEntry.CONTENT_URI,
