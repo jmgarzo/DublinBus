@@ -5,4 +5,15 @@
     <string name="content_authority">com.jmgarzo.dublinbus</string>
     <string name="title_activity_route">RouteActivity</string>
 
+    <string name="btn_route">Routes</string>
+
+
+    <!--Strings for SharedPreference-->
+    <string name="pref_route_information_db">route_information_db</string>
+    <string name="pref_route_db">route_db</string>
+    <string name="pref_bus_stop_db">bus_stop_db</string>
+    <string name="pref_operator_information">operator_information</string>
+
+
+
 </resources>

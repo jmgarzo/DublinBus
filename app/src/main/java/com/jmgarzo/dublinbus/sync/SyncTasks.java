@@ -3,12 +3,19 @@ package com.jmgarzo.dublinbus.sync;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
 import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.objects.RouteBusStop;
 import com.jmgarzo.dublinbus.objects.RouteInformation;
+import com.jmgarzo.dublinbus.sync.services.BusStopInformationService;
+import com.jmgarzo.dublinbus.sync.services.OperatorInformationService;
+import com.jmgarzo.dublinbus.sync.services.RouteInformationService;
+import com.jmgarzo.dublinbus.sync.services.RouteListInformationService;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 import com.jmgarzo.dublinbus.utilities.NetworkUtilities;
 
@@ -36,8 +43,11 @@ public class SyncTasks {
                 ContentResolver contentResolver = context.getContentResolver();
 
                 //TODO: Mirar a ver si quiero borrar todo lo anterior antes de insertar
-                contentResolver.bulkInsert(DublinBusContract.OperatorEntry.CONTENT_URI,
+                int inserted = contentResolver.bulkInsert(DublinBusContract.OperatorEntry.CONTENT_URI,
                         contentValues);
+                if(inserted>0){
+                    DBUtils.setIsFilledOperatorInformation(context,true);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,12 +64,14 @@ public class SyncTasks {
                     BusStop busStop = busStopList.get(i);
                     contentValues[i] = busStop.getContentValues();
                 }
-
                 ContentResolver contentResolver = context.getContentResolver();
 
                 //TODO: Mirar a ver si quiero borrar todo lo anterior antes de insertar
-                contentResolver.bulkInsert(DublinBusContract.BusStopEntry.CONTENT_URI,
+                int inserted = contentResolver.bulkInsert(DublinBusContract.BusStopEntry.CONTENT_URI,
                         contentValues);
+                if(inserted>0){
+                    DBUtils.setIsFilledBusStop(context,true);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,7 +91,6 @@ public class SyncTasks {
 
                 ContentResolver contentResolver = context.getContentResolver();
 
-                //TODO: Mirar a ver si quiero borrar todo lo anterior antes de insertar
                 contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
                         contentValues);
 
@@ -90,14 +101,24 @@ public class SyncTasks {
 
                     ArrayList<String> stopsList = route.getStops();
                     if (stopsList != null && stopsList.size() > 0) {
+                        ContentValues[] busStopContentValues = new ContentValues[stopsList.size()];
                         for (int k = 0; k < stopsList.size(); k++) {
                             Long stopId = DBUtils.getBusStopId(context, stopsList.get(k));
 
-                            ContentValues cv = new ContentValues();
-                            cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID.toString(), routeId);
-                            cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID, stopId);
+                            if(stopId != -1l) {
+                                ContentValues cv = new ContentValues();
+                                cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID.toString(), routeId);
+                                cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID, stopId);
 
-                            contentResolver.insert(DublinBusContract.RouteBusStopEntry.CONTENT_URI, cv);
+//                            contentResolver.insert(DublinBusContract.RouteBusStopEntry.CONTENT_URI, cv);
+                                busStopContentValues[k] = cv;
+                            }else{
+                                Log.e(LOG_TAG,"StopId not found");
+                            }
+                        }
+                        int inserted = contentResolver.bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI,busStopContentValues);
+                        if(inserted>0){
+                            DBUtils.setIsFilledRoute(context,true);
                         }
                     }
 
@@ -121,12 +142,53 @@ public class SyncTasks {
 
                 ContentResolver contentResolver = context.getContentResolver();
 
-                contentResolver.bulkInsert(DublinBusContract.RouteInformationEntry.CONTENT_URI,
+                int numInsert = contentResolver.bulkInsert(DublinBusContract.RouteInformationEntry.CONTENT_URI,
                         contentValues);
+                if (numInsert>0){
+                    DBUtils.setIsFilledRouteInformation(context,true);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void syncDB(Context context){
+
+        if(!DBUtils.isFilledOperatorInformation(context)) {
+            Intent intentOperatorInformationService = new Intent(context, OperatorInformationService.class);
+            context.startService(intentOperatorInformationService);
+        }
+        if(!DBUtils.isFilledRouteInformation(context)) {
+            Intent intentRouteListInformationService = new Intent(context, RouteListInformationService.class);
+            context.startService(intentRouteListInformationService);
+        }
+
+//        Intent intentRealTimeBusInformation = new Intent(getActivity(), RealTimeBusInformationService.class);
+//        getContext().startService(intentRealTimeBusInformation);
+        //tvAnswer.setText(sAnswer);
+
+//        Intent intentTimeTableBusInformation = new Intent(getActivity(), TimeTableBusInformationService.class);
+//        getContext().startService(intentTimeTableBusInformation);
+
+
+//        Intent intentFullTimetableBusInformation = new Intent(getActivity(), FullTimetableBusInformationService.class);
+//        getContext().startService(intentFullTimetableBusInformation);
+
+
+        if(!DBUtils.isFilledBusStop(context)) {
+            Intent intentBusStopInformationService = new Intent(context, BusStopInformationService.class);
+            context.startService(intentBusStopInformationService);
+        }
+
+        if(!DBUtils.isFilledRoute(context)) {
+            Intent intentRouteInformationService = new Intent(context, RouteInformationService.class);
+            context.startService(intentRouteInformationService);
+        }
+
+//        Intent intentOperatorInformationService = new Intent(getActivity(), OperatorInformationService.class);
+//        getContext().startService(intentOperatorInformationService);
+
     }
 
 }

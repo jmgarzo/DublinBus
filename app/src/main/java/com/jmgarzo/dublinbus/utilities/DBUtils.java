@@ -1,8 +1,12 @@
 package com.jmgarzo.dublinbus.utilities;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
+import com.jmgarzo.dublinbus.R;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.data.DublinBusProvider;
 import com.jmgarzo.dublinbus.objects.BusStop;
@@ -137,9 +141,63 @@ public class DBUtils {
         if(cursor.moveToFirst()){
             result = cursor.getLong(DBUtils.COL_BUS_STOP_ID);
         }
+        else{
+            Log.e("DB_Utils","No existe bus stop");
+            result = -1l;
+        }
 
         return result;
     }
 
+    public static boolean isDBCreated(Context context){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return pref.getBoolean("db_created",false);
+    }
+
+    public static void setCreatedDB(Context context,boolean b){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        pref.edit().putBoolean("db_created",b).apply();
+    }
+
+    public static void setIsFilledRouteInformation(Context context,boolean b){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        pref.edit().putBoolean(context.getString(R.string.pref_route_information_db),b).apply();
+
+    }
+
+    public static boolean isFilledRouteInformation(Context context){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return pref.getBoolean(context.getString(R.string.pref_route_information_db),false);
+    }
+
+    public static void setIsFilledOperatorInformation(Context context,boolean b){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        pref.edit().putBoolean(context.getString(R.string.pref_operator_information),b).apply();
+    }
+
+    public static boolean isFilledOperatorInformation(Context context){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return pref.getBoolean(context.getString(R.string.pref_operator_information),false);
+    }
+
+    public static void setIsFilledBusStop(Context context,boolean b){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        pref.edit().putBoolean(context.getString(R.string.pref_bus_stop_db),b).apply();
+    }
+
+    public static boolean isFilledBusStop(Context context){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return pref.getBoolean(context.getString(R.string.pref_bus_stop_db),false);
+    }
+
+    public static void setIsFilledRoute(Context context,boolean b){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        pref.edit().putBoolean(context.getString(R.string.pref_route_db),b).apply();
+    }
+
+    public static boolean isFilledRoute(Context context){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return pref.getBoolean(context.getString(R.string.pref_route_db),false);
+    }
 
 }
