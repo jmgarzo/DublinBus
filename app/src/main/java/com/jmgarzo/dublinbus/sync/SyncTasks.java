@@ -100,12 +100,16 @@ public class SyncTasks {
 
                         contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
                                 contentValues);
+
+                        for(int j = 0; j<routeList.size();j++){
+                            DBUtils.insertRouteBusStop(context,routeList.get(j));
+                        }
                     }
 
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG,e.toString());
         }
 
     }
