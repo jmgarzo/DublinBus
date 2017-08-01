@@ -1,5 +1,6 @@
 package com.jmgarzo.dublinbus.utilities;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -8,14 +9,14 @@ import android.util.Log;
 
 import com.jmgarzo.dublinbus.R;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
-import com.jmgarzo.dublinbus.data.DublinBusProvider;
-import com.jmgarzo.dublinbus.objects.BusStop;
+import com.jmgarzo.dublinbus.objects.Route;
 
 /**
  * Created by jmgarzo on 27/07/17.
  */
 
 public class DBUtils {
+    private static final String LOG_TAG = DBUtils.class.getSimpleName();
 
 
     public static final String[] OPERATOR_COLUMNS = {
@@ -30,8 +31,6 @@ public class DBUtils {
     public static final int COL_OPERATOR_REFERENCE = 1;
     public static final int COL_OPERATOR_NAME = 2;
     public static final int COL_OPERATOR_DESCRIPTION = 3;
-
-
 
 
     public static final String[] BUS_STOP_COLUMNS = {
@@ -59,7 +58,6 @@ public class DBUtils {
     public static final int COL_BUS_STOP_LAST_UPDATED = 9;
 
 
-
     public static final String[] ROUTE_COLUMNS = {
             DublinBusContract.RouteEntry._ID,
             DublinBusContract.RouteEntry.TIMESTAMP,
@@ -84,7 +82,6 @@ public class DBUtils {
     public static final int COL_ROUTE_LAST_UPDATE = 8;
 
 
-
     public static final String[] ROUTE_INFORMATION_COLUMNS = {
             DublinBusContract.RouteInformationEntry._ID,
             DublinBusContract.RouteInformationEntry.OPERATOR,
@@ -97,7 +94,7 @@ public class DBUtils {
     public static final int COL_ROUTE_INFORMATION_ROUTE = 2;
 
 
-    public static long getOperator(Context contect, String operatorReference){
+    public static long getOperator(Context contect, String operatorReference) {
         Cursor cursor = contect.getContentResolver().query(
                 DublinBusContract.OperatorEntry.CONTENT_URI,
                 DBUtils.OPERATOR_COLUMNS,
@@ -106,31 +103,31 @@ public class DBUtils {
                 null
         );
         Long result = null;
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             result = cursor.getLong(DBUtils.COL_OPERATOR_ID);
         }
 
         return result;
     }
 
-    public static long getRouteId(Context context,String routeName,String routeDestination){
+    public static long getRouteId(Context context, String routeName, String routeDestination) {
         Long result = null;
-        String selection = DublinBusContract.RouteEntry.NAME + " = ? AND "  +
-                DublinBusContract.RouteEntry.DESTINATION + " = ? " ;
+        String selection = DublinBusContract.RouteEntry.NAME + " = ? AND " +
+                DublinBusContract.RouteEntry.DESTINATION + " = ? ";
 
         Cursor cursor = context.getContentResolver().query(
                 DublinBusContract.RouteEntry.CONTENT_URI,
                 DBUtils.ROUTE_COLUMNS,
                 selection,
-                new String[]{routeName,routeDestination},
+                new String[]{routeName, routeDestination},
                 null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             result = cursor.getLong(DBUtils.COL_ROUTE_ID);
         }
         return result;
     }
 
-    public static long getBusStopId(Context context, String stopNumber){
+    public static long getBusStopId(Context context, String stopNumber) {
         Long result = null;
 
         Cursor cursor = context.getContentResolver().query(DublinBusContract.BusStopEntry.CONTENT_URI,
@@ -138,66 +135,100 @@ public class DBUtils {
                 DublinBusContract.BusStopEntry.NUMBER + " =? ",
                 new String[]{stopNumber},
                 null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             result = cursor.getLong(DBUtils.COL_BUS_STOP_ID);
-        }
-        else{
-            Log.e("DB_Utils","No existe bus stop");
+        } else {
+            Log.e("DB_Utils", "No existe bus stop");
             result = -1l;
         }
 
         return result;
     }
 
-    public static boolean isDBCreated(Context context){
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        return pref.getBoolean("db_created",false);
+
+    public static void insertRouteBusStop(Context context, Route route) {
+
+        String selection = DublinBusContract.RouteEntry.NAME + " = ? " +
+                " AND " + DublinBusContract.RouteEntry.DESTINATION + " = ? ";
+        String[] selectionArgs = new String[]{route.getName(), route.getDestination()};
+        Cursor cursor = context.getContentResolver().query(DublinBusContract.RouteEntry.CONTENT_URI,
+                new String[]{DublinBusContract.RouteEntry._ID},
+                selection,
+                selectionArgs,
+                null);
+
+        Long idRoute;
+        if (null!= cursor && cursor.moveToFirst()) {
+            idRoute = cursor.getLong(0);
+        }else{
+            return;
+        }
+        ContentValues[] cvArray = new ContentValues[route.getStops().size()];
+        for (int i = 0; i<route.getStops().size();i++){
+
+            ContentValues cv = new ContentValues();
+            cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID,idRoute);
+            cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID,route.getStops().get(i));
+
+            cvArray[i]=cv;
+        }
+
+        int inserted = context.getContentResolver().bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI,cvArray);
+        if(inserted<=0){
+            Log.d(LOG_TAG,"insertRouteBusStop() no record Insert" );
+        }
     }
 
-    public static void setCreatedDB(Context context,boolean b){
+
+    public static boolean isDBCreated(Context context) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        pref.edit().putBoolean("db_created",b).apply();
+        return pref.getBoolean("db_created", false);
     }
 
-    public static void setIsFilledRouteInformation(Context context,boolean b){
+    public static void setCreatedDB(Context context, boolean b) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        pref.edit().putBoolean(context.getString(R.string.pref_route_information_db),b).apply();
+        pref.edit().putBoolean("db_created", b).apply();
+    }
+
+    public static void setIsFilledRouteInformation(Context context, boolean b) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        pref.edit().putBoolean(context.getString(R.string.pref_route_information_db), b).apply();
 
     }
 
-    public static boolean isFilledRouteInformation(Context context){
+    public static boolean isFilledRouteInformation(Context context) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        return pref.getBoolean(context.getString(R.string.pref_route_information_db),false);
+        return pref.getBoolean(context.getString(R.string.pref_route_information_db), false);
     }
 
-    public static void setIsFilledOperatorInformation(Context context,boolean b){
+    public static void setIsFilledOperatorInformation(Context context, boolean b) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        pref.edit().putBoolean(context.getString(R.string.pref_operator_information),b).apply();
+        pref.edit().putBoolean(context.getString(R.string.pref_operator_information), b).apply();
     }
 
-    public static boolean isFilledOperatorInformation(Context context){
+    public static boolean isFilledOperatorInformation(Context context) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        return pref.getBoolean(context.getString(R.string.pref_operator_information),false);
+        return pref.getBoolean(context.getString(R.string.pref_operator_information), false);
     }
 
-    public static void setIsFilledBusStop(Context context,boolean b){
+    public static void setIsFilledBusStop(Context context, boolean b) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        pref.edit().putBoolean(context.getString(R.string.pref_bus_stop_db),b).apply();
+        pref.edit().putBoolean(context.getString(R.string.pref_bus_stop_db), b).apply();
     }
 
-    public static boolean isFilledBusStop(Context context){
+    public static boolean isFilledBusStop(Context context) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        return pref.getBoolean(context.getString(R.string.pref_bus_stop_db),false);
+        return pref.getBoolean(context.getString(R.string.pref_bus_stop_db), false);
     }
 
-    public static void setIsFilledRoute(Context context,boolean b){
+    public static void setIsFilledRoute(Context context, boolean b) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        pref.edit().putBoolean(context.getString(R.string.pref_route_db),b).apply();
+        pref.edit().putBoolean(context.getString(R.string.pref_route_db), b).apply();
     }
 
-    public static boolean isFilledRoute(Context context){
+    public static boolean isFilledRoute(Context context) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        return pref.getBoolean(context.getString(R.string.pref_route_db),false);
+        return pref.getBoolean(context.getString(R.string.pref_route_db), false);
     }
 
 }
