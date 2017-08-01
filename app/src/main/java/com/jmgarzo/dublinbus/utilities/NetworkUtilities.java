@@ -13,7 +13,6 @@ import com.jmgarzo.dublinbus.objects.RouteInformation;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -232,7 +231,32 @@ public class NetworkUtilities {
     //3.4.5 Retrieve Route Information
     //http://[rtpiserver]/routeinformation?routeid=[route]&operator=[operator]&operator=[operator]&format=[format]
 
-    public static ArrayList<Route> getRouteInformation(Context context) {
+    public static ArrayList<Route> getRouteInformation(Context context, String routeName){
+        String response = "";
+        ArrayList<Route> routeList = null;
+
+        Uri builtUri = Uri.parse(BASE_URL).buildUpon()
+                .appendEncodedPath(ROUTE_INFORMATION_PATH)
+                .appendQueryParameter(ROUTER_ID_PARAM,routeName )
+                .appendQueryParameter(OPERATOR_PARAM, DUBLIN_BUS_OPERATOR_PARAM)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+            response = getResponseFromHttpUrl(url);
+            routeList = JsonUtilities.getRouteFromJson(context, response);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, e.toString());
+        }
+        return routeList;
+    }
+
+    public static ArrayList<Route> getAllRouteInformation(Context context) {
         String response = "";
         ArrayList<Route> routeListPerQuery = null;
         ArrayList<Route> routeListTotal = null;
@@ -243,31 +267,16 @@ public class NetworkUtilities {
                 null,
                 null);
 
+
+
         if (cursor != null && cursor.moveToFirst()) {
             routeListTotal = new ArrayList<>();
             do {
+                routeListPerQuery = getRouteInformation(context,cursor.getString(DBUtils.COL_ROUTE_INFORMATION_ROUTE));
 
-                Uri builtUri = Uri.parse(BASE_URL).buildUpon()
-                        .appendEncodedPath(ROUTE_INFORMATION_PATH)
-                        .appendQueryParameter(ROUTER_ID_PARAM,cursor.getString(DBUtils.COL_ROUTE_INFORMATION_ROUTE) )
-                        .appendQueryParameter(OPERATOR_PARAM, DUBLIN_BUS_OPERATOR_PARAM)
-                        .build();
-                URL url = null;
-                try {
-                    url = new URL(builtUri.toString());
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    response = getResponseFromHttpUrl(url);
-                    routeListPerQuery = JsonUtilities.getRouteFromJson(context, response);
                     if(null!= routeListPerQuery && routeListPerQuery.size()>0){
                         routeListTotal.addAll(routeListPerQuery);
-
                     }
-                } catch (IOException e) {
-                    Log.e(LOG_TAG, e.toString());
-                }
             }while(cursor.moveToNext());
         }
         return routeListTotal;

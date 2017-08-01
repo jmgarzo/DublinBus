@@ -11,7 +11,6 @@ import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
 import com.jmgarzo.dublinbus.objects.Route;
-import com.jmgarzo.dublinbus.objects.RouteBusStop;
 import com.jmgarzo.dublinbus.objects.RouteInformation;
 import com.jmgarzo.dublinbus.sync.services.BusStopInformationService;
 import com.jmgarzo.dublinbus.sync.services.OperatorInformationService;
@@ -40,18 +39,16 @@ public class SyncTasks {
                     Operator operator = operatorList.get(i);
                     contentValues[i] = operator.getContentValues();
                 }
-
                 ContentResolver contentResolver = context.getContentResolver();
 
-                //TODO: Mirar a ver si quiero borrar todo lo anterior antes de insertar
                 int inserted = contentResolver.bulkInsert(DublinBusContract.OperatorEntry.CONTENT_URI,
                         contentValues);
-                if(inserted>0){
-                    DBUtils.setIsFilledOperatorInformation(context,true);
+                if (inserted > 0) {
+                    DBUtils.setIsFilledOperatorInformation(context, true);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.toString());
         }
     }
 
@@ -67,11 +64,10 @@ public class SyncTasks {
                 }
                 ContentResolver contentResolver = context.getContentResolver();
 
-                //TODO: Mirar a ver si quiero borrar todo lo anterior antes de insertar
                 int inserted = contentResolver.bulkInsert(DublinBusContract.BusStopEntry.CONTENT_URI,
                         contentValues);
-                if(inserted>0){
-                    DBUtils.setIsFilledBusStop(context,true);
+                if (inserted > 0) {
+                    DBUtils.setIsFilledBusStop(context, true);
                 }
             }
         } catch (Exception e) {
@@ -81,53 +77,37 @@ public class SyncTasks {
 
     synchronized public static void syncRoute(Context context) {
         try {
-            ArrayList<Route> routeList = NetworkUtilities.getRouteInformation(context);
 
-            if (routeList != null && routeList.size() > 0) {
-                ContentValues[] contentValues = new ContentValues[routeList.size()];
-                for (int i = 0; i < routeList.size(); i++) {
-                    Route route = routeList.get(i);
-                    contentValues[i] = route.getContentValues();
-                }
-
-                ContentResolver contentResolver = context.getContentResolver();
-
-                contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
-                        contentValues);
+            Cursor cursor = context.getContentResolver().query(DublinBusContract.RouteInformationEntry.CONTENT_URI,
+                    DBUtils.ROUTE_INFORMATION_COLUMNS,
+                    null,
+                    null,
+                    null);
 
 
-                for (int j = 0; j < routeList.size(); j++) {
-                    Route route = routeList.get(j);
-                    long routeId = DBUtils.getRouteId(context, route.getName(), route.getDestination());
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    ArrayList<Route> routeList = NetworkUtilities.getRouteInformation(context, cursor.getString(DBUtils.COL_ROUTE_INFORMATION_ROUTE));
 
-                    ArrayList<String> stopsList = route.getStops();
-                    if (stopsList != null && stopsList.size() > 0) {
-                        ContentValues[] busStopContentValues = new ContentValues[stopsList.size()];
-                        for (int k = 0; k < stopsList.size(); k++) {
-                            Long stopId = DBUtils.getBusStopId(context, stopsList.get(k));
-
-                            if(stopId != -1l) {
-                                ContentValues cv = new ContentValues();
-                                cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID, routeId);
-                                cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID, stopId);
-
-//                            contentResolver.insert(DublinBusContract.RouteBusStopEntry.CONTENT_URI, cv);
-                                busStopContentValues[k] = cv;
-                            }else{
-                                Log.e(LOG_TAG,"StopId not found");
-                            }
+                    if (routeList != null && routeList.size() > 0) {
+                        ContentValues[] contentValues = new ContentValues[routeList.size()];
+                        for (int i = 0; i < routeList.size(); i++) {
+                            Route route = routeList.get(i);
+                            contentValues[i] = route.getContentValues();
                         }
-                        int inserted = contentResolver.bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI,busStopContentValues);
-                        if(inserted>0){
-                            DBUtils.setIsFilledRoute(context,true);
-                        }
+
+                        ContentResolver contentResolver = context.getContentResolver();
+
+                        contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
+                                contentValues);
                     }
 
-                }
+                } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     synchronized public static void syncRouteInformation(Context context) {
@@ -145,8 +125,8 @@ public class SyncTasks {
 
                 int numInsert = contentResolver.bulkInsert(DublinBusContract.RouteInformationEntry.CONTENT_URI,
                         contentValues);
-                if (numInsert>0){
-                    DBUtils.setIsFilledRouteInformation(context,true);
+                if (numInsert > 0) {
+                    DBUtils.setIsFilledRouteInformation(context, true);
                 }
             }
         } catch (Exception e) {
@@ -154,23 +134,23 @@ public class SyncTasks {
         }
     }
 
-    public static void syncDB(Context context){
+    public static void syncDB(Context context) {
 
-        if(!DBUtils.isFilledOperatorInformation(context)) {
+        if (!DBUtils.isFilledOperatorInformation(context)) {
             Intent intentOperatorInformationService = new Intent(context, OperatorInformationService.class);
             context.startService(intentOperatorInformationService);
         }
-        if(!DBUtils.isFilledRouteInformation(context)) {
+        if (!DBUtils.isFilledRouteInformation(context)) {
             Intent intentRouteListInformationService = new Intent(context, RouteListInformationService.class);
             context.startService(intentRouteListInformationService);
         }
 
-        if(!DBUtils.isFilledBusStop(context)) {
+        if (!DBUtils.isFilledBusStop(context)) {
             Intent intentBusStopInformationService = new Intent(context, BusStopInformationService.class);
             context.startService(intentBusStopInformationService);
         }
 
-        if(!DBUtils.isFilledRoute(context)) {
+        if (!DBUtils.isFilledRoute(context)) {
             Intent intentRouteInformationService = new Intent(context, RouteInformationService.class);
             context.startService(intentRouteInformationService);
         }
