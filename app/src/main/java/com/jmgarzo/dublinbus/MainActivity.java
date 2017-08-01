@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.jmgarzo.dublinbus.databinding.ActivityMainBinding;
+import com.jmgarzo.dublinbus.sync.SyncTasks;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,8 +20,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        SyncTasks.syncDB(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -12,17 +12,28 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_route"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
             android:clipToPadding="false"
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp" />
+            android:paddingRight="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.0" />
 
         <ProgressBar
             android:id="@+id/pb_loading_indicator_route"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            tools:layout_editor_absoluteY="162dp"
+            tools:layout_editor_absoluteX="0dp" />
     </android.support.constraint.ConstraintLayout>
 </layout>

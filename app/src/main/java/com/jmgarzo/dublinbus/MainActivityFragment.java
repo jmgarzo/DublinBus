@@ -31,7 +31,7 @@ public class MainActivityFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         tvAnswer = getActivity().findViewById(R.id.tv_prueba);
-        SyncTasks.syncDB(getContext());
+
 
 
         return rootView;

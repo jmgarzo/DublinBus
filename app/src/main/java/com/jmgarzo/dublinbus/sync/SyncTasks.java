@@ -165,18 +165,6 @@ public class SyncTasks {
             context.startService(intentRouteListInformationService);
         }
 
-//        Intent intentRealTimeBusInformation = new Intent(getActivity(), RealTimeBusInformationService.class);
-//        getContext().startService(intentRealTimeBusInformation);
-        //tvAnswer.setText(sAnswer);
-
-//        Intent intentTimeTableBusInformation = new Intent(getActivity(), TimeTableBusInformationService.class);
-//        getContext().startService(intentTimeTableBusInformation);
-
-
-//        Intent intentFullTimetableBusInformation = new Intent(getActivity(), FullTimetableBusInformationService.class);
-//        getContext().startService(intentFullTimetableBusInformation);
-
-
         if(!DBUtils.isFilledBusStop(context)) {
             Intent intentBusStopInformationService = new Intent(context, BusStopInformationService.class);
             context.startService(intentBusStopInformationService);

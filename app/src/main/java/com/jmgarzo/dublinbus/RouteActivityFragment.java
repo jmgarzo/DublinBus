@@ -10,6 +10,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -58,6 +59,9 @@ public class RouteActivityFragment extends Fragment implements
 
         mRouteAdapter = new RouteAdapter(getContext(), this);
         binding.recyclerviewRoute.setAdapter(mRouteAdapter);
+
+        binding.recyclerviewRoute.addItemDecoration(new DividerItemDecoration(getActivity(),
+                DividerItemDecoration.VERTICAL));
 
         getActivity().getSupportLoaderManager().initLoader(ID_ROUTES_LOADER, null, this);
 
