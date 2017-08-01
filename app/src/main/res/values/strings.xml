@@ -13,7 +13,6 @@
     <string name="label_towards">Towards: </string>
 
 
-
     <!--Strings for SharedPreference-->
     <string name="pref_route_information_db">route_information_db</string>
     <string name="pref_route_db">route_db</string>
@@ -23,8 +22,7 @@
 
     <!--Description content -->
     <string name="description_arrow_right">arrow right</string>
-
-
+    <string name="title_activity_route_detail">RouteDetailActivity</string>
 
 
 </resources>

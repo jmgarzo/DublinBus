@@ -52,6 +52,10 @@
         <activity
             android:name=".RouteActivity"
             android:label="@string/title_activity_route"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RouteDetailActivity"
+            android:label="@string/title_activity_route_detail"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

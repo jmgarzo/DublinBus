@@ -1,6 +1,5 @@
 package com.jmgarzo.dublinbus;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,16 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.jmgarzo.dublinbus.objects.Route;
-
-public class RouteActivity extends AppCompatActivity implements RouteActivityFragment.Callback {
-
-    public static final String ROUTE_INTENT_TAG="route_tag";
+public class RouteDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_route);
+        setContentView(R.layout.activity_route_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -31,12 +26,4 @@ public class RouteActivity extends AppCompatActivity implements RouteActivityFra
         });
     }
 
-
-    @Override
-    public void OnItemSelected(Route route) {
-        Intent intent = new Intent(this,RouteDetailActivity.class);
-        intent.putExtra(ROUTE_INTENT_TAG,route);
-        startActivity(intent);
-
-    }
 }
