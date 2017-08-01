@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.util.Log;
 
 import com.jmgarzo.dublinbus.data.DublinBusContract;
@@ -107,7 +108,7 @@ public class SyncTasks {
 
                             if(stopId != -1l) {
                                 ContentValues cv = new ContentValues();
-                                cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID.toString(), routeId);
+                                cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID, routeId);
                                 cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID, stopId);
 
 //                            contentResolver.insert(DublinBusContract.RouteBusStopEntry.CONTENT_URI, cv);

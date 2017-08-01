@@ -1,9 +1,11 @@
 package com.jmgarzo.dublinbus.utilities;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
+import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
 import com.jmgarzo.dublinbus.objects.Route;
@@ -29,25 +31,23 @@ public class NetworkUtilities {
     private static final String BASE_URL = "https://data.dublinked.ie/cgi-bin/rtpi/";
 
     private static final String REAL_TIME_BUS_INFORMATION_PATH = "realtimebusinformation";
-    private static final String TIME_TABLE_INFORMATION_PATH ="timetableinformation";
+    private static final String TIME_TABLE_INFORMATION_PATH = "timetableinformation";
     private static final String BUS_STOP_INFORMATION_PATH = "busstopinformation";
     private static final String ROUTE_INFORMATION_PATH = "routeinformation";
-    private static final String OPERATOR_INFORMATION_PATH ="operatorinformation";
-    private static final String ROUTE_LIST_INFORMATION_PATH="routelistinformation";
+    private static final String OPERATOR_INFORMATION_PATH = "operatorinformation";
+    private static final String ROUTE_LIST_INFORMATION_PATH = "routelistinformation";
 
     private static final String STOP_ID_PARAM = "stopid";
-    private static final String ROUTER_ID_PARAM="routeid";
+    private static final String ROUTER_ID_PARAM = "routeid";
     private static final String FORMAT_PARAM = "format";
-    private static final String OPERATOR_PARAM="operator";
+    private static final String OPERATOR_PARAM = "operator";
 
 
-
-    private static final String TYPE_PARAM="type";
+    private static final String TYPE_PARAM = "type";
     private static final String JSON_VALUE_PARAM = "json";
     private static final String TYPE_DAY_PARAM = "day";
-    private static final String TYPE_WEEK_PARAM ="week";
-    private static final String DUBLIN_BUS_OPERATOR_PARAM="bac";
-
+    private static final String TYPE_WEEK_PARAM = "week";
+    private static final String DUBLIN_BUS_OPERATOR_PARAM = "bac";
 
 
     /**
@@ -77,7 +77,6 @@ public class NetworkUtilities {
     }
 
 
-
     //3.4.1 Retrieve Real Time Bus Information
     /*http://[rtpiserver]/realtimebusinformation
     realtimebusinformation?stopid=[stopid]&routeid=[routeid]
@@ -100,7 +99,7 @@ public class NetworkUtilities {
             e.printStackTrace();
         }
 
-        String response="";
+        String response = "";
         try {
 
             response = getResponseFromHttpUrl(url);
@@ -117,7 +116,6 @@ public class NetworkUtilities {
     }
 
 
-
     //3.4.2 Retrieve Timetable Bus Information by Date
     /*
     http://[rtpiserver]/timetableinformation?
@@ -126,15 +124,15 @@ public class NetworkUtilities {
      */
 
 
-    public static String getTimetableBusInformationByDate(Context context){
+    public static String getTimetableBusInformationByDate(Context context) {
 
-        String response="";
+        String response = "";
 
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(TIME_TABLE_INFORMATION_PATH)
-                .appendQueryParameter(TYPE_PARAM,TYPE_DAY_PARAM)
+                .appendQueryParameter(TYPE_PARAM, TYPE_DAY_PARAM)
                 .appendQueryParameter(STOP_ID_PARAM, "7025")
-                .appendQueryParameter(ROUTER_ID_PARAM,"39")
+                .appendQueryParameter(ROUTER_ID_PARAM, "39")
                 .appendQueryParameter(FORMAT_PARAM, JSON_VALUE_PARAM)
                 .build();
 
@@ -164,14 +162,14 @@ public class NetworkUtilities {
     //http://[rtpiserver]/timetableinformation?timetableinformation?type=week&stopid=[stopid]&routeid=[routeid]&
     //stopid=[stopid]&routeid=[routeid]&format=[format]
 
-    public static String getFullTimeTableBusInformation(Context context){
-        String response="";
+    public static String getFullTimeTableBusInformation(Context context) {
+        String response = "";
 
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(TIME_TABLE_INFORMATION_PATH)
-                .appendQueryParameter(TYPE_PARAM,TYPE_WEEK_PARAM)
+                .appendQueryParameter(TYPE_PARAM, TYPE_WEEK_PARAM)
                 .appendQueryParameter(STOP_ID_PARAM, "7025")
-                .appendQueryParameter(ROUTER_ID_PARAM,"39")
+                .appendQueryParameter(ROUTER_ID_PARAM, "39")
                 .appendQueryParameter(FORMAT_PARAM, JSON_VALUE_PARAM)
                 .build();
 
@@ -202,14 +200,14 @@ public class NetworkUtilities {
     //3.4.4 Retrieve Bus Stop Information
     //http://[rtpiserver]/busstopinformation?stopid=[stopid]&stopname=[stopnamestopname]&format=[format]
 
-    public static ArrayList<BusStop> getBusStopInformation(){
+    public static ArrayList<BusStop> getBusStopInformation() {
 
-        String response="";
+        String response = "";
         ArrayList<BusStop> busStopList = null;
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(BUS_STOP_INFORMATION_PATH)
 //                .appendQueryParameter(STOP_ID_PARAM, "7025")
-                .appendQueryParameter(OPERATOR_PARAM,DUBLIN_BUS_OPERATOR_PARAM)
+                .appendQueryParameter(OPERATOR_PARAM, DUBLIN_BUS_OPERATOR_PARAM)
                 .appendQueryParameter(FORMAT_PARAM, JSON_VALUE_PARAM)
                 .build();
 
@@ -231,41 +229,56 @@ public class NetworkUtilities {
     }
 
 
-
     //3.4.5 Retrieve Route Information
     //http://[rtpiserver]/routeinformation?routeid=[route]&operator=[operator]&operator=[operator]&format=[format]
 
-    public static ArrayList<Route>  getRouteInformation(Context context){
-        String response="";
-        ArrayList<Route> routeList = null;
+    public static ArrayList<Route> getRouteInformation(Context context) {
+        String response = "";
+        ArrayList<Route> routeListPerQuery = null;
+        ArrayList<Route> routeListTotal = null;
 
-        Uri builtUri = Uri.parse(BASE_URL).buildUpon()
-                .appendEncodedPath(ROUTE_INFORMATION_PATH)
-                .appendQueryParameter(ROUTER_ID_PARAM,"39")
-                .appendQueryParameter(OPERATOR_PARAM, DUBLIN_BUS_OPERATOR_PARAM)
-                .build();
-        URL url = null;
-        try {
-            url = new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        Cursor cursor = context.getContentResolver().query(DublinBusContract.RouteInformationEntry.CONTENT_URI,
+                DBUtils.ROUTE_INFORMATION_COLUMNS,
+                null,
+                null,
+                null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            routeListTotal = new ArrayList<>();
+            do {
+
+                Uri builtUri = Uri.parse(BASE_URL).buildUpon()
+                        .appendEncodedPath(ROUTE_INFORMATION_PATH)
+                        .appendQueryParameter(ROUTER_ID_PARAM,cursor.getString(DBUtils.COL_ROUTE_INFORMATION_ROUTE) )
+                        .appendQueryParameter(OPERATOR_PARAM, DUBLIN_BUS_OPERATOR_PARAM)
+                        .build();
+                URL url = null;
+                try {
+                    url = new URL(builtUri.toString());
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    response = getResponseFromHttpUrl(url);
+                    routeListPerQuery = JsonUtilities.getRouteFromJson(context, response);
+                    if(null!= routeListPerQuery && routeListPerQuery.size()>0){
+                        routeListTotal.addAll(routeListPerQuery);
+
+                    }
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, e.toString());
+                }
+            }while(cursor.moveToNext());
         }
-        try {
-            response = getResponseFromHttpUrl(url);
-            routeList = JsonUtilities.getRouteFromJson(context,response);
-        } catch (IOException e) {
-            Log.e(LOG_TAG, e.toString());
-        }
-        return routeList;
+        return routeListTotal;
     }
-
 
 
     //3.4.6 Operator Information
     //http://[rtpiserver]/operatorinformation?format=[format]
 
-    public static ArrayList<Operator> getOperatorInformation(){
-        String response="";
+    public static ArrayList<Operator> getOperatorInformation() {
+        String response = "";
         ArrayList<Operator> operatorList = null;
 
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
@@ -292,10 +305,10 @@ public class NetworkUtilities {
 
     //3.4.7 Route List Information
     //http://[rtpiserver]/routelistinformation? operator=[operator]&format=[format]
-    public static ArrayList<RouteInformation> getRouteListInformation(Context context){
+    public static ArrayList<RouteInformation> getRouteListInformation(Context context) {
 
-        ArrayList<RouteInformation> routeInformationList =null;
-        String response="";
+        ArrayList<RouteInformation> routeInformationList = null;
+        String response = "";
 
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(ROUTE_LIST_INFORMATION_PATH)

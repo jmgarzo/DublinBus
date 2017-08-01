@@ -27,6 +27,12 @@ public class Route {
 
     public Route(){}
 
+    public Route(Cursor cursor, int position) {
+        if (cursor != null && cursor.moveToPosition(position)) {
+            cursorToRoute(cursor);
+        }
+    }
+
     public long getId() {
         return id;
     }
@@ -122,7 +128,7 @@ public class Route {
         return contentValues;
     }
 
-    private void cursorToOperator(Cursor cursor) {
+    private void cursorToRoute(Cursor cursor) {
 
         id = cursor.getInt(DBUtils.COL_ROUTE_ID);
         timestamp = cursor.getString(DBUtils.COL_ROUTE_TIMESTAMP);
