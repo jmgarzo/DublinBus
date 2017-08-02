@@ -98,8 +98,11 @@ public class SyncTasks {
 
                         ContentResolver contentResolver = context.getContentResolver();
 
-                        contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
+                        int inserted = contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
                                 contentValues);
+                        if (inserted>0){
+                            DBUtils.setIsFilledRoute(context,true);
+                        }
 
                         for(int j = 0; j<routeList.size();j++){
                             DBUtils.insertRouteBusStop(context,routeList.get(j));

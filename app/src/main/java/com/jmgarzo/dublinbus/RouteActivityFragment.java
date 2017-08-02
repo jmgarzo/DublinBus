@@ -1,19 +1,14 @@
 package com.jmgarzo.dublinbus;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,9 +101,9 @@ public class RouteActivityFragment extends Fragment implements
     }
 
     @Override
-    public void onClick(Route trailer) {
+    public void onClick(Route route) {
 
-        ((Callback) getActivity()).OnItemSelected(trailer);
+        ((Callback) getActivity()).OnItemSelected(route);
 
 
     }

@@ -12,7 +12,6 @@ import com.jmgarzo.dublinbus.objects.Route;
 
 public class RouteActivity extends AppCompatActivity implements RouteActivityFragment.Callback {
 
-    public static final String ROUTE_INTENT_TAG="route_tag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public class RouteActivity extends AppCompatActivity implements RouteActivityFra
     @Override
     public void OnItemSelected(Route route) {
         Intent intent = new Intent(this,RouteDetailActivity.class);
-        intent.putExtra(ROUTE_INTENT_TAG,route);
+        intent.putExtra(Intent.EXTRA_TEXT,route.getId());
         startActivity(intent);
 
     }
