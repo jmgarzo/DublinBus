@@ -33,8 +33,9 @@ public class RouteActivity extends AppCompatActivity implements RouteActivityFra
 
     @Override
     public void OnItemSelected(Route route) {
+
         Intent intent = new Intent(this,RouteDetailActivity.class);
-        intent.putExtra(Intent.EXTRA_TEXT,route.getId());
+        intent.putExtra(Intent.EXTRA_TEXT,String.valueOf(route.getId()));
         startActivity(intent);
 
     }

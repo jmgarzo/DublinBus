@@ -7,8 +7,17 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.3"
-        sha1="243f8cf3ea15d4ad5cb609b123d035794f8b02c1">
+        sha1="5366d1c7622cb8495c838361efd112919e9b094e">
         <dex dex="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_bd38ec354aac5251225562f5caf5015fa8528982/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_ea51706b523e1f0114d8a4b7fd704b1f49a13145/classes.dex" />
     </item>
 
 </items>

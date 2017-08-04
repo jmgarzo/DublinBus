@@ -168,7 +168,8 @@ public class DBUtils {
 
             ContentValues cv = new ContentValues();
             cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID,idRoute);
-            cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID,route.getStops().get(i));
+            cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID,getBusStopIdFromNumber(context,route.getStops().get(i)));
+            cv.put(DublinBusContract.RouteBusStopEntry.RECORD_ORDER,i);
 
             cvArray[i]=cv;
         }
@@ -178,6 +179,21 @@ public class DBUtils {
             Log.d(LOG_TAG,"insertRouteBusStop() no record Insert" );
         }
     }
+
+    private static String getBusStopIdFromNumber(Context context, String busStopNumber){
+        String busStopId = "";
+        Cursor cursorBusStop = context.getContentResolver().query(DublinBusContract.BusStopEntry.CONTENT_URI,
+                new String[]{DublinBusContract.BusStopEntry._ID},
+                DublinBusContract.BusStopEntry.NUMBER + " = ? ",
+                new String[]{busStopNumber},
+                null);
+        if(cursorBusStop != null && cursorBusStop.moveToFirst()){
+            busStopId = cursorBusStop.getString(0);
+        }
+        return busStopId;
+    }
+
+
 
 
     public static boolean isDBCreated(Context context) {

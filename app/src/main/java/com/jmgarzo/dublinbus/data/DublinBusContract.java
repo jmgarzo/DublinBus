@@ -54,6 +54,15 @@ public class DublinBusContract {
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+
+        public static Uri buildBusStopWithRouteId(String routeId) {
+            return CONTENT_URI.buildUpon().appendPath(routeId).build();
+        }
+
+        public static String getRouteIdFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
     }
     public static final class RouteEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ROUTE).build();
@@ -80,6 +89,7 @@ public class DublinBusContract {
         public static final String TABLE_NAME = "route_bus_stop";
         public static final String ROUTE_ID = "route_id";
         public static final String BUS_STOP_ID = "bus_stop_id";
+        public static final String RECORD_ORDER = "record_insert_order";
 
 
         public static final String CONTENT_DIR_TYPE =

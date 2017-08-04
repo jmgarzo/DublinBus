@@ -69,6 +69,7 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
                 "CREATE TABLE " + DublinBusContract.RouteBusStopEntry.TABLE_NAME + " ( " +
                         DublinBusContract.RouteBusStopEntry.ROUTE_ID + " INTEGER , " +
                         DublinBusContract.RouteBusStopEntry.BUS_STOP_ID + " INTEGER, " +
+                        DublinBusContract.RouteBusStopEntry.RECORD_ORDER  + " INTEGER NOT NULL,  " +
                         " PRIMARY KEY( " +
                         DublinBusContract.RouteBusStopEntry.ROUTE_ID + " , "+
                         DublinBusContract.RouteBusStopEntry.BUS_STOP_ID  +

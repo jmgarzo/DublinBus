@@ -1,4 +1,4 @@
-package com.jmgarzo.dublinbus.utilities;
+package com.jmgarzo.dublinbus;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jmgarzo.dublinbus.R;
 import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 /**
  * Created by jmgarzo on 03/08/17.
