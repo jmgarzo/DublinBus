@@ -30,15 +30,11 @@ public class DublinBusProvider extends ContentProvider {
 
     static final int ROUTE_INFORMATION = 500;
 
+    static final int REAL_TIME_STOP = 600;
+
     private DublinBusDBHelper mOpenHelper;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
-
-    //    SELECT *
-//    FROM bus_stop
-//    INNER JOIN route_bus_stop
-//    ON bus_stop._id = route_bus_stop.bus_stop_id
-//    where route_bus_stop.route_id = 1;
     private static final SQLiteQueryBuilder sStopsByRouteQueryBuilder;
 
     static {
@@ -86,6 +82,7 @@ public class DublinBusProvider extends ContentProvider {
 
         matcher.addURI(DublinBusContract.CONTENT_AUTHORITY, DublinBusContract.PATH_ROUTE_INFORMATION, ROUTE_INFORMATION);
 
+        matcher.addURI(DublinBusContract.CONTENT_AUTHORITY, DublinBusContract.PATH_REAL_TIME_STOP, REAL_TIME_STOP);
 
         return matcher;
 
@@ -183,6 +180,19 @@ public class DublinBusProvider extends ContentProvider {
                 );
                 break;
             }
+
+            case REAL_TIME_STOP: {
+                returnCursor = mOpenHelper.getReadableDatabase().query(
+                        DublinBusContract.RealTimeStopEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
             }
@@ -208,6 +218,8 @@ public class DublinBusProvider extends ContentProvider {
                 return DublinBusContract.RouteBusStopEntry.CONTENT_DIR_TYPE;
             case ROUTE_INFORMATION:
                 return DublinBusContract.RouteBusStopEntry.CONTENT_DIR_TYPE;
+            case REAL_TIME_STOP:
+                return DublinBusContract.RealTimeStopEntry.CONTENT_DIR_TYPE;
         }
         return null;
     }
@@ -278,6 +290,18 @@ public class DublinBusProvider extends ContentProvider {
                 }
                 break;
             }
+
+            case REAL_TIME_STOP: {
+                long id = db.insert(DublinBusContract.RealTimeStopEntry.TABLE_NAME,
+                        null,
+                        contentValues);
+                if (id > 0) {
+                    returnUri = ContentUris.withAppendedId(DublinBusContract.RealTimeStopEntry.CONTENT_URI, id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into: " + uri);
+                }
+                break;
+            }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
             }
@@ -330,6 +354,14 @@ public class DublinBusProvider extends ContentProvider {
             case ROUTE_INFORMATION: {
                 numDeleted = db.delete(
                         DublinBusContract.RouteInformationEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs
+                );
+                break;
+            }
+            case REAL_TIME_STOP: {
+                numDeleted = db.delete(
+                        DublinBusContract.RealTimeStopEntry.TABLE_NAME,
                         selection,
                         selectionArgs
                 );
@@ -388,6 +420,14 @@ public class DublinBusProvider extends ContentProvider {
 
             case ROUTE_INFORMATION: {
                 numUpdates = db.update(DublinBusContract.RouteInformationEntry.TABLE_NAME,
+                        contentValues,
+                        selection,
+                        selectionArgs);
+                break;
+            }
+
+            case REAL_TIME_STOP: {
+                numUpdates = db.update(DublinBusContract.RealTimeStopEntry.TABLE_NAME,
                         contentValues,
                         selection,
                         selectionArgs);
@@ -499,6 +539,25 @@ public class DublinBusProvider extends ContentProvider {
                             throw new IllegalArgumentException("Cannot have null content values");
                         }
                         long id = db.insert(DublinBusContract.RouteInformationEntry.TABLE_NAME, null, value);
+                        if (id != -1) {
+                            numInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                break;
+            }
+
+            case REAL_TIME_STOP: {
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        if (value == null) {
+                            throw new IllegalArgumentException("Cannot have null content values");
+                        }
+                        long id = db.insert(DublinBusContract.RealTimeStopEntry.TABLE_NAME, null, value);
                         if (id != -1) {
                             numInserted++;
                         }

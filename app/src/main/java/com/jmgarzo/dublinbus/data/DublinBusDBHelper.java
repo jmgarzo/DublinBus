@@ -91,6 +91,30 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
 
         db.execSQL(SQL_CREATE_ROUTE_INFORMATION_TABLE);
 
+        final String SQL_CREATE_REAL_TIME_STOP =
+                "CREATE TABLE " + DublinBusContract.RealTimeStopEntry.TABLE_NAME + " ( " +
+                        DublinBusContract.RealTimeStopEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                        DublinBusContract.RealTimeStopEntry.STOP_NUMBER + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.ARRIVAL_DATE_TIME + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.DUE_TIME + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.DEPARTURE_DATE_TIME + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.DEPARTURE_DUE_TIME + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.SCHEDULE_ARRIVAL_DATE_TIME + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.SCHEDULED_DEPARTURE_DATE_TIME + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.DESTINATION + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.DESTINATION_LOCALIZED + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.ORIGIN + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.ORIGIN_LOCALIZED + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.DIRECTION + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.ADDITIONAL_INFORMATION + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.LOW_FLOOR_STATUS + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.SOURCE_TIMESTAMP + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.MONITORED + " TEXT NOT NULL " +
+
+                        " );";
+
+        db.execSQL(SQL_CREATE_REAL_TIME_STOP);
+
     }
 
     @Override

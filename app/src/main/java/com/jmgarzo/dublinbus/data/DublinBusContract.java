@@ -19,6 +19,7 @@ public class DublinBusContract {
     public static final String PATH_ROUTE = "route";
     public static final String PATH_ROUTE_BUS_STOP="route_bus_stop";
     public static final String PATH_ROUTE_INFORMATION="route_information";
+    public static final String PATH_REAL_TIME_STOP = "real_time_stop";
 
 
     public static final class OperatorEntry implements BaseColumns {
@@ -105,6 +106,36 @@ public class DublinBusContract {
         public static final String _ID = "_id";
         public static final String OPERATOR = "operator";
         public static final String ROUTE = "route";
+
+        public static final String CONTENT_DIR_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+
+    }
+
+    public static final class RealTimeStopEntry implements BaseColumns {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_REAL_TIME_STOP).build();
+        public static final String TABLE_NAME = "real_time_stop";
+        public static final String _ID = "_id";
+        public static final String STOP_NUMBER = "operator";
+        public static final String ARRIVAL_DATE_TIME = "arrivaldatetime";
+        public static final String DUE_TIME = "duetime";
+        public static final String DEPARTURE_DATE_TIME = "departuredatetime";
+        public static final String DEPARTURE_DUE_TIME = "departureduetime";
+        public static final String SCHEDULE_ARRIVAL_DATE_TIME = "scheduledarrivaldatetime";
+        public static final String SCHEDULED_DEPARTURE_DATE_TIME = "scheduleddeparturedatetime";
+        public static final String DESTINATION = "destination";
+        public static final String DESTINATION_LOCALIZED = "destinationlocalized";
+        public static final String ORIGIN = "origin";
+        public static final String ORIGIN_LOCALIZED = "originlocalized";
+        public static final String DIRECTION = "direction";
+        public static final String OPERATOR = "operator";
+        public static final String ADDITIONAL_INFORMATION = "additionalinformation";
+        public static final String LOW_FLOOR_STATUS = "lowfloorstatus";
+        public static final String ROUTE = "route";
+        public static final String SOURCE_TIMESTAMP = "sourcetimestamp";
+        public static final String MONITORED = "monitored";
 
         public static final String CONTENT_DIR_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
