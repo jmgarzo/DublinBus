@@ -82,16 +82,64 @@ public class DBUtils {
     public static final int COL_ROUTE_LAST_UPDATE = 8;
 
 
+
+
+
     public static final String[] ROUTE_INFORMATION_COLUMNS = {
             DublinBusContract.RouteInformationEntry._ID,
             DublinBusContract.RouteInformationEntry.OPERATOR,
-            DublinBusContract.RouteInformationEntry.ROUTE,
+            DublinBusContract.RouteInformationEntry.ROUTE
 
     };
 
     public static final int COL_ROUTE_INFORMATION_ID = 0;
     public static final int COL_ROUTE_INFORMATION_OPERATOR = 1;
     public static final int COL_ROUTE_INFORMATION_ROUTE = 2;
+
+
+    public static final String[] REAL_TIME_STOP_COLUMNS = {
+            DublinBusContract.RealTimeStopEntry._ID,
+            DublinBusContract.RealTimeStopEntry.STOP_NUMBER,
+            DublinBusContract.RealTimeStopEntry.ARRIVAL_DATE_TIME,
+            DublinBusContract.RealTimeStopEntry.DUE_TIME,
+            DublinBusContract.RealTimeStopEntry.DEPARTURE_DATE_TIME,
+            DublinBusContract.RealTimeStopEntry.DEPARTURE_DUE_TIME,
+            DublinBusContract.RealTimeStopEntry.SCHEDULED_ARRIVAL_DATE_TIME,
+            DublinBusContract.RealTimeStopEntry.SCHEDULED_DEPARTURE_DATE_TIME,
+            DublinBusContract.RealTimeStopEntry.DESTINATION,
+            DublinBusContract.RealTimeStopEntry.DESTINATION_LOCALIZED,
+            DublinBusContract.RealTimeStopEntry.ORIGIN,
+            DublinBusContract.RealTimeStopEntry.ORIGIN_LOCALIZED,
+            DublinBusContract.RealTimeStopEntry.DIRECTION,
+            DublinBusContract.RealTimeStopEntry.OPERATOR,
+            DublinBusContract.RealTimeStopEntry.ADDITIONAL_INFORMATION,
+            DublinBusContract.RealTimeStopEntry.LOW_FLOOR_STATUS,
+            DublinBusContract.RealTimeStopEntry.ROUTE,
+            DublinBusContract.RealTimeStopEntry.SOURCE_TIMESTAMP,
+            DublinBusContract.RealTimeStopEntry.MONITORED
+
+
+    };
+
+    public static final int COL_REAL_TIME_STOP_ID = 0;
+    public static final int COL_REAL_TIME_STOP_STOP_NUMBER =1;
+    public static final int COL_REAL_TIME_STOP_ARRIVAL_DATE_TIME = 2;
+    public static final int COL_REAL_TIME_STOP_DUE_TIME = 3;
+    public static final int COL_REAL_TIME_STOP_DEPARTURE_DATE_TIME = 4;
+    public static final int COL_REAL_TIME_STOP_DEPARTURE_DUE_TIME = 5;
+    public static final int COL_REAL_TIME_STOP_SCHEDULED_ARRIVAL_DATE_TIME = 6;
+    public static final int COL_REAL_TIME_STOP_SCHEDULED_DEPARTURE_DATE_TIME = 7;
+    public static final int COL_REAL_TIME_STOP_DESTINATION = 8;
+    public static final int COL_REAL_TIME_STOP_DESTINATION_LOCALIZED = 9;
+    public static final int COL_REAL_TIME_STOP_ORIGIN = 10;
+    public static final int COL_REAL_TIME_STOP_ORIGIN_LOCALIZED = 11;
+    public static final int COL_REAL_TIME_STOP_DIRECTION = 12;
+    public static final int COL_REAL_TIME_STOP_OPERATOR = 13;
+    public static final int COL_REAL_TIME_STOP_ADDITIONAL_INFORMATION = 14;
+    public static final int COL_REAL_TIME_STOP_LOW_FLOOR_STATUS = 15;
+    public static final int COL_REAL_TIME_STOP_ROUTE = 16;
+    public static final int COL_REAL_TIME_STOP_SOURCE_TIMESTAMP = 17;
+    public static final int COL_REAL_TIME_STOP_MONITORED = 18;
 
 
     public static long getOperator(Context contect, String operatorReference) {

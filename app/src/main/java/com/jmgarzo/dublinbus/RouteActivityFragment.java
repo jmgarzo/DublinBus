@@ -58,6 +58,8 @@ public class RouteActivityFragment extends Fragment implements
         binding.recyclerviewRoute.addItemDecoration(new DividerItemDecoration(getActivity(),
                 DividerItemDecoration.VERTICAL));
 
+
+
         getActivity().getSupportLoaderManager().initLoader(ID_ROUTES_LOADER, null, this);
 
 

@@ -28,7 +28,7 @@
             android:exported="false" />
 
         <service
-            android:name=".sync.services.RealTimeBusInformationService"
+            android:name=".sync.services.RealTimeStopService"
             android:exported="false" />
         <service
             android:name=".sync.services.TimeTableBusInformationService"
@@ -56,7 +56,8 @@
         <activity
             android:name=".RouteDetailActivity"
             android:label="@string/title_activity_route_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".RealTimeStopActivity"></activity>
     </application>
 
 </manifest>

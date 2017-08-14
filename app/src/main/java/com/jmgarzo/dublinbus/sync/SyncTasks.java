@@ -158,6 +158,7 @@ public class SyncTasks {
                 int inserted = contentResolver.bulkInsert(DublinBusContract.RealTimeStopEntry.CONTENT_URI,
                         contentValues);
                 if (inserted > 0) {
+                    Log.v(LOG_TAG,"Inserted: " + Integer.valueOf(inserted).toString());
 //                    DBUtils.setIsFilledOperatorInformation(context, true);
                 }
             }

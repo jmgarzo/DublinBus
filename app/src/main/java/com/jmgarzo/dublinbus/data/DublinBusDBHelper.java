@@ -106,8 +106,10 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
                         DublinBusContract.RealTimeStopEntry.ORIGIN + " TEXT NOT NULL, " +
                         DublinBusContract.RealTimeStopEntry.ORIGIN_LOCALIZED + " TEXT NOT NULL, " +
                         DublinBusContract.RealTimeStopEntry.DIRECTION + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.OPERATOR + " TEXT NOT NULL, " +
                         DublinBusContract.RealTimeStopEntry.ADDITIONAL_INFORMATION + " TEXT NOT NULL, " +
                         DublinBusContract.RealTimeStopEntry.LOW_FLOOR_STATUS + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.ROUTE + " TEXT NOT NULL, " +
                         DublinBusContract.RealTimeStopEntry.SOURCE_TIMESTAMP + " TEXT NOT NULL, " +
                         DublinBusContract.RealTimeStopEntry.MONITORED + " TEXT NOT NULL " +
 

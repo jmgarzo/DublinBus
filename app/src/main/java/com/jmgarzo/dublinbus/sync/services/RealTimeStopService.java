@@ -11,14 +11,22 @@ import com.jmgarzo.dublinbus.sync.SyncTasks;
  */
 
 public class RealTimeStopService extends IntentService {
-    String mStopID;
-    public RealTimeStopService(String stopId){
+
+    public RealTimeStopService() {
         super("RealTimeStopService");
-        mStopID = stopId;
     }
+
+    public RealTimeStopService(String stopId) {
+        super("RealTimeStopService");
+    }
+
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        SyncTasks.syncRealTimeStop(this,mStopID);
+        String stopid = null;
+        if (intent.getExtras() != null) {
+            stopid = intent.getStringExtra(Intent.EXTRA_TEXT);
+        }
+        SyncTasks.syncRealTimeStop(this, stopid);
 
     }
 }

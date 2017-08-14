@@ -7,9 +7,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.jmgarzo.dublinbus.databinding.ActivityMainBinding;
 import com.jmgarzo.dublinbus.sync.SyncTasks;
@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
     public void goToRoute(View v){
         Intent intent = new Intent(this,RouteActivity.class);
         this.startActivity(intent);
+    }
 
+    public void goToRealTime(View v){
+        Intent intent = new Intent(this,RealTimeStopActivity.class);
+        this.startActivity(intent);
     }
 }
