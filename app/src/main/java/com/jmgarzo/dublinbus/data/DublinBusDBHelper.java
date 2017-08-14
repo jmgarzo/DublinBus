@@ -99,7 +99,7 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
                         DublinBusContract.RealTimeStopEntry.DUE_TIME + " TEXT NOT NULL, " +
                         DublinBusContract.RealTimeStopEntry.DEPARTURE_DATE_TIME + " TEXT NOT NULL, " +
                         DublinBusContract.RealTimeStopEntry.DEPARTURE_DUE_TIME + " TEXT NOT NULL, " +
-                        DublinBusContract.RealTimeStopEntry.SCHEDULE_ARRIVAL_DATE_TIME + " TEXT NOT NULL, " +
+                        DublinBusContract.RealTimeStopEntry.SCHEDULED_ARRIVAL_DATE_TIME + " TEXT NOT NULL, " +
                         DublinBusContract.RealTimeStopEntry.SCHEDULED_DEPARTURE_DATE_TIME + " TEXT NOT NULL, " +
                         DublinBusContract.RealTimeStopEntry.DESTINATION + " TEXT NOT NULL, " +
                         DublinBusContract.RealTimeStopEntry.DESTINATION_LOCALIZED + " TEXT NOT NULL, " +

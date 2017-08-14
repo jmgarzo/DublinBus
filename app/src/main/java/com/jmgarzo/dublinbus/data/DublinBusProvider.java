@@ -568,12 +568,9 @@ public class DublinBusProvider extends ContentProvider {
                 }
                 break;
             }
-
             default:
                 return super.bulkInsert(uri, values);
-
         }
-
         if (numInserted > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }

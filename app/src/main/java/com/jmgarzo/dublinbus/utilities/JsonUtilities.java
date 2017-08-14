@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
+import com.jmgarzo.dublinbus.objects.RealTimeStop;
 import com.jmgarzo.dublinbus.objects.Route;
 import com.jmgarzo.dublinbus.objects.RouteInformation;
 
@@ -59,12 +60,83 @@ public class JsonUtilities {
     private static final String ROUTE_INFORMATION_ROUTE = "route";
     private static final String ROUTE_INFORMATION_RESULTS = "results";
 
+    //REAL TIME STOP FIELDS
+
+    private static final String REAL_TIME_STOP_RESULTS="results";
+
+    private static final String REAL_TIME_STOP_NUMBER="stopid";
+    public static final String REAL_TIME_ARRIVAL_DATE_TIME = "arrivaldatetime";
+    public static final String REAL_TIME_DUE_TIME = "duetime";
+    public static final String REAL_TIME_DEPARTURE_DATE_TIME = "departuredatetime";
+    public static final String REAL_TIME_DEPARTURE_DUE_TIME = "departureduetime";
+    public static final String REAL_TIME_SCHEDULED_ARRIVAL_DATE_TIME = "scheduledarrivaldatetime";
+    public static final String REAL_TIME_SCHEDULED_DEPARTURE_DATE_TIME = "scheduleddeparturedatetime";
+    public static final String REAL_TIME_DESTINATION = "destination";
+    public static final String REAL_TIME_DESTINATION_LOCALIZED = "destinationlocalized";
+    public static final String REAL_TIME_ORIGIN = "origin";
+    public static final String REAL_TIME_ORIGIN_LOCALIZED = "originlocalized";
+    public static final String REAL_TIME_DIRECTION = "direction";
+    public static final String REAL_TIME_OPERATOR = "operator";
+    public static final String REAL_TIME_ADDITIONAL_INFORMATION = "additionalinformation";
+    public static final String REAL_TIME_LOW_FLOOR_STATUS = "lowfloorstatus";
+    public static final String REAL_TIME_ROUTE = "route";
+    public static final String REAL_TIME_SOURCE_TIMESTAMP = "sourcetimestamp";
+    public static final String REAL_TIME_MONITORED = "monitored";
 
 
 
 
 
 
+
+
+
+
+    public static ArrayList<RealTimeStop> getRealTimeStopFromJson(String jsonStr) {
+
+
+        ArrayList<RealTimeStop> realTimeStopList = null;
+
+        JSONObject realTimeStopJson = null;
+        String stopId;
+        try {
+            realTimeStopJson = new JSONObject(jsonStr);
+            stopId = realTimeStopJson.getString(REAL_TIME_STOP_NUMBER);
+            JSONArray realTimeStopArray = realTimeStopJson.getJSONArray(REAL_TIME_STOP_RESULTS);
+            realTimeStopList = new ArrayList<>();
+            for (int i = 0; i < realTimeStopArray.length(); i++) {
+                JSONObject jsonRealTimeStop = realTimeStopArray.getJSONObject(i);
+
+                RealTimeStop realTimeStop = new RealTimeStop();
+
+                realTimeStop.setStopNumber(stopId);
+                realTimeStop.setArrivalDateTime(jsonRealTimeStop.getString(REAL_TIME_ARRIVAL_DATE_TIME));
+                realTimeStop.setDueTime(jsonRealTimeStop.getString(REAL_TIME_DUE_TIME));
+                realTimeStop.setDepartureDateTime(jsonRealTimeStop.getString(REAL_TIME_DEPARTURE_DATE_TIME));
+                realTimeStop.setDepartureDueTime(jsonRealTimeStop.getString(REAL_TIME_DEPARTURE_DUE_TIME));
+                realTimeStop.setScheduleArrivalDateTime(jsonRealTimeStop.getString(REAL_TIME_SCHEDULED_ARRIVAL_DATE_TIME));
+                realTimeStop.setScheduledDepartureDateTime(jsonRealTimeStop.getString(REAL_TIME_SCHEDULED_DEPARTURE_DATE_TIME));
+                realTimeStop.setDestination(jsonRealTimeStop.getString(REAL_TIME_DESTINATION));
+                realTimeStop.setDestinationLocalized(jsonRealTimeStop.getString(REAL_TIME_DESTINATION_LOCALIZED));
+                realTimeStop.setOrigin(jsonRealTimeStop.getString(REAL_TIME_ORIGIN));
+                realTimeStop.setOriginLocalized(jsonRealTimeStop.getString(REAL_TIME_ORIGIN_LOCALIZED));
+                realTimeStop.setDirection(jsonRealTimeStop.getString(REAL_TIME_DIRECTION));
+                realTimeStop.setOperator(jsonRealTimeStop.getString(REAL_TIME_OPERATOR));
+                realTimeStop.setAdditionalInformation(jsonRealTimeStop.getString(REAL_TIME_ADDITIONAL_INFORMATION));
+                realTimeStop.setLowFloorStatus(jsonRealTimeStop.getString(REAL_TIME_LOW_FLOOR_STATUS));
+                realTimeStop.setRoute(jsonRealTimeStop.getString(REAL_TIME_ROUTE));
+                realTimeStop.setSourceTimestamp(jsonRealTimeStop.getString(REAL_TIME_SOURCE_TIMESTAMP));
+                realTimeStop.setMonitored(jsonRealTimeStop.getString(REAL_TIME_MONITORED));
+
+                realTimeStopList.add(realTimeStop);
+            }
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, e.toString());
+        }
+
+        return realTimeStopList;
+    }
 
 
     public static ArrayList<Operator> getOperatorsFromJson(String jsonStr) {

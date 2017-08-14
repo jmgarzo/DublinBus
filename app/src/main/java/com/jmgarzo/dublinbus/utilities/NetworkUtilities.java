@@ -8,6 +8,7 @@ import android.util.Log;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
+import com.jmgarzo.dublinbus.objects.RealTimeStop;
 import com.jmgarzo.dublinbus.objects.Route;
 import com.jmgarzo.dublinbus.objects.RouteInformation;
 
@@ -82,12 +83,13 @@ public class NetworkUtilities {
             ?stopid=[stopid]&routeid=[routeid]&maxresults&operator=
             [operator]&format=[format] */
 
-
-    public static String getRealTimeBusInformation(Context context) {
+    public static ArrayList<RealTimeStop> getRealTimeStop(String stopid) {
+        String response = "";
+        ArrayList<RealTimeStop> realTimeStopsList = null;
 
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(REAL_TIME_BUS_INFORMATION_PATH)
-                .appendQueryParameter(STOP_ID_PARAM, "7602")
+                .appendQueryParameter(STOP_ID_PARAM, stopid)
                 .appendQueryParameter(FORMAT_PARAM, JSON_VALUE_PARAM)
                 .build();
 
@@ -98,21 +100,45 @@ public class NetworkUtilities {
             e.printStackTrace();
         }
 
-        String response = "";
         try {
-
             response = getResponseFromHttpUrl(url);
-//            moviesList = getMoviesFromJson(jsonMoviesResponse,PopularMovieContract.MOST_POPULAR_REGISTRY_TYPE);
-//
-//            jsonMoviesResponse=NetworksUtils.getResponseFromHttpUrl(moviesURLTopRate);
-//            moviesList.addAll(getMoviesFromJson(jsonMoviesResponse,PopularMovieContract.TOP_RATE_REGISTRY_TYPE));
+            realTimeStopsList = JsonUtilities.getRealTimeStopFromJson(response);
         } catch (IOException e) {
             Log.e(LOG_TAG, e.toString());
         }
 
-
-        return response;
+        return realTimeStopsList;
     }
+//    public static String getRealTimeBusInformation(String stopId) {
+//
+//        Uri builtUri = Uri.parse(BASE_URL).buildUpon()
+//                .appendEncodedPath(REAL_TIME_BUS_INFORMATION_PATH)
+//                .appendQueryParameter(STOP_ID_PARAM, "7602")
+//                .appendQueryParameter(FORMAT_PARAM, JSON_VALUE_PARAM)
+//                .build();
+//
+//        URL url = null;
+//        try {
+//            url = new URL(builtUri.toString());
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String response = "";
+//        try {
+//
+//            response = getResponseFromHttpUrl(url);
+////            moviesList = getMoviesFromJson(jsonMoviesResponse,PopularMovieContract.MOST_POPULAR_REGISTRY_TYPE);
+////
+////            jsonMoviesResponse=NetworksUtils.getResponseFromHttpUrl(moviesURLTopRate);
+////            moviesList.addAll(getMoviesFromJson(jsonMoviesResponse,PopularMovieContract.TOP_RATE_REGISTRY_TYPE));
+//        } catch (IOException e) {
+//            Log.e(LOG_TAG, e.toString());
+//        }
+//
+//
+//        return response;
+//    }
 
 
     //3.4.2 Retrieve Timetable Bus Information by Date

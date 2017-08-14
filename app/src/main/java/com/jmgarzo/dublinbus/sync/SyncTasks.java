@@ -10,6 +10,7 @@ import android.util.Log;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
+import com.jmgarzo.dublinbus.objects.RealTimeStop;
 import com.jmgarzo.dublinbus.objects.Route;
 import com.jmgarzo.dublinbus.objects.RouteInformation;
 import com.jmgarzo.dublinbus.sync.services.BusStopInformationService;
@@ -138,6 +139,30 @@ public class SyncTasks {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    synchronized public static void syncRealTimeStop(Context context,String stopId) {
+        try {
+            ArrayList<RealTimeStop> realTimeStopList = NetworkUtilities.getRealTimeStop(stopId);
+
+            if (realTimeStopList != null && realTimeStopList.size() > 0) {
+                ContentValues[] contentValues = new ContentValues[realTimeStopList.size()];
+                for (int i = 0; i < realTimeStopList.size(); i++) {
+                    RealTimeStop realTimeStop = realTimeStopList.get(i);
+                    contentValues[i] = realTimeStop.getContentValues();
+                }
+                ContentResolver contentResolver = context.getContentResolver();
+
+                int inserted = contentResolver.bulkInsert(DublinBusContract.RealTimeStopEntry.CONTENT_URI,
+                        contentValues);
+                if (inserted > 0) {
+//                    DBUtils.setIsFilledOperatorInformation(context, true);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(LOG_TAG, e.toString());
         }
     }
 

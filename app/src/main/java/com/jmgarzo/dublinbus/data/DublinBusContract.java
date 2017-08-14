@@ -118,12 +118,12 @@ public class DublinBusContract {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_REAL_TIME_STOP).build();
         public static final String TABLE_NAME = "real_time_stop";
         public static final String _ID = "_id";
-        public static final String STOP_NUMBER = "operator";
+        public static final String STOP_NUMBER = "stopid";
         public static final String ARRIVAL_DATE_TIME = "arrivaldatetime";
         public static final String DUE_TIME = "duetime";
         public static final String DEPARTURE_DATE_TIME = "departuredatetime";
         public static final String DEPARTURE_DUE_TIME = "departureduetime";
-        public static final String SCHEDULE_ARRIVAL_DATE_TIME = "scheduledarrivaldatetime";
+        public static final String SCHEDULED_ARRIVAL_DATE_TIME = "scheduledarrivaldatetime";
         public static final String SCHEDULED_DEPARTURE_DATE_TIME = "scheduleddeparturedatetime";
         public static final String DESTINATION = "destination";
         public static final String DESTINATION_LOCALIZED = "destinationlocalized";
