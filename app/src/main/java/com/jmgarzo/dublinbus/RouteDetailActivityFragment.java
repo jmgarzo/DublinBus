@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jmgarzo.dublinbus.data.DublinBusContract;
-import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 /**
@@ -110,7 +110,7 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
     }
 
     @Override
-    public void onClick(Route route) {
+    public void onClick(BusStop busStop) {
 
     }
 }

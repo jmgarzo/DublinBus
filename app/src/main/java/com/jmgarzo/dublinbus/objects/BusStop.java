@@ -26,6 +26,12 @@ public class BusStop  implements Parcelable {
 
     public BusStop(){}
 
+    public BusStop(Cursor cursor, int position) {
+        if (cursor != null && cursor.moveToPosition(position)) {
+            cursorToBusStop(cursor);
+        }
+    }
+
     public int getId() {
         return id;
     }

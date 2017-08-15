@@ -1,6 +1,7 @@
 package com.jmgarzo.dublinbus;
 
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,12 +10,13 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.jmgarzo.dublinbus.data.DublinBusContract;
-import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 
@@ -25,8 +27,10 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
         BusStopAdapter.BusStopAdapterOnClickHandler {
 
     private static final int ID_BUS_STOP_LOADER = 66;
+    public static final String FILTER_TAG = "arg_filter_tag";
 
     BusStopAdapter mBusStopAdapter;
+    SearchView mSearchView;
     private RecyclerView mRecyclerView;
     public BusStopFragment() {
         // Required empty public constructor
@@ -50,6 +54,29 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
 
         getActivity().getSupportLoaderManager().initLoader(ID_BUS_STOP_LOADER, null, this);
 
+        mSearchView = rootView.findViewById(R.id.search);
+
+        mSearchView.setActivated(true);
+        mSearchView.setQueryHint("Type your keyword here");
+        mSearchView.onActionViewExpanded();
+        mSearchView.setIconified(false);
+        mSearchView.clearFocus();
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                onQueryTextChanged(newText);
+                   //mBusStopAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
 
 
 
@@ -60,18 +87,45 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
         return rootView;
     }
 
+    public boolean onQueryTextChanged(String newText) {
+        // Called when the action bar search text has changed.  Update
+        // the search filter, and restart the loader to do a new query
+        // with this filter.
+
+        Bundle args = new Bundle();
+        args.putString(FILTER_TAG,newText);
+        getLoaderManager().restartLoader(ID_BUS_STOP_LOADER,args,this);
+//        mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
+        //getLoaderManager().restartLoader(0, null, this);
+        return true;
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         switch (id) {
 
             case ID_BUS_STOP_LOADER: {
-                return new CursorLoader(getContext(),
-                        DublinBusContract.BusStopEntry.CONTENT_URI,
-                        DBUtils.BUS_STOP_COLUMNS,
-                        null,
-                        null,
-                        null);
+
+                if(args != null){
+                    String filterArg = args.getString(FILTER_TAG);
+
+                    String selection = DublinBusContract.BusStopEntry.NUMBER + " LIKE '%"+filterArg+ "%' ";
+                    return new CursorLoader(getContext(),
+                            DublinBusContract.BusStopEntry.CONTENT_URI,
+                            DBUtils.BUS_STOP_COLUMNS,
+                            selection,
+                            null,
+                            null);
+                }else {
+
+                    return new CursorLoader(getContext(),
+                            DublinBusContract.BusStopEntry.CONTENT_URI,
+                            DBUtils.BUS_STOP_COLUMNS,
+                            null,
+                            null,
+                            null);
+                }
             }
         }
         return null;
@@ -97,7 +151,9 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     @Override
-    public void onClick(Route route) {
-
+    public void onClick(BusStop busStop) {
+        Intent intent = new Intent(getActivity(),RealTimeStopActivity.class);
+        intent.putExtra(Intent.EXTRA_TEXT,busStop.getNumber());
+        this.startActivity(intent);
     }
 }

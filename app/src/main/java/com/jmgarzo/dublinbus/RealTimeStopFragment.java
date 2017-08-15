@@ -24,6 +24,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
 
     private RecyclerView mRecyclerView;
     private RealTimeStopAdapter mRealTimeStopAdapter;
+    private String mBusStopNumber;
 
     public RealTimeStopFragment() {
     }
@@ -32,6 +33,8 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_real_time_stop, container, false);
+
+        mBusStopNumber = getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT);
 
 
         LinearLayoutManager layoutManager =
@@ -45,7 +48,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         mRecyclerView.setAdapter(mRealTimeStopAdapter);
 
         Intent intentRealTimeStopService = new Intent(getContext(), RealTimeStopService.class);
-        intentRealTimeStopService.putExtra(Intent.EXTRA_TEXT,"4747");
+        intentRealTimeStopService.putExtra(Intent.EXTRA_TEXT,mBusStopNumber);
         getContext().startService(intentRealTimeStopService);
 
         getActivity().getSupportLoaderManager().initLoader(ID_REAL_TIME_STOP_LOADER, null, this);
