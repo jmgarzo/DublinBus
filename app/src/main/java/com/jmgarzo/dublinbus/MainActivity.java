@@ -79,4 +79,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,StopsNearActivity.class);
         this.startActivity(intent);
     }
+
+    public void goToBusStop(View view){
+        Intent intent=new Intent(this,BusStopActivity.class);
+        this.startActivity(intent);
+    }
 }

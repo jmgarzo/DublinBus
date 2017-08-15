@@ -63,7 +63,8 @@
             android:label="@string/title_activity_route_detail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RealTimeStopActivity" />
-        <activity android:name=".StopsNearActivity"></activity>
+        <activity android:name=".StopsNearActivity" />
+        <activity android:name=".BusStopActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,7 @@
+<fragment
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/stops_near_master_fragment"
+    android:name="com.jmgarzo.dublinbus.BusStopFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
