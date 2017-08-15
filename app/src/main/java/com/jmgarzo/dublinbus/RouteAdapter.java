@@ -45,17 +45,13 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteAdapter
 
     @Override
     public void onBindViewHolder(RouteAdapterViewHolder holder, int position) {
-
-
         mCursor.moveToPosition(position);
-
         if (mCursor != null && mCursor.moveToPosition(position)) {
             holder.mRouteName.setText(mCursor.getString(DBUtils.COL_ROUTE_NAME));
             holder.mRouteOrigin.setText(mCursor.getString(DBUtils.COL_ROUTE_ORIGIN));
             holder.mRouteDestination.setText(mCursor.getString(DBUtils.COL_ROUTE_DESTINATION));
 
         }
-
     }
 
     @Override

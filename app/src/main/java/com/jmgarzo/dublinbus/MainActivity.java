@@ -74,4 +74,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,RealTimeStopActivity.class);
         this.startActivity(intent);
     }
+
+    public void goToNearMe(View v){
+        Intent intent = new Intent(this,StopsNearActivity.class);
+        this.startActivity(intent);
+    }
 }

@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.sync.services.RealTimeStopService;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
-import com.jmgarzo.dublinbus.utilities.RealTimeStopAdapter;
 
 
 public class RealTimeStopFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {

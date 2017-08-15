@@ -107,7 +107,7 @@ public class BusStop  implements Parcelable {
     }
 
 
-    private void cursorToBusStop(Cursor cursor) {
+    public void cursorToBusStop(Cursor cursor) {
 
         id = cursor.getInt(DBUtils.COL_BUS_STOP_ID);
         number = cursor.getString(DBUtils.COL_BUS_STOP_NUMBER);
