@@ -3,7 +3,6 @@ package com.jmgarzo.dublinbus.sync;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
 
@@ -13,10 +12,6 @@ import com.jmgarzo.dublinbus.objects.Operator;
 import com.jmgarzo.dublinbus.objects.RealTimeStop;
 import com.jmgarzo.dublinbus.objects.Route;
 import com.jmgarzo.dublinbus.objects.RouteInformation;
-import com.jmgarzo.dublinbus.sync.services.BusStopInformationService;
-import com.jmgarzo.dublinbus.sync.services.OperatorInformationService;
-import com.jmgarzo.dublinbus.sync.services.RouteInformationService;
-import com.jmgarzo.dublinbus.sync.services.RouteListInformationService;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 import com.jmgarzo.dublinbus.utilities.NetworkUtilities;
 
@@ -169,24 +164,24 @@ public class SyncTasks {
 
     public static void syncDB(Context context) {
 
-        if (!DBUtils.isFilledOperatorInformation(context)) {
-            Intent intentOperatorInformationService = new Intent(context, OperatorInformationService.class);
-            context.startService(intentOperatorInformationService);
-        }
-        if (!DBUtils.isFilledRouteInformation(context)) {
-            Intent intentRouteListInformationService = new Intent(context, RouteListInformationService.class);
-            context.startService(intentRouteListInformationService);
-        }
-
-        if (!DBUtils.isFilledBusStop(context)) {
-            Intent intentBusStopInformationService = new Intent(context, BusStopInformationService.class);
-            context.startService(intentBusStopInformationService);
-        }
-
-        if (!DBUtils.isFilledRoute(context)) {
-            Intent intentRouteInformationService = new Intent(context, RouteInformationService.class);
-            context.startService(intentRouteInformationService);
-        }
+//        if (!DBUtils.isFilledOperatorInformation(context)) {
+//            Intent intentOperatorInformationService = new Intent(context, OperatorInformationService.class);
+//            context.startService(intentOperatorInformationService);
+//        }
+//        if (!DBUtils.isFilledRouteInformation(context)) {
+//            Intent intentRouteListInformationService = new Intent(context, RouteListInformationService.class);
+//            context.startService(intentRouteListInformationService);
+//        }
+//
+//        if (!DBUtils.isFilledBusStop(context)) {
+//            Intent intentBusStopInformationService = new Intent(context, BusStopInformationService.class);
+//            context.startService(intentBusStopInformationService);
+//        }
+//
+//        if (!DBUtils.isFilledRoute(context)) {
+//            Intent intentRouteInformationService = new Intent(context, RouteInformationService.class);
+//            context.startService(intentRouteInformationService);
+//        }
 
 //        Intent intentOperatorInformationService = new Intent(getActivity(), OperatorInformationService.class);
 //        getContext().startService(intentOperatorInformationService);
