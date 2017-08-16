@@ -18,6 +18,10 @@
     <string name="bus_stop_search_hint">Bus Stop, i.e.:4747</string>
     <string name="bus_stop_label">Bus Stop: </string>
 
+    <!--Real Time Bus Stop-->
+    <string name="real_time_stop_title">Arrival time</string>
+    <string name="real_time_stop_minutes_label">min</string>
+
     <!--Strings for SharedPreference-->
     <string name="pref_route_information_db">route_information_db</string>
     <string name="pref_route_db">route_db</string>
