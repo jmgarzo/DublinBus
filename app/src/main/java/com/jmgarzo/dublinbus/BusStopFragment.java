@@ -173,6 +173,7 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
         searchView.setActivated(true);
         searchView.setQueryHint(getString(R.string.bus_stop_search_hint));
         searchView.onActionViewExpanded();
+        
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

@@ -36,11 +36,14 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_real_time_stop, container, false);
-        getActivity().setTitle(getString(R.string.real_time_stop_title));
         setHasOptionsMenu(true);
 
 
-        mBusStopNumber = getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT);
+        if(getActivity().getIntent()!= null) {
+            mBusStopNumber = getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT);
+        }
+
+        getActivity().setTitle(mBusStopNumber + " "+ getString(R.string.real_time_stop_title));
 
 
         mSwipeRefreshLayout = rootView.findViewById(R.id.swiperl_real_time_stop);
@@ -72,6 +75,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     }
 
     private void refreshData() {
+        //TODO: code for mBusStopNumber == null -> show a message
         Intent intentRealTimeStopService = new Intent(getContext(), RealTimeStopService.class);
         intentRealTimeStopService.putExtra(Intent.EXTRA_TEXT, mBusStopNumber);
         getContext().startService(intentRealTimeStopService);    }
