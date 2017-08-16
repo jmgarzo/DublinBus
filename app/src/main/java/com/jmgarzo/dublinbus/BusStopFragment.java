@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -57,6 +58,8 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
         mRecyclerView = rootView.findViewById(R.id.recyclerview_bus_stop);
         mRecyclerView.setLayoutManager(stopBusLayoutManager);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
+                DividerItemDecoration.VERTICAL));
 
         mBusStopAdapter = new BusStopAdapter(getContext(), this);
         mRecyclerView.setAdapter(mBusStopAdapter);

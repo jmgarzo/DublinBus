@@ -15,11 +15,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <!--<ImageView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:src="@drawable/ic_bus_double_decker"-->
+                    <!--android:padding="8dp"-->
+                    <!--/>-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bus_stop_label"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:paddingRight="8dp"/>
+
                 <TextView
                     android:id="@+id/list_item_bus_stop_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textStyle="bold"/>
 
 
             </LinearLayout>
