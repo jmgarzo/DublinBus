@@ -70,10 +70,6 @@ public class MainActivity extends AppCompatActivity {
         this.startActivity(intent);
     }
 
-    public void goToRealTime(View v){
-        Intent intent = new Intent(this,RealTimeStopActivity.class);
-        this.startActivity(intent);
-    }
 
     public void goToNearMe(View v){
         Intent intent = new Intent(this,StopsNearActivity.class);

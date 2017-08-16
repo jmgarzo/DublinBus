@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jmgarzo.dublinbus.data.DublinBusContract;
+import com.jmgarzo.dublinbus.sync.DublinBusSyncUtils;
 import com.jmgarzo.dublinbus.sync.services.RealTimeStopService;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
@@ -69,6 +70,9 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
 
 
         getActivity().getSupportLoaderManager().initLoader(ID_REAL_TIME_STOP_LOADER, null, this);
+
+        DublinBusSyncUtils.initialize(getContext(),mBusStopNumber);
+
 
 
         return rootView;
