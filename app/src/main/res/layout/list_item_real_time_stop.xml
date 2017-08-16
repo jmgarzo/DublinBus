@@ -90,7 +90,7 @@
         android:layout_marginBottom="0dp"
         android:layout_marginLeft="8dp"
         android:text="@string/real_time_stop_minus"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         app:layout_constraintBottom_toBottomOf="@+id/list_item_real_time_route"
         app:layout_constraintLeft_toRightOf="@+id/list_item_real_time_route"
         tools:text="@string/real_time_stop_minus" />

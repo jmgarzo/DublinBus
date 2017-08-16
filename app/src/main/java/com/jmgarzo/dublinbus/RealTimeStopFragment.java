@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     private RecyclerView mRecyclerView;
     private RealTimeStopAdapter mRealTimeStopAdapter;
     private String mBusStopNumber;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public RealTimeStopFragment() {
     }
@@ -41,6 +43,13 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         mBusStopNumber = getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT);
 
 
+        mSwipeRefreshLayout = rootView.findViewById(R.id.swiperl_real_time_stop);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshData();
+            }
+        });
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
@@ -49,20 +58,23 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
                 DividerItemDecoration.VERTICAL));
-        
+
         mRealTimeStopAdapter = new RealTimeStopAdapter(getContext());
 
         mRecyclerView.setAdapter(mRealTimeStopAdapter);
+        refreshData();
 
-        Intent intentRealTimeStopService = new Intent(getContext(), RealTimeStopService.class);
-        intentRealTimeStopService.putExtra(Intent.EXTRA_TEXT,mBusStopNumber);
-        getContext().startService(intentRealTimeStopService);
 
         getActivity().getSupportLoaderManager().initLoader(ID_REAL_TIME_STOP_LOADER, null, this);
 
 
         return rootView;
     }
+
+    private void refreshData() {
+        Intent intentRealTimeStopService = new Intent(getContext(), RealTimeStopService.class);
+        intentRealTimeStopService.putExtra(Intent.EXTRA_TEXT, mBusStopNumber);
+        getContext().startService(intentRealTimeStopService);    }
 
 
     @Override
@@ -86,6 +98,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         switch (loader.getId()) {
             case ID_REAL_TIME_STOP_LOADER: {
                 mRealTimeStopAdapter.swapCursor(data);
+                mSwipeRefreshLayout.setRefreshing(false);
                 break;
             }
         }
