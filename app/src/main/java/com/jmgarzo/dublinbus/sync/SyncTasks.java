@@ -153,6 +153,7 @@ public class SyncTasks {
                 }
                 ContentResolver contentResolver = context.getContentResolver();
 
+                contentResolver.delete(DublinBusContract.RealTimeStopEntry.CONTENT_URI,null,null);
                 int inserted = contentResolver.bulkInsert(DublinBusContract.RealTimeStopEntry.CONTENT_URI,
                         contentValues);
                 if (inserted > 0) {
