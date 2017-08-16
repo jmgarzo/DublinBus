@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,6 +47,8 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         mRecyclerView = rootView.findViewById(R.id.recyclerview_real_time_stop);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
+                DividerItemDecoration.VERTICAL));
 
         mRealTimeStopAdapter = new RealTimeStopAdapter(getContext());
         mRecyclerView.setAdapter(mRealTimeStopAdapter);

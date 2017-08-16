@@ -21,6 +21,7 @@
     <!--Real Time Bus Stop-->
     <string name="real_time_stop_title">Arrival time</string>
     <string name="real_time_stop_minutes_label">min</string>
+    <string name="real_time_stop_minus">-</string>
 
     <!--Strings for SharedPreference-->
     <string name="pref_route_information_db">route_information_db</string>

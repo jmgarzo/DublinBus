@@ -68,7 +68,7 @@ public class RealTimeStopAdapter extends RecyclerView.Adapter<RealTimeStopAdapte
             mRouteName = view.findViewById(R.id.list_item_real_time_route);
             mDueTime = view.findViewById(R.id.list_item_real_time_due_time);
             mOrigin = view.findViewById(R.id.list_item_real_time_origin);
-            mDestination = (TextView) view.findViewById(R.id.list_item_real_time_destination);
+            mDestination =  view.findViewById(R.id.list_item_real_time_destination);
             view.setOnClickListener(this);
         }
 
