@@ -39,7 +39,11 @@ public class RealTimeStopAdapter extends RecyclerView.Adapter<RealTimeStopAdapte
 
         if (mCursor != null && mCursor.moveToPosition(position)) {
             holder.mRouteName.setText(mCursor.getString(DBUtils.COL_REAL_TIME_STOP_ROUTE));
-            holder.mDueTime.setText(mCursor.getString(DBUtils.COL_REAL_TIME_STOP_DUE_TIME));
+            String minutes = mCursor.getString(DBUtils.COL_REAL_TIME_STOP_DUE_TIME);
+            holder.mDueTime.setText(minutes);
+            if(minutes.equalsIgnoreCase("Due")){
+                holder.mMinutesLabel.setVisibility(View.GONE);
+            }
             holder.mOrigin.setText(mCursor.getString(DBUtils.COL_REAL_TIME_STOP_ORIGIN));
             holder.mDestination.setText(mCursor.getString(DBUtils.COL_REAL_TIME_STOP_DESTINATION));
         }
@@ -60,6 +64,7 @@ public class RealTimeStopAdapter extends RecyclerView.Adapter<RealTimeStopAdapte
     public class RealTimeStopAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mRouteName;
         public final TextView mDueTime;
+        public final TextView mMinutesLabel;
         public final TextView mOrigin;
         public final TextView mDestination;
 
@@ -67,6 +72,7 @@ public class RealTimeStopAdapter extends RecyclerView.Adapter<RealTimeStopAdapte
             super(view);
             mRouteName = view.findViewById(R.id.list_item_real_time_route);
             mDueTime = view.findViewById(R.id.list_item_real_time_due_time);
+            mMinutesLabel= view.findViewById(R.id.list_item_real_time_minutes_label);
             mOrigin = view.findViewById(R.id.list_item_real_time_origin);
             mDestination =  view.findViewById(R.id.list_item_real_time_destination);
             view.setOnClickListener(this);

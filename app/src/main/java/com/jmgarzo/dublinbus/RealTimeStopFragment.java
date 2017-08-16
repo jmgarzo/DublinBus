@@ -49,8 +49,9 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
                 DividerItemDecoration.VERTICAL));
-
+        
         mRealTimeStopAdapter = new RealTimeStopAdapter(getContext());
+
         mRecyclerView.setAdapter(mRealTimeStopAdapter);
 
         Intent intentRealTimeStopService = new Intent(getContext(), RealTimeStopService.class);
