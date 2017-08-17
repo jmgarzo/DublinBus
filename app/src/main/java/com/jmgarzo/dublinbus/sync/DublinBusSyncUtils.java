@@ -26,13 +26,15 @@ public class DublinBusSyncUtils {
     private static final int SYNC_INTERVAL_SECONDS = (int) java.util.concurrent.TimeUnit.HOURS.toSeconds(SYNC_INTERVAL_HOURS);
     private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS / 3;
 
+    private static FirebaseJobDispatcher dispatcher;
+
 
     public static final String STOP_ID_TAG = "stop_id";
     private static final String REAL_TIME_SYNC_TAG="real_time_sync";
 
     static void scheduleFirebaseJobDispatcherSync(@NonNull final Context context,String stopId){
         Driver driver = new GooglePlayDriver(context);
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(driver);
+        dispatcher = new FirebaseJobDispatcher(driver);
 
         Bundle b = new Bundle();
         b.putString(STOP_ID_TAG,stopId);
@@ -44,12 +46,17 @@ public class DublinBusSyncUtils {
                 .setLifetime(Lifetime.FOREVER)
                 .setRecurring(true)
                 .setTrigger(Trigger.executionWindow(
-                        10,
-                        15))
+                        5,
+                        7))
                 .setReplaceCurrent(true)
                 .build();
 
         dispatcher.schedule(syncRealTimeJob);
+    }
+
+    synchronized public static void cancelDispach(){
+        sInitialized= false;
+        dispatcher.cancel(REAL_TIME_SYNC_TAG);
     }
 
 

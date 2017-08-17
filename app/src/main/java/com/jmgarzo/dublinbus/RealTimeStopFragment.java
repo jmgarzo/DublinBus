@@ -71,11 +71,23 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
 
         getActivity().getSupportLoaderManager().initLoader(ID_REAL_TIME_STOP_LOADER, null, this);
 
-        DublinBusSyncUtils.initialize(getContext(),mBusStopNumber);
 
 
 
         return rootView;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        DublinBusSyncUtils.cancelDispach();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DublinBusSyncUtils.initialize(getContext(),mBusStopNumber);
     }
 
     private void refreshData() {
