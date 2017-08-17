@@ -143,7 +143,12 @@ public class SyncTasks {
 
     synchronized public static void syncRealTimeStop(Context context,String stopId) {
         try {
-            ArrayList<RealTimeStop> realTimeStopList = NetworkUtilities.getRealTimeStop(stopId);
+            if(!NetworkUtilities.isNetworkAvailable(context)){
+                DBUtils.setRealTimeConnectionStatus(context,DBUtils.REAL_TIME_STATUS_NETWORK_NOT_AVAILABLE);
+
+                return;
+            }
+            ArrayList<RealTimeStop> realTimeStopList = NetworkUtilities.getRealTimeStop(context,stopId);
 
             if (realTimeStopList != null && realTimeStopList.size() > 0) {
                 ContentValues[] contentValues = new ContentValues[realTimeStopList.size()];

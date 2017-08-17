@@ -2,9 +2,12 @@ package com.jmgarzo.dublinbus.utilities;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
+import com.jmgarzo.dublinbus.R;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
@@ -19,6 +22,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import static com.jmgarzo.dublinbus.R.string.empty_real_time_stop_server_down;
+import static com.jmgarzo.dublinbus.R.string.empty_real_time_stop_server_error;
 
 /**
  * Created by jmgarzo on 25/07/17.
@@ -83,7 +89,7 @@ public class NetworkUtilities {
             ?stopid=[stopid]&routeid=[routeid]&maxresults&operator=
             [operator]&format=[format] */
 
-    public static ArrayList<RealTimeStop> getRealTimeStop(String stopid) {
+    public static ArrayList<RealTimeStop> getRealTimeStop(Context context, String stopid) {
         String response = "";
         ArrayList<RealTimeStop> realTimeStopsList = null;
 
@@ -102,9 +108,13 @@ public class NetworkUtilities {
 
         try {
             response = getResponseFromHttpUrl(url);
-            realTimeStopsList = JsonUtilities.getRealTimeStopFromJson(response);
+
+            realTimeStopsList = JsonUtilities.getRealTimeStopFromJson(context,response);
         } catch (IOException e) {
             Log.e(LOG_TAG, e.toString());
+            if (response.equalsIgnoreCase("")) {
+                DBUtils.setRealTimeConnectionStatus(context, DBUtils.REAL_TIME_STATUS_SERVER_DOWN);
+            }
         }
 
         return realTimeStopsList;
@@ -257,13 +267,13 @@ public class NetworkUtilities {
     //3.4.5 Retrieve Route Information
     //http://[rtpiserver]/routeinformation?routeid=[route]&operator=[operator]&operator=[operator]&format=[format]
 
-    public static ArrayList<Route> getRouteInformation(Context context, String routeName){
+    public static ArrayList<Route> getRouteInformation(Context context, String routeName) {
         String response = "";
         ArrayList<Route> routeList = null;
 
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(ROUTE_INFORMATION_PATH)
-                .appendQueryParameter(ROUTER_ID_PARAM,routeName )
+                .appendQueryParameter(ROUTER_ID_PARAM, routeName)
                 .appendQueryParameter(OPERATOR_PARAM, DUBLIN_BUS_OPERATOR_PARAM)
                 .build();
 
@@ -294,16 +304,15 @@ public class NetworkUtilities {
                 null);
 
 
-
         if (cursor != null && cursor.moveToFirst()) {
             routeListTotal = new ArrayList<>();
             do {
-                routeListPerQuery = getRouteInformation(context,cursor.getString(DBUtils.COL_ROUTE_INFORMATION_ROUTE));
+                routeListPerQuery = getRouteInformation(context, cursor.getString(DBUtils.COL_ROUTE_INFORMATION_ROUTE));
 
-                    if(null!= routeListPerQuery && routeListPerQuery.size()>0){
-                        routeListTotal.addAll(routeListPerQuery);
-                    }
-            }while(cursor.moveToNext());
+                if (null != routeListPerQuery && routeListPerQuery.size() > 0) {
+                    routeListTotal.addAll(routeListPerQuery);
+                }
+            } while (cursor.moveToNext());
         }
         return routeListTotal;
     }
@@ -367,4 +376,54 @@ public class NetworkUtilities {
         return routeInformationList;
     }
 
+    static public boolean isNetworkAvailable(Context c) {
+        ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+    }
+
+
+    static public int getErrorMessage(Context context) {
+        // if cursor is empty, why? do we have an invalid location
+        int message = R.string.empty_real_time_stop_list;
+        int status = DBUtils.getRealTimeConnectionStatus(context);
+        switch (status) {
+            case DBUtils.REAL_TIME_STATUS_NO_RESULTS:
+                message = R.string.empty_real_time_stop_invalid_stop;
+                break;
+            case DBUtils.REAL_TIME_STATUS_MISSING_PARAMETER:
+                message = empty_real_time_stop_server_down;
+                break;
+            case DBUtils.REAL_TIME_STATUS_INVALID_PARAMETER:
+                message = empty_real_time_stop_server_down;
+                break;
+            case DBUtils.REAL_TIME_STATUS_SCHEDULED_DOWN_TIME:
+                message = empty_real_time_stop_server_down;
+                break;
+            case DBUtils.REAL_TIME_STATUS_UNEXPECTED_SERVER_ERROR:
+                message = empty_real_time_stop_server_down;
+                break;
+            case DBUtils.REAL_TIME_STATUS_SERVER_DOWN:
+                message = empty_real_time_stop_server_down;
+                break;
+            case DBUtils.REAL_TIME_STATUS_SERVER_INVALID:
+                message = empty_real_time_stop_server_error;
+                break;
+            case DBUtils.REAL_TIME_STATUS_UNKNOWN:
+                message = empty_real_time_stop_server_down;
+                break;
+            case DBUtils.REAL_TIME_STATUS_NETWORK_NOT_AVAILABLE:
+                message = R.string.empty_real_time_stop_no_network;
+                break;
+            default:
+                message = R.string.empty_real_time_stop_list;
+        }
+        return message;
+    }
+
+
 }
+
+

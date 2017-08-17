@@ -65,23 +65,27 @@ public class JsonUtilities {
     private static final String REAL_TIME_STOP_RESULTS="results";
 
     private static final String REAL_TIME_STOP_NUMBER="stopid";
-    public static final String REAL_TIME_ARRIVAL_DATE_TIME = "arrivaldatetime";
-    public static final String REAL_TIME_DUE_TIME = "duetime";
-    public static final String REAL_TIME_DEPARTURE_DATE_TIME = "departuredatetime";
-    public static final String REAL_TIME_DEPARTURE_DUE_TIME = "departureduetime";
-    public static final String REAL_TIME_SCHEDULED_ARRIVAL_DATE_TIME = "scheduledarrivaldatetime";
-    public static final String REAL_TIME_SCHEDULED_DEPARTURE_DATE_TIME = "scheduleddeparturedatetime";
-    public static final String REAL_TIME_DESTINATION = "destination";
-    public static final String REAL_TIME_DESTINATION_LOCALIZED = "destinationlocalized";
-    public static final String REAL_TIME_ORIGIN = "origin";
-    public static final String REAL_TIME_ORIGIN_LOCALIZED = "originlocalized";
-    public static final String REAL_TIME_DIRECTION = "direction";
-    public static final String REAL_TIME_OPERATOR = "operator";
-    public static final String REAL_TIME_ADDITIONAL_INFORMATION = "additionalinformation";
-    public static final String REAL_TIME_LOW_FLOOR_STATUS = "lowfloorstatus";
-    public static final String REAL_TIME_ROUTE = "route";
-    public static final String REAL_TIME_SOURCE_TIMESTAMP = "sourcetimestamp";
-    public static final String REAL_TIME_MONITORED = "monitored";
+    private static final String REAL_TIME_ARRIVAL_DATE_TIME = "arrivaldatetime";
+    private static final String REAL_TIME_DUE_TIME = "duetime";
+    private static final String REAL_TIME_DEPARTURE_DATE_TIME = "departuredatetime";
+    private static final String REAL_TIME_DEPARTURE_DUE_TIME = "departureduetime";
+    private static final String REAL_TIME_SCHEDULED_ARRIVAL_DATE_TIME = "scheduledarrivaldatetime";
+    private static final String REAL_TIME_SCHEDULED_DEPARTURE_DATE_TIME = "scheduleddeparturedatetime";
+    private static final String REAL_TIME_DESTINATION = "destination";
+    private static final String REAL_TIME_DESTINATION_LOCALIZED = "destinationlocalized";
+    private static final String REAL_TIME_ORIGIN = "origin";
+    private static final String REAL_TIME_ORIGIN_LOCALIZED = "originlocalized";
+    private static final String REAL_TIME_DIRECTION = "direction";
+    private static final String REAL_TIME_OPERATOR = "operator";
+    private static final String REAL_TIME_ADDITIONAL_INFORMATION = "additionalinformation";
+    private static final String REAL_TIME_LOW_FLOOR_STATUS = "lowfloorstatus";
+    private static final String REAL_TIME_ROUTE = "route";
+    private static final String REAL_TIME_SOURCE_TIMESTAMP = "sourcetimestamp";
+    private static final String REAL_TIME_MONITORED = "monitored";
+
+    //COMMON FIELDS
+    private static final String ERROR_CODE="errorcode";
+    private static final String ERROR_MESSAGE="errormessage";
 
 
 
@@ -92,16 +96,25 @@ public class JsonUtilities {
 
 
 
-    public static ArrayList<RealTimeStop> getRealTimeStopFromJson(String jsonStr) {
+
+
+    public static ArrayList<RealTimeStop> getRealTimeStopFromJson(Context context ,String jsonStr) {
 
 
         ArrayList<RealTimeStop> realTimeStopList = null;
 
         JSONObject realTimeStopJson = null;
         String stopId;
+        String errorCode;
+        String errorMessage;
         try {
             realTimeStopJson = new JSONObject(jsonStr);
             stopId = realTimeStopJson.getString(REAL_TIME_STOP_NUMBER);
+            errorCode= realTimeStopJson.getString(ERROR_CODE);
+            if(null!=errorCode){
+                DBUtils.setRealTimeConnectionStatus(context,Integer.valueOf(errorCode));
+            }
+            errorMessage = realTimeStopJson.getString(ERROR_MESSAGE);
             JSONArray realTimeStopArray = realTimeStopJson.getJSONArray(REAL_TIME_STOP_RESULTS);
             realTimeStopList = new ArrayList<>();
             for (int i = 0; i < realTimeStopArray.length(); i++) {

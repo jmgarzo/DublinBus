@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.Driver;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -22,9 +21,8 @@ public class DublinBusSyncUtils {
 
     private static boolean sInitialized;
 
-    private static final int SYNC_INTERVAL_HOURS =3;
-    private static final int SYNC_INTERVAL_SECONDS = (int) java.util.concurrent.TimeUnit.HOURS.toSeconds(SYNC_INTERVAL_HOURS);
-    private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS / 3;
+    private static final int SYNC_INTERVAL_SECONDS = 5;
+    private static final int SYNC_FLEXTIME_SECONDS = 8;
 
     private static FirebaseJobDispatcher dispatcher;
 
@@ -42,12 +40,11 @@ public class DublinBusSyncUtils {
                 .setService(RealTimeJobService.class)
                 .setExtras(b)
                 .setTag(REAL_TIME_SYNC_TAG)
-                .setConstraints(Constraint.ON_ANY_NETWORK)
                 .setLifetime(Lifetime.FOREVER)
                 .setRecurring(true)
                 .setTrigger(Trigger.executionWindow(
-                        5,
-                        7))
+                        SYNC_INTERVAL_SECONDS,
+                        SYNC_FLEXTIME_SECONDS))
                 .setReplaceCurrent(true)
                 .build();
 

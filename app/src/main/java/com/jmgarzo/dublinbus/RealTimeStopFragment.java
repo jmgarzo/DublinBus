@@ -1,8 +1,10 @@
 package com.jmgarzo.dublinbus;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -14,14 +16,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.sync.DublinBusSyncUtils;
 import com.jmgarzo.dublinbus.sync.services.RealTimeStopService;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
+import com.jmgarzo.dublinbus.utilities.NetworkUtilities;
 
 
-public class RealTimeStopFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class RealTimeStopFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final int ID_REAL_TIME_STOP_LOADER = 165;
 
@@ -29,6 +34,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     private RealTimeStopAdapter mRealTimeStopAdapter;
     private String mBusStopNumber;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private TextView mError;
 
     public RealTimeStopFragment() {
     }
@@ -39,12 +45,13 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         View rootView = inflater.inflate(R.layout.fragment_real_time_stop, container, false);
         setHasOptionsMenu(true);
 
+        mError = rootView.findViewById(R.id.tv_real_time_stop_error);
 
-        if(getActivity().getIntent()!= null) {
+        if (getActivity().getIntent() != null) {
             mBusStopNumber = getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT);
         }
 
-        getActivity().setTitle(mBusStopNumber + " "+ getString(R.string.real_time_stop_title));
+        getActivity().setTitle(mBusStopNumber + " " + getString(R.string.real_time_stop_title));
 
 
         mSwipeRefreshLayout = rootView.findViewById(R.id.swiperl_real_time_stop);
@@ -72,29 +79,34 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         getActivity().getSupportLoaderManager().initLoader(ID_REAL_TIME_STOP_LOADER, null, this);
 
 
-
-
         return rootView;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sp.registerOnSharedPreferenceChangeListener(this);
+        DublinBusSyncUtils.initialize(getContext(), mBusStopNumber);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sp.unregisterOnSharedPreferenceChangeListener(this);
         DublinBusSyncUtils.cancelDispach();
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        DublinBusSyncUtils.initialize(getContext(),mBusStopNumber);
-    }
-
     private void refreshData() {
         //TODO: code for mBusStopNumber == null -> show a message
+        DBUtils.setRealTimeConnectionStatus(getContext(), DBUtils.REAL_TIME_STATUS_SUCCCESS);
         Intent intentRealTimeStopService = new Intent(getContext(), RealTimeStopService.class);
         intentRealTimeStopService.putExtra(Intent.EXTRA_TEXT, mBusStopNumber);
-        getContext().startService(intentRealTimeStopService);    }
+        getContext().startService(intentRealTimeStopService);
+    }
 
 
     @Override
@@ -119,6 +131,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
             case ID_REAL_TIME_STOP_LOADER: {
                 mRealTimeStopAdapter.swapCursor(data);
                 mSwipeRefreshLayout.setRefreshing(false);
+//                updateEmptyView();
                 break;
             }
         }
@@ -132,6 +145,32 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
                 mRealTimeStopAdapter.swapCursor(null);
                 break;
         }
+    }
+
+    private void showError() {
+        mRecyclerView.setVisibility(View.GONE);
+        mError.setVisibility(View.VISIBLE);
+    }
+
+    private void showRecyclerView() {
+        mError.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void updateEmptyView() {
+
+        if (DBUtils.REAL_TIME_STATUS_SUCCCESS != DBUtils.getRealTimeConnectionStatus(getContext())) {
+            showError();
+            mError.setText(NetworkUtilities.getErrorMessage(getContext()));
+        } else {
+            showRecyclerView();
+        }
+    }
+
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        updateEmptyView();
     }
 
 }
