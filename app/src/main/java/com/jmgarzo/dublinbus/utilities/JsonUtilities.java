@@ -114,6 +114,7 @@ public class JsonUtilities {
             if(null!=errorCode){
                 DBUtils.setRealTimeConnectionStatus(context,Integer.valueOf(errorCode));
             }
+            //TODO:Show de error message in logs and search for other error case
             errorMessage = realTimeStopJson.getString(ERROR_MESSAGE);
             JSONArray realTimeStopArray = realTimeStopJson.getJSONArray(REAL_TIME_STOP_RESULTS);
             realTimeStopList = new ArrayList<>();

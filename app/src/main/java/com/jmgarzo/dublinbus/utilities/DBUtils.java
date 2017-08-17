@@ -139,12 +139,14 @@ public class DBUtils {
     public static final int COL_REAL_TIME_STOP_MONITORED = 18;
 
 
+    //documentation error codes 
     public static final int REAL_TIME_STATUS_SUCCCESS = 0;
     public static final int REAL_TIME_STATUS_NO_RESULTS = 1;
     public static final int REAL_TIME_STATUS_MISSING_PARAMETER = 2;
     public static final int REAL_TIME_STATUS_INVALID_PARAMETER = 3;
     public static final int REAL_TIME_STATUS_SCHEDULED_DOWN_TIME = 4;
     public static final int REAL_TIME_STATUS_UNEXPECTED_SERVER_ERROR = 5;
+    //app error codes
     public static final int REAL_TIME_STATUS_SERVER_DOWN = 6;
     public static final int REAL_TIME_STATUS_SERVER_INVALID = 7;
     public static final int REAL_TIME_STATUS_UNKNOWN = 8;
