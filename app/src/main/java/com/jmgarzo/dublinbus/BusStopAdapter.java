@@ -57,7 +57,6 @@ public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopA
         if (mCursor != null && mCursor.moveToPosition(position)) {
             Glide.with(mContext).load(R.drawable.yellow_a400).
                     apply(RequestOptions.circleCropTransform()).into(holder.mBusStopImageView);
-//            holder.mBusStopImageView.setBackgroundColor(mContext.getResources().getColor(R.color.yellowA400));
 
             holder.mBusStopName.setText(mCursor.getString(DBUtils.COL_BUS_STOP_NUMBER));
             holder.mBusStopShortName.setText(mCursor.getString(DBUtils.COL_BUS_STOP_SHORTNAME));
