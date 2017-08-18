@@ -3,6 +3,24 @@
 
     <item
         is-multidex="true"
+        jar="C:\Users\jmgarzo\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\annotations\4.0.0\f80192e6fd828d41c7da6f3552b0bef5d89cb26e\annotations-4.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="f80192e6fd828d41c7da6f3552b0bef5d89cb26e">
+        <dex dex="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\transforms\dex\debug\folders\1000\10\annotations-4.0.0_b70f054a391bd72784cd153c8c5f198194b0c3aa\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\jmgarzo\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\glide\4.0.0\dff931af436f0a2815d0109ab2258bbce2d6275d\glide-4.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="dff931af436f0a2815d0109ab2258bbce2d6275d">
+        <dex dex="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\transforms\dex\debug\folders\1000\10\glide-4.0.0_26c37fa2d585568a28a88c203dfc155d995c4f90\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
@@ -18,6 +36,24 @@
         revision="25.0.3"
         sha1="018d64ca449a6d86a7cf2f9fd23149406e389bb0">
         <dex dex="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_5fe118e8faaae6199a698d559619f0564066ae4c\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\jmgarzo\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\gifdecoder\4.0.0\47c487cc4e64e6ab127a517669ca9a7b49f8c61d\gifdecoder-4.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="47c487cc4e64e6ab127a517669ca9a7b49f8c61d">
+        <dex dex="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\transforms\dex\debug\folders\1000\10\gifdecoder-4.0.0_6e804d29f0b965f815b2618bf3de1f86b5d12e87\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\jmgarzo\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\disklrucache\4.0.0\d88059003509074dd59fa226c822724bcf5ec0ca\disklrucache-4.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="d88059003509074dd59fa226c822724bcf5ec0ca">
+        <dex dex="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\transforms\dex\debug\folders\1000\10\disklrucache-4.0.0_4f3ac5c1e8ba459cc98caba7de5ebc2f4d6c506b\classes.dex" />
     </item>
 
 </items>
