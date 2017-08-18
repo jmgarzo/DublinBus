@@ -55,7 +55,7 @@ public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopA
         mCursor.moveToPosition(position);
 
         if (mCursor != null && mCursor.moveToPosition(position)) {
-            Glide.with(mContext).load(R.drawable.yellow_a400).
+            Glide.with(mContext).load(R.drawable.yellow_a700).
                     apply(RequestOptions.circleCropTransform()).into(holder.mBusStopImageView);
 
             holder.mBusStopName.setText(mCursor.getString(DBUtils.COL_BUS_STOP_NUMBER));

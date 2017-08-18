@@ -31,8 +31,9 @@
 
         android:layout_marginTop="0dp"
         android:textAlignment="center"
-        android:textColor="#212121"
+        android:textColor="#000000"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/list_item_bus_stop_imageview"
         app:layout_constraintLeft_toLeftOf="@+id/list_item_bus_stop_imageview"
         app:layout_constraintRight_toRightOf="@+id/list_item_bus_stop_imageview"
