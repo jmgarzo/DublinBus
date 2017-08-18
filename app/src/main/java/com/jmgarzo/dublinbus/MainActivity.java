@@ -1,26 +1,29 @@
 package com.jmgarzo.dublinbus;
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.jmgarzo.dublinbus.databinding.ActivityMainBinding;
 import com.jmgarzo.dublinbus.sync.SyncTasks;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
-    ActivityMainBinding binding;
+
+    //This is our tablayout
+    private TabLayout tabLayout;
+
+    //This is our viewPager
+    private ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
         SyncTasks.syncDB(this);
 
@@ -28,19 +31,31 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
+        //Adding the tabs using addTab() method
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_directions_bus_black_24px));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_favorite_black_24px));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        //Initializing viewPager
+        viewPager = (ViewPager) findViewById(R.id.pager);
+
+
+        //Creating our pager adapter
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+
+        //Adding adapter to pager
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        //Adding onTabSelectedListener to swipe views
+        tabLayout.setOnTabSelectedListener(this);
 
 
 
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override
@@ -79,5 +94,20 @@ public class MainActivity extends AppCompatActivity {
     public void goToBusStop(View view){
         Intent intent=new Intent(this,BusStopActivity.class);
         this.startActivity(intent);
+    }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
     }
 }

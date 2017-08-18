@@ -3,12 +3,12 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\jmgarzo\.android\build-cache\d6c2fbceb2d33252ad523b7bd1188466d9d19f94\output\jars\classes.jar"
+        jar="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.3"
-        sha1="a7d1d5f89815c94a839ffd4de5f083f5e166d9a5">
-        <dex dex="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_05a54b184f27fa5281bcbaba7fe3145c2baae3d6\classes.dex" />
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_e2cb5dbfd3e65d7b493f5368217018749383f96a\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -16,7 +16,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.3"
-        sha1="7f80a2fad6f4765235369329e26d345f4bf00f75">
+        sha1="018d64ca449a6d86a7cf2f9fd23149406e389bb0">
         <dex dex="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_5fe118e8faaae6199a698d559619f0564066ae4c\classes.dex" />
     </item>
 
