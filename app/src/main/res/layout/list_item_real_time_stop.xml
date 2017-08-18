@@ -9,9 +9,12 @@
         android:id="@+id/list_item_real_time_image"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        app:srcCompat="@drawable/yellow_a400"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="1dp" />
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="0dp" />
 
     <TextView
         android:id="@+id/list_item_real_time_route"
