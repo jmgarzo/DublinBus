@@ -43,7 +43,8 @@ public class DBUtils {
             DublinBusContract.BusStopEntry.FULL_NAME_LOCALIZED,
             DublinBusContract.BusStopEntry.LATITUDE,
             DublinBusContract.BusStopEntry.LONGITUDE,
-            DublinBusContract.BusStopEntry.LAST_UPDATED
+            DublinBusContract.BusStopEntry.LAST_UPDATED,
+            DublinBusContract.BusStopEntry.IS_FAVOURITE
     };
 
     public static final int COL_BUS_STOP_ID = 0;
@@ -56,6 +57,8 @@ public class DBUtils {
     public static final int COL_BUS_STOP_LATITUDE = 6;
     public static final int COL_BUS_STOP_LONGITUDE = 8;
     public static final int COL_BUS_STOP_LAST_UPDATED = 9;
+    public static final int COL_BUS_STOP_IS_FAVORITE = 9;
+
 
 
     public static final String[] ROUTE_COLUMNS = {

@@ -35,8 +35,6 @@
     <string name="empty_real_time_stop_invalid_stop">No Bus Stop information available. The Bus Stop is not recognized by the server.</string>
 
 
-
-
     <!--Strings for SharedPreference-->
     <string name="pref_route_information_db">route_information_db</string>
     <string name="pref_route_db">route_db</string>
@@ -48,7 +46,8 @@
     <string name="description_arrow_right">arrow right</string>
     <string name="title_activity_route_detail">RouteDetailActivity</string>
 
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

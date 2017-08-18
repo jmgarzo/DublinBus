@@ -23,6 +23,7 @@ public class BusStop  implements Parcelable {
     private String latitude;
     private String longitude;
     private String lastUpdated;
+    private boolean isFavourite;
 
     public BusStop(){}
 
@@ -112,6 +113,13 @@ public class BusStop  implements Parcelable {
         this.lastUpdated = lastUpdated;
     }
 
+    public boolean isFavourite() {
+        return isFavourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        isFavourite = favourite;
+    }
 
     public void cursorToBusStop(Cursor cursor) {
 
@@ -124,6 +132,7 @@ public class BusStop  implements Parcelable {
         latitude = cursor.getString(DBUtils.COL_BUS_STOP_LATITUDE);
         longitude = cursor.getString(DBUtils.COL_BUS_STOP_LONGITUDE);
         lastUpdated = cursor.getString(DBUtils.COL_BUS_STOP_LAST_UPDATED);
+        isFavourite = cursor.getInt(DBUtils.COL_BUS_STOP_IS_FAVORITE) != 0;
     }
 
 
@@ -139,6 +148,8 @@ public class BusStop  implements Parcelable {
         contentValues.put(DublinBusContract.BusStopEntry.LATITUDE,getLatitude());
         contentValues.put(DublinBusContract.BusStopEntry.LONGITUDE,getLongitude());
         contentValues.put(DublinBusContract.BusStopEntry.LAST_UPDATED,getLastUpdated());
+        int iIsFavorite = (isFavourite) ? 1 : 0;
+        contentValues.put(DublinBusContract.BusStopEntry.IS_FAVOURITE, iIsFavorite);
 
         return contentValues;
     }
@@ -155,6 +166,7 @@ public class BusStop  implements Parcelable {
         dest.writeString(latitude);
         dest.writeString(longitude);
         dest.writeString(lastUpdated);
+        dest.writeByte((byte) (isFavourite ? 1 : 0));;
 
     }
 
@@ -172,6 +184,7 @@ public class BusStop  implements Parcelable {
         latitude = parcel.readString();
         longitude = parcel.readString();
         lastUpdated = parcel.readString();
+        isFavourite = parcel.readByte() != 0;
 
     }
 

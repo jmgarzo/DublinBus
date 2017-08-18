@@ -50,6 +50,7 @@ public class DublinBusContract {
         public static final String LATITUDE = "latitude";
         public static final String LONGITUDE = "longitude";
         public static final String LAST_UPDATED = "last_updated";
+        public static final String IS_FAVOURITE =  "is_favorite";
 
         public static final String CONTENT_DIR_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;

@@ -208,6 +208,7 @@ public class JsonUtilities {
                 busStop.setLatitude(jsonBusStop.getString(BUS_STOP_LATITUDE));
                 busStop.setLongitude(jsonBusStop.getString(BUS_STOP_LONGITUDE));
                 busStop.setLastUpdated(jsonBusStop.getString(BUS_STOP_LAST_UPDATED));
+                busStop.setFavourite(false);
 
                 busStopList.add(busStop);
             }

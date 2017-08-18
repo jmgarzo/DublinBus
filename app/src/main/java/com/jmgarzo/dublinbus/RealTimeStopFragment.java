@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -44,6 +45,23 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_real_time_stop, container, false);
         setHasOptionsMenu(true);
+
+        FloatingActionButton fab = rootView.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                if (isFavorite) {
+//                    Intent deleteFavoriteIntent = new Intent(getContext(), DeleteFromFavoriteIntentService.class);
+//                    deleteFavoriteIntent.putExtra(FAVORITE_MOVIE_TAG, mMovie);
+//                    getActivity().startService(deleteFavoriteIntent);
+//                } else {
+//                    Intent addToFavoriteIntent = new Intent(getContext(), AddFavoriteIntentService.class);
+//                    addToFavoriteIntent.putExtra(FAVORITE_MOVIE_TAG, mMovie);
+//                    getActivity().startService(addToFavoriteIntent);
+//
+//                }
+            }
+        });
 
         mError = rootView.findViewById(R.id.tv_real_time_stop_error);
 
