@@ -44,7 +44,8 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
                         DublinBusContract.BusStopEntry.LATITUDE + " TEXT NOT NULL, " +
                         DublinBusContract.BusStopEntry.LONGITUDE + " TEXT NOT NULL, " +
                         DublinBusContract.BusStopEntry.LAST_UPDATED + " TEXT NOT NULL, " +
-                        DublinBusContract.BusStopEntry.IS_FAVOURITE + " INTEGER NOT NULL " +
+                        DublinBusContract.BusStopEntry.IS_FAVOURITE + " INTEGER NOT NULL, " +
+                        DublinBusContract.BusStopEntry.ALIAS + " INTEGER NOT NULL " +
                         " );";
 
         db.execSQL(SQL_CREATE_BUS_STOP_TABLE);

@@ -209,6 +209,7 @@ public class JsonUtilities {
                 busStop.setLongitude(jsonBusStop.getString(BUS_STOP_LONGITUDE));
                 busStop.setLastUpdated(jsonBusStop.getString(BUS_STOP_LAST_UPDATED));
                 busStop.setFavourite(false);
+                busStop.setAlias("");
 
                 busStopList.add(busStop);
             }
