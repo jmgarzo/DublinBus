@@ -2,6 +2,51 @@
 <items version="2" >
 
     <item
+        is-multidex="false"
+        jar="C:\Users\jmgar\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\gifdecoder\4.0.0\47c487cc4e64e6ab127a517669ca9a7b49f8c61d\gifdecoder-4.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="47c487cc4e64e6ab127a517669ca9a7b49f8c61d">
+        <dex dex="C:\Users\jmgar\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\pre-dexed\debug\gifdecoder-4.0.0_7e88cd68cf36a846aa058a8a570b0ffbf2bd21f6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\jmgar\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\glide\4.0.0\dff931af436f0a2815d0109ab2258bbce2d6275d\glide-4.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="dff931af436f0a2815d0109ab2258bbce2d6275d">
+        <dex dex="C:\Users\jmgar\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\pre-dexed\debug\glide-4.0.0_bec3cec38fea12896622436e36a8e468afc0951f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\jmgar\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\disklrucache\4.0.0\d88059003509074dd59fa226c822724bcf5ec0ca\disklrucache-4.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="d88059003509074dd59fa226c822724bcf5ec0ca">
+        <dex dex="C:\Users\jmgar\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\pre-dexed\debug\disklrucache-4.0.0_3847ce34800ebbd640dca2a500f4138b1ff720dc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\jmgar\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\annotations\4.0.0\f80192e6fd828d41c7da6f3552b0bef5d89cb26e\annotations-4.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="f80192e6fd828d41c7da6f3552b0bef5d89cb26e">
+        <dex dex="C:\Users\jmgar\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\pre-dexed\debug\annotations-4.0.0_c3f04377e96a9d703073271522623f3c1a532fe9.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\jmgar\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="f8708a20517ddef3e3a7d4f736f776084d417eea">
+        <dex dex="C:\Users\jmgar\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_fec35940a982cd554d3d79ba119b347c727de708\classes.dex" />
+    </item>
+    <item
         is-multidex="true"
         jar="C:\Users\jmgar\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
@@ -11,13 +56,13 @@
         <dex dex="C:\Users\jmgar\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_80f65e2a5d318efde139bc96afdf5927633d1f9b\classes.dex" />
     </item>
     <item
-        is-multidex="true"
-        jar="C:\Users\jmgar\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\jmgar\.android\build-cache\b6778c5f88d8d6bcd5aa53f5a17e34cc761c71f3\output\jars\classes.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.3"
-        sha1="b95dfa6c5dec940ff8345ab8b554dc5056875366">
-        <dex dex="C:\Users\jmgar\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_fec35940a982cd554d3d79ba119b347c727de708\classes.dex" />
+        sha1="a7d1d5f89815c94a839ffd4de5f083f5e166d9a5">
+        <dex dex="C:\Users\jmgar\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\pre-dexed\debug\classes_00a02365a4bc777d212acfc1ff4ca2a8177dceff.jar" />
     </item>
 
 </items>

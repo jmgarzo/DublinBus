@@ -17,6 +17,8 @@
     <string name="bus_stop_tiltle">Bus Stop</string>
     <string name="bus_stop_search_hint">Bus Stop, i.e.:4747</string>
     <string name="bus_stop_label">Bus Stop: </string>
+     <!--Favourite Stop Strings-->
+    <string name="favourite_bus_stop_title">Favourite Bus Stop</string>
 
     <!--Real Time Bus Stop-->
     <string name="list_label_from">From </string>

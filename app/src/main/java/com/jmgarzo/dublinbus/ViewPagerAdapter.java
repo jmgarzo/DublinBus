@@ -25,8 +25,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 BusStopFragment busStopFragment = new BusStopFragment();
                 return busStopFragment;
             case 1:
-                Tab2 tab2 = new Tab2();
-                return tab2;
+                FavouriteBusStopFragment favouriteBusStopFragment = new FavouriteBusStopFragment();
+                return favouriteBusStopFragment;
             default:
                 return null;
         }

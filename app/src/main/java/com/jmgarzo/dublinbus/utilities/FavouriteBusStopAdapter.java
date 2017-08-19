@@ -1,4 +1,4 @@
-package com.jmgarzo.dublinbus;
+package com.jmgarzo.dublinbus.utilities;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,43 +11,40 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.jmgarzo.dublinbus.R;
 import com.jmgarzo.dublinbus.objects.BusStop;
-import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 /**
- * Created by jmgarzo on 03/08/17.
+ * Created by jmgar on 19/08/2017.
  */
 
-public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopAdapterViewHolder>
-         {
+public class FavouriteBusStopAdapter extends RecyclerView.Adapter<FavouriteBusStopAdapter.FavouriteBusStopAdapterViewHolder>{
+
 
     private Cursor mCursor;
-
     private Context mContext;
-    private final BusStopAdapterOnClickHandler mClickHandler;
+    private final FavouriteBusStopAdapterOnClickHandler mClickHandler;
 
 
 
-    public static interface BusStopAdapterOnClickHandler {
+    public static interface FavouriteBusStopAdapterOnClickHandler {
         void onClick(BusStop busStop);
     }
-
-    public BusStopAdapter(Context context, BusStopAdapterOnClickHandler clickHandler) {
+    public FavouriteBusStopAdapter(Context context, FavouriteBusStopAdapterOnClickHandler clickHandler) {
         mContext = context;
         mClickHandler = clickHandler;
     }
 
     @Override
-    public BusStopAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FavouriteBusStopAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
-        View view = inflater.inflate(R.layout.list_item_bus_stop, parent, false);
+        View view = inflater.inflate(R.layout.list_item_favourite_bus_stop, parent, false);
         view.setFocusable(true);
-        return new BusStopAdapterViewHolder(view);
-    }
+        return new FavouriteBusStopAdapterViewHolder(view);    }
 
     @Override
-    public void onBindViewHolder(BusStopAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(FavouriteBusStopAdapterViewHolder holder, int position) {
 
         mCursor.moveToPosition(position);
 
@@ -68,21 +65,18 @@ public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopA
         return mCursor.getCount();
     }
 
-    void swapCursor(Cursor newCursor) {
+    public void swapCursor(Cursor newCursor) {
         mCursor = newCursor;
         notifyDataSetChanged();
     }
 
-
-
-
-    public class BusStopAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class FavouriteBusStopAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final ImageView mBusStopImageView;
         public final TextView mBusStopName;
         public final TextView mBusStopShortName;
         public final TextView mBusStopShortNameLocalized;
 
-        public BusStopAdapterViewHolder(View view) {
+        public FavouriteBusStopAdapterViewHolder(View view) {
             super(view);
             mBusStopImageView = view.findViewById(R.id.list_item_bus_stop_imageview);
             mBusStopName = view.findViewById(R.id.list_item_bus_stop_name);
@@ -96,8 +90,6 @@ public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopA
             int adapterPosition = getAdapterPosition();
             BusStop busStop = new BusStop(mCursor, adapterPosition);
             mClickHandler.onClick(busStop);
-
-
         }
 
 
