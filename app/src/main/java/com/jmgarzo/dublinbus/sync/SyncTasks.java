@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.util.Log;
 
 import com.jmgarzo.dublinbus.data.DublinBusContract;
@@ -99,19 +100,19 @@ public class SyncTasks {
 
                         int inserted = contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
                                 contentValues);
-                        if (inserted>0){
-                            DBUtils.setIsFilledRoute(context,true);
+                        if (inserted > 0) {
+                            DBUtils.setIsFilledRoute(context, true);
                         }
 
-                        for(int j = 0; j<routeList.size();j++){
-                            DBUtils.insertRouteBusStop(context,routeList.get(j));
+                        for (int j = 0; j < routeList.size(); j++) {
+                            DBUtils.insertRouteBusStop(context, routeList.get(j));
                         }
                     }
 
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            Log.e(LOG_TAG,e.toString());
+            Log.e(LOG_TAG, e.toString());
         }
 
     }
@@ -141,14 +142,14 @@ public class SyncTasks {
     }
 
 
-    synchronized public static void syncRealTimeStop(Context context,String stopId) {
+    synchronized public static void syncRealTimeStop(Context context, String stopId) {
         try {
-            if(!NetworkUtilities.isNetworkAvailable(context)){
-                DBUtils.setRealTimeConnectionStatus(context,DBUtils.REAL_TIME_STATUS_NETWORK_NOT_AVAILABLE);
+            if (!NetworkUtilities.isNetworkAvailable(context)) {
+                DBUtils.setRealTimeConnectionStatus(context, DBUtils.REAL_TIME_STATUS_NETWORK_NOT_AVAILABLE);
 
                 return;
             }
-            ArrayList<RealTimeStop> realTimeStopList = NetworkUtilities.getRealTimeStop(context,stopId);
+            ArrayList<RealTimeStop> realTimeStopList = NetworkUtilities.getRealTimeStop(context, stopId);
 
             if (realTimeStopList != null && realTimeStopList.size() > 0) {
                 ContentValues[] contentValues = new ContentValues[realTimeStopList.size()];
@@ -158,11 +159,11 @@ public class SyncTasks {
                 }
                 ContentResolver contentResolver = context.getContentResolver();
 
-                contentResolver.delete(DublinBusContract.RealTimeStopEntry.CONTENT_URI,null,null);
+                contentResolver.delete(DublinBusContract.RealTimeStopEntry.CONTENT_URI, null, null);
                 int inserted = contentResolver.bulkInsert(DublinBusContract.RealTimeStopEntry.CONTENT_URI,
                         contentValues);
                 if (inserted > 0) {
-                    Log.v(LOG_TAG,"Inserted: " + Integer.valueOf(inserted).toString());
+                    Log.v(LOG_TAG, "Inserted: " + Integer.valueOf(inserted).toString());
 //                    DBUtils.setIsFilledOperatorInformation(context, true);
                 }
             }
@@ -195,6 +196,46 @@ public class SyncTasks {
 //        Intent intentOperatorInformationService = new Intent(getActivity(), OperatorInformationService.class);
 //        getContext().startService(intentOperatorInformationService);
 
+    }
+
+
+    public static void addFavoriteBusStop(Context context, String busStopNumber) {
+
+       Cursor cursor =  context.getContentResolver().query(
+                DublinBusContract.BusStopEntry.CONTENT_URI,
+                DBUtils.BUS_STOP_COLUMNS,
+                DBUtils.COL_BUS_STOP_NUMBER + " = ? " ,
+                new String[]{busStopNumber},
+                null
+        );
+
+        BusStop busStop = new BusStop();
+        busStop.cursorToBusStop(cursor);
+        busStop.setFavourite(true);
+
+
+        Uri insertResultUri = context.getContentResolver().insert(
+                DublinBusContract.BusStopEntry.CONTENT_URI,
+                busStop.getContentValues());
+
+        String newIdBusStop = null;
+        if (insertResultUri != null) {
+            newIdBusStop = insertResultUri.getLastPathSegment();
+            Log.d(LOG_TAG, newIdBusStop + " New Bus Stop inserted");
+        }
+
+    }
+
+    public static void deleteFavoriteBusStop(Context context, String busStopNumber) {
+
+        String selection = DBUtils.COL_BUS_STOP_NUMBER + " = ?  AND "
+                + DBUtils.COL_BUS_STOP_IS_FAVORITE + " = ?";
+        String[] selectionArgs = {busStopNumber, "1"};
+
+        context.getContentResolver().delete(
+                DublinBusContract.BusStopEntry.CONTENT_URI,
+                selection,
+                selectionArgs);
     }
 
 }

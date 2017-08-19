@@ -20,7 +20,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jmgarzo.dublinbus.data.DublinBusContract;
+import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.sync.DublinBusSyncUtils;
+import com.jmgarzo.dublinbus.sync.services.AddFavouriteBusStopService;
+import com.jmgarzo.dublinbus.sync.services.DeleteFromFavoriteBusStopService;
 import com.jmgarzo.dublinbus.sync.services.RealTimeStopService;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 import com.jmgarzo.dublinbus.utilities.NetworkUtilities;
@@ -29,13 +32,18 @@ import com.jmgarzo.dublinbus.utilities.NetworkUtilities;
 public class RealTimeStopFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final int ID_REAL_TIME_STOP_LOADER = 165;
+    private static final int ID_REAL_TIME_STOP_LOADER = 16;
+    private static final int ID_FAB_FAVOURITE_FAB_LOADER = 34;
+    public static final String FAVORITE_BUS_STOP_TAG = "favourite_bus_stop tag";
+
 
     private RecyclerView mRecyclerView;
     private RealTimeStopAdapter mRealTimeStopAdapter;
     private String mBusStopNumber;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private TextView mError;
+    private FloatingActionButton fab;
+    private boolean isFavorite;
 
     public RealTimeStopFragment() {
     }
@@ -46,20 +54,21 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         View rootView = inflater.inflate(R.layout.fragment_real_time_stop, container, false);
         setHasOptionsMenu(true);
 
-        FloatingActionButton fab = rootView.findViewById(R.id.fab);
+        isFavorite = false;
+        fab = rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (isFavorite) {
-//                    Intent deleteFavoriteIntent = new Intent(getContext(), DeleteFromFavoriteIntentService.class);
-//                    deleteFavoriteIntent.putExtra(FAVORITE_MOVIE_TAG, mMovie);
-//                    getActivity().startService(deleteFavoriteIntent);
-//                } else {
-//                    Intent addToFavoriteIntent = new Intent(getContext(), AddFavoriteIntentService.class);
-//                    addToFavoriteIntent.putExtra(FAVORITE_MOVIE_TAG, mMovie);
-//                    getActivity().startService(addToFavoriteIntent);
-//
-//                }
+                if (isFavorite) {
+                    Intent deleteFavouriteBusStop = new Intent(getContext(), DeleteFromFavoriteBusStopService.class);
+                    deleteFavouriteBusStop.putExtra(FAVORITE_BUS_STOP_TAG, mBusStopNumber);
+                    getActivity().startService(deleteFavouriteBusStop);
+                } else {
+                    Intent addToFavoriteIntent = new Intent(getContext(), AddFavouriteBusStopService.class);
+                    addToFavoriteIntent.putExtra(FAVORITE_BUS_STOP_TAG, mBusStopNumber);
+                    getActivity().startService(addToFavoriteIntent);
+
+                }
             }
         });
 
@@ -95,6 +104,8 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
 
 
         getActivity().getSupportLoaderManager().initLoader(ID_REAL_TIME_STOP_LOADER, null, this);
+        getActivity().getSupportLoaderManager().initLoader(ID_FAB_FAVOURITE_FAB_LOADER, null, this);
+
 
 
         return rootView;
@@ -139,6 +150,18 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
                         null,
                         null);
             }
+
+            case ID_FAB_FAVOURITE_FAB_LOADER: {
+
+                String selection = DublinBusContract.BusStopEntry.NUMBER + "= ? AND "
+                        + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ";
+                return new CursorLoader(getActivity(),
+                        DublinBusContract.BusStopEntry.CONTENT_URI,
+                        DBUtils.BUS_STOP_COLUMNS,
+                        selection,
+                        new String[]{mBusStopNumber, "1"},
+                        null);
+            }
         }
         return null;
     }
@@ -150,6 +173,16 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
                 mRealTimeStopAdapter.swapCursor(data);
                 mSwipeRefreshLayout.setRefreshing(false);
 //                updateEmptyView();
+                break;
+            }
+            case ID_FAB_FAVOURITE_FAB_LOADER: {
+                if (data.moveToFirst()) {
+                    isFavorite = true;
+                    fab.setImageResource(R.drawable.ic_favorite_white_24px);
+                } else {
+                    isFavorite = false;
+                    fab.setImageResource(R.drawable.ic_favorite_border_white_24px);
+                }
                 break;
             }
         }

@@ -54,6 +54,12 @@
         <service
             android:name=".sync.services.RouteListInformationService"
             android:exported="false" />
+        <service
+            android:name=".sync.services.AddFavouriteBusStopService"
+            android:exported="false" />
+        <service
+            android:name=".sync.services.DeleteFromFavoriteBusStopService"
+            android:exported="false" />
 
         <activity
             android:name=".RouteActivity"

@@ -123,16 +123,19 @@ public class BusStop  implements Parcelable {
 
     public void cursorToBusStop(Cursor cursor) {
 
+        if(cursor.moveToFirst()){
         id = cursor.getInt(DBUtils.COL_BUS_STOP_ID);
         number = cursor.getString(DBUtils.COL_BUS_STOP_NUMBER);
         displayStopId = cursor.getString(DBUtils.COL_BUS_STOP_DISPLAY_STOP_ID);
         shortName = cursor.getString(DBUtils.COL_BUS_STOP_SHORTNAME);
         shortNameLocalized = cursor.getString(DBUtils.COL_BUS_STOP_SHORT_NAME_LOCALIZED);
-        fullName = cursor.getString(DBUtils.COL_BUS_STOP_FULL_NAME_LOCALIZED);
+        fullName = cursor.getString(DBUtils.COL_BUS_STOP_FULL_NAME);
+        fullNameLocalized = cursor.getString(DBUtils.COL_BUS_STOP_FULL_NAME_LOCALIZED);
         latitude = cursor.getString(DBUtils.COL_BUS_STOP_LATITUDE);
         longitude = cursor.getString(DBUtils.COL_BUS_STOP_LONGITUDE);
         lastUpdated = cursor.getString(DBUtils.COL_BUS_STOP_LAST_UPDATED);
         isFavourite = cursor.getInt(DBUtils.COL_BUS_STOP_IS_FAVORITE) != 0;
+        }
     }
 
 
