@@ -36,7 +36,6 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
     public static final String FILTER_TAG = "arg_filter_tag";
 
     BusStopAdapter mBusStopAdapter;
-    SearchView mSearchView;
     private RecyclerView mRecyclerView;
 
     public BusStopFragment() {

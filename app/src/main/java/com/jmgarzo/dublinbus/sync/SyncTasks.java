@@ -201,35 +201,37 @@ public class SyncTasks {
 
     public static void addFavoriteBusStop(Context context, String busStopNumber) {
 
-       Cursor cursor =  context.getContentResolver().query(
+        Cursor cursor = context.getContentResolver().query(
                 DublinBusContract.BusStopEntry.CONTENT_URI,
                 DBUtils.BUS_STOP_COLUMNS,
-                DBUtils.COL_BUS_STOP_NUMBER + " = ? " ,
-                new String[]{busStopNumber},
+                DublinBusContract.BusStopEntry.NUMBER + " = ? AND " + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ",
+                new String[]{busStopNumber, "0"},
                 null
         );
+        if (cursor.moveToFirst()) {
 
-        BusStop busStop = new BusStop();
-        busStop.cursorToBusStop(cursor);
-        busStop.setFavourite(true);
+            BusStop busStop = new BusStop();
+            busStop.cursorToBusStop(cursor);
+            busStop.setFavourite(true);
 
 
-        Uri insertResultUri = context.getContentResolver().insert(
-                DublinBusContract.BusStopEntry.CONTENT_URI,
-                busStop.getContentValues());
+            Uri insertResultUri = context.getContentResolver().insert(
+                    DublinBusContract.BusStopEntry.CONTENT_URI,
+                    busStop.getContentValues());
 
-        String newIdBusStop = null;
-        if (insertResultUri != null) {
-            newIdBusStop = insertResultUri.getLastPathSegment();
-            Log.d(LOG_TAG, newIdBusStop + " New Bus Stop inserted");
+            String newIdBusStop = null;
+            if (insertResultUri != null) {
+                newIdBusStop = insertResultUri.getLastPathSegment();
+                Log.d(LOG_TAG, newIdBusStop + " New Bus Stop inserted");
+            }
         }
 
     }
 
     public static void deleteFavoriteBusStop(Context context, String busStopNumber) {
 
-        String selection = DBUtils.COL_BUS_STOP_NUMBER + " = ?  AND "
-                + DBUtils.COL_BUS_STOP_IS_FAVORITE + " = ?";
+        String selection = DublinBusContract.BusStopEntry.NUMBER + " = ?  AND "
+                + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ?";
         String[] selectionArgs = {busStopNumber, "1"};
 
         context.getContentResolver().delete(

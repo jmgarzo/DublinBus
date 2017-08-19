@@ -54,7 +54,7 @@ public class DBUtils {
     public static final int COL_BUS_STOP_SHORT_NAME_LOCALIZED = 4;
     public static final int COL_BUS_STOP_FULL_NAME = 5;
     public static final int COL_BUS_STOP_FULL_NAME_LOCALIZED = 6;
-    public static final int COL_BUS_STOP_LATITUDE = 6;
+    public static final int COL_BUS_STOP_LATITUDE = 7;
     public static final int COL_BUS_STOP_LONGITUDE = 8;
     public static final int COL_BUS_STOP_LAST_UPDATED = 9;
     public static final int COL_BUS_STOP_IS_FAVORITE = 10;
