@@ -6,11 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
@@ -52,8 +49,8 @@ public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopA
         mCursor.moveToPosition(position);
 
         if (mCursor != null && mCursor.moveToPosition(position)) {
-            Glide.with(mContext).load(R.drawable.yellow_a700).
-                    apply(RequestOptions.circleCropTransform()).into(holder.mBusStopImageView);
+//            Glide.with(mContext).load(R.drawable.yellow_a700).
+//                    apply(RequestOptions.circleCropTransform()).into(holder.mBusStopImageView);
 
             holder.mBusStopName.setText(mCursor.getString(DBUtils.COL_BUS_STOP_NUMBER));
             holder.mBusStopShortName.setText(mCursor.getString(DBUtils.COL_BUS_STOP_SHORTNAME));
@@ -77,14 +74,14 @@ public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopA
 
 
     public class BusStopAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final ImageView mBusStopImageView;
+//        public final ImageView mBusStopImageView;
         public final TextView mBusStopName;
         public final TextView mBusStopShortName;
         public final TextView mBusStopShortNameLocalized;
 
         public BusStopAdapterViewHolder(View view) {
             super(view);
-            mBusStopImageView = view.findViewById(R.id.list_item_bus_stop_imageview);
+//            mBusStopImageView = view.findViewById(R.id.list_item_bus_stop_imageview);
             mBusStopName = view.findViewById(R.id.list_item_bus_stop_name);
             mBusStopShortName = view.findViewById(R.id.list_item_bus_stop_short_name);
             mBusStopShortNameLocalized = view.findViewById(R.id.list_item_bus_stop_short_name_localized);

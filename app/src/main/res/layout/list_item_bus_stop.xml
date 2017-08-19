@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
      android:layout_height="wrap_content"
-    android:paddingBottom="8dp"
-    android:paddingTop="8dp">
+    android:paddingBottom="0dp"
+    android:paddingTop="0dp">
 
 
     <ImageView
@@ -19,6 +19,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
+        android:src="@drawable/yellow_a700_circle_480x480"
+
         />
 
     <TextView
@@ -28,8 +30,8 @@
         android:layout_marginBottom="0dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
-
         android:layout_marginTop="0dp"
+        android:fontFamily="serif"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="16sp"
