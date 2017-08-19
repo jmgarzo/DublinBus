@@ -8,12 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
@@ -28,6 +30,7 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
 
 
     private static final int ID_BUS_FAVOURITE_STOP_LOADER = 99;
+    private TextView tvMessageError;
 
 
     FavouriteBusStopAdapter mFavouriteBusStopAdapter;
@@ -44,6 +47,7 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
         // Inflate the layout for this fragment
          View rootView =  inflater.inflate(R.layout.fragment_favourite_bus_stop, container, false);
 
+        tvMessageError = rootView.findViewById(R.id.tv_favorite_error_message);
 
         LinearLayoutManager stopBusLayoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -88,10 +92,25 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case ID_BUS_FAVOURITE_STOP_LOADER: {
+                if(!data.moveToFirst()){
+                    showErrorMessage(getString(R.string.favorite_empty_error_message));
+                    break;
+                }
+                showRecyclerView();
                 mFavouriteBusStopAdapter.swapCursor(data);
                 break;
             }
         }
+    }
+
+    private void showErrorMessage(String message){
+        tvMessageError.setText(message);
+        mRecyclerView.setVisibility(View.GONE);
+        tvMessageError.setVisibility(View.VISIBLE);
+    }
+    private void showRecyclerView(){
+        tvMessageError.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
