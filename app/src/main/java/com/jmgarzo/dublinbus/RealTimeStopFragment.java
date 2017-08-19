@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jmgarzo.dublinbus.data.DublinBusContract;
-import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.sync.DublinBusSyncUtils;
 import com.jmgarzo.dublinbus.sync.services.AddFavouriteBusStopService;
 import com.jmgarzo.dublinbus.sync.services.DeleteFromFavoriteBusStopService;
@@ -78,7 +77,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
             mBusStopNumber = getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT);
         }
 
-        getActivity().setTitle(mBusStopNumber + " " + getString(R.string.real_time_stop_title));
+        getActivity().setTitle(getString(R.string.real_time_stop_title)+ " " +(mBusStopNumber));
 
 
         mSwipeRefreshLayout = rootView.findViewById(R.id.swiperl_real_time_stop);

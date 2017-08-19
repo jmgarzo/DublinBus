@@ -26,7 +26,7 @@
     <!--Real Time Bus Stop-->
     <string name="list_label_from">From </string>
     <string name="list_label_to"> to </string>
-    <string name="real_time_stop_title">Arrival time</string>
+    <string name="real_time_stop_title">Real Time: </string>
     <string name="real_time_stop_minutes_label">min</string>
     <string name="real_time_stop_minus">-</string>
 
