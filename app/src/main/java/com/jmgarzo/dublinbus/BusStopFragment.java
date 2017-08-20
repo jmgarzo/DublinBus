@@ -48,7 +48,7 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_bus_stop, container, false);
 
-        getActivity().setTitle(getString(R.string.bus_stop_tiltle));
+        getActivity().setTitle(getString(R.string.bus_stop_title));
         setHasOptionsMenu(true);
 
         LinearLayoutManager stopBusLayoutManager =

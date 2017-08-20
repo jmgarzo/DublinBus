@@ -14,21 +14,25 @@ import com.jmgarzo.dublinbus.sync.SyncTasks;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     //This is our tablayout
     private TabLayout tabLayout;
 
     //This is our viewPager
     private ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         SyncTasks.syncDB(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+         toolbar.setLogo(R.mipmap.ic_launcher);
 
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -51,9 +55,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         //Adding onTabSelectedListener to swipe views
         tabLayout.setOnTabSelectedListener(this);
-
-
-
 
 
     }
@@ -80,25 +81,34 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         return super.onOptionsItemSelected(item);
     }
 
-    public void goToRoute(View v){
-        Intent intent = new Intent(this,RouteActivity.class);
+    public void goToRoute(View v) {
+        Intent intent = new Intent(this, RouteActivity.class);
         this.startActivity(intent);
     }
 
 
-    public void goToNearMe(View v){
-        Intent intent = new Intent(this,StopsNearActivity.class);
+    public void goToNearMe(View v) {
+        Intent intent = new Intent(this, StopsNearActivity.class);
         this.startActivity(intent);
     }
 
-    public void goToBusStop(View view){
-        Intent intent=new Intent(this,BusStopActivity.class);
+    public void goToBusStop(View view) {
+        Intent intent = new Intent(this, BusStopActivity.class);
         this.startActivity(intent);
     }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
+
         viewPager.setCurrentItem(tab.getPosition());
+        switch (tab.getPosition()) {
+            case 0:
+                this.setTitle(getString(R.string.bus_stop_title));
+                break;
+            case 1:
+                this.setTitle(getString(R.string.favourite_bus_stop_title));
+                break;
+        }
     }
 
     @Override
