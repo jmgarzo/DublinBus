@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -15,9 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
+
+import java.util.ArrayList;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -32,6 +36,8 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
     private RecyclerView mBusStopRecyclerView;
 
     private final int BUS_STOPS_LOADER_ID =223;
+    public static final String BUS_STOP_LIST_TAG = "bus_top_list_tag";
+    private ArrayList<LatLng> busStopList;
 
 
 
@@ -43,11 +49,21 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_route_detail, container, false);
 
+
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(),RouteMapsActivity.class);
+                intent.putExtra(BUS_STOP_LIST_TAG,busStopList);
+                startActivity(intent);
+
+            }
+        });
         Intent intent = getActivity().getIntent();
         if (null != intent) {
             idRoute= intent.getStringExtra(Intent.EXTRA_TEXT);
         }
-        getActivity().setTitle();
 
         mBusStopRecyclerView =rootView.findViewById(R.id.recyclerview_bus_stop);
 
@@ -69,13 +85,7 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
 
         return rootView;
     }
-//        sWeatherByLocationSettingQueryBuilder.setTables(
-//    WeatherContract.WeatherEntry.TABLE_NAME + " INNER JOIN " +
-//    WeatherContract.LocationEntry.TABLE_NAME +
-//            " ON " + WeatherContract.WeatherEntry.TABLE_NAME +
-//            "." + WeatherContract.WeatherEntry.COLUMN_LOC_KEY +
-//            " = " + WeatherContract.LocationEntry.TABLE_NAME +
-//            "." + WeatherContract.LocationEntry._ID);
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
@@ -102,9 +112,23 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
         switch (loader.getId()){
             case BUS_STOPS_LOADER_ID:{
                 mBusStopAdapter.swapCursor(data);
+                if(data.moveToFirst()){
+                    busStopList = cursorToLatLongList(data);
+                }
                 break;
                 }
             }
+    }
+
+    private ArrayList<LatLng> cursorToLatLongList(Cursor data){
+        ArrayList<LatLng> routeList = new ArrayList<>();
+        do{
+            Double lat = Double.valueOf(data.getString(DBUtils.COL_BUS_STOP_LATITUDE));
+            Double lon = Double.valueOf(data.getString(DBUtils.COL_BUS_STOP_LONGITUDE));
+            LatLng latLng = new LatLng(lat,lon);
+            routeList.add(latLng);
+        }while (data.moveToNext());
+        return routeList;
     }
 
     @Override

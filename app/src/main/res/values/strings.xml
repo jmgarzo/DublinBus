@@ -25,7 +25,7 @@
     <string name="bus_stop_label">Bus Stop: </string>
 
 
-     <!--Favourite Stop Strings-->
+    <!--Favourite Stop Strings-->
     <string name="favourite_bus_stop_title">Favourite Bus Stop</string>
     <string name="favorite_empty_error_message">Your favourite list is empty </string>
 
@@ -59,6 +59,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_route_maps">Map</string>
 
 
 </resources>
