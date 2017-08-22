@@ -8,10 +8,16 @@
     <string name="btn_route">Routes</string>
     <string name="btn_real_time">RealTime</string>
 
+    <!--labels-->
+    <string name="label_search">Search</string>
 
     <!--Route Strings-->
+    <string name="route_title">Bus Routes</string>
+
     <string name="label_from">From: </string>
     <string name="label_towards">Towards: </string>
+    <string name="route_search_hint">Route, i.e.:39a</string>
+
 
     <!--Bus Stop Strings-->
     <string name="bus_stop_title">Bus Stop</string>

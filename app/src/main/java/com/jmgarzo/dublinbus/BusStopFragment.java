@@ -65,7 +65,6 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
 
         getActivity().getSupportLoaderManager().initLoader(ID_BUS_STOP_LOADER, null, this);
 
-
         return rootView;
     }
 
