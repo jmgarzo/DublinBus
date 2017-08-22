@@ -7,4 +7,6 @@
     <color name="colorPrimaryDark">#1565C0</color>
     <color name="colorAccent">#ff4081</color>
     <color name="yellowA400">#FFEA00</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
 </resources>

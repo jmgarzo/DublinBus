@@ -65,29 +65,6 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
 
         getActivity().getSupportLoaderManager().initLoader(ID_BUS_STOP_LOADER, null, this);
 
-//        mSearchView = rootView.findViewById(R.id.search);
-//
-//        mSearchView.setActivated(true);
-//        mSearchView.setQueryHint("Type your keyword here");
-//        mSearchView.onActionViewExpanded();
-//        mSearchView.setIconified(false);
-//        mSearchView.clearFocus();
-//
-//        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//
-//                onQueryTextChanged(newText);
-//                   //mBusStopAdapter.getFilter().filter(newText);
-//                return false;
-//            }
-//        });
-
 
         return rootView;
     }
