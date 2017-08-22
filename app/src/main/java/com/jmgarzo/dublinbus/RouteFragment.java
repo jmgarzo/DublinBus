@@ -3,6 +3,7 @@ package com.jmgarzo.dublinbus;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -163,7 +164,9 @@ public class RouteFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onClick(Route route) {
-
+        Intent intent = new Intent(getContext(),RouteDetailActivity.class);
+        intent.putExtra(Intent.EXTRA_TEXT,String.valueOf(route.getId()));
+        startActivity(intent);
     }
 
 

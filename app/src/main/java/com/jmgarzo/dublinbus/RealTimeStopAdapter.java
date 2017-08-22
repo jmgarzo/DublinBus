@@ -41,7 +41,7 @@ public class RealTimeStopAdapter extends RecyclerView.Adapter<RealTimeStopAdapte
         mCursor.moveToPosition(position);
 
         if (mCursor != null && mCursor.moveToPosition(position)) {
-            Glide.with(mContext).load(R.drawable.blue_a400).
+            Glide.with(mContext).load(R.drawable.blue_circle).
                     apply(RequestOptions.circleCropTransform()).into(holder.mImageView);
             holder.mRouteName.setText(mCursor.getString(DBUtils.COL_REAL_TIME_STOP_ROUTE));
             String minutes = mCursor.getString(DBUtils.COL_REAL_TIME_STOP_DUE_TIME);

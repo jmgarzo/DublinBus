@@ -58,7 +58,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteAdapter
 //        if(destinationLocalized.isEmpty()) destinationLocalized = destination;
 
         if (mCursor != null && mCursor.moveToPosition(position)) {
-            Glide.with(mContext).load(R.drawable.blue_a400).
+            Glide.with(mContext).load(R.drawable.blue_circle).
                     apply(RequestOptions.circleCropTransform()).into(holder.mImageViewNameBackground);
             holder.mRouteName.setText(mCursor.getString(DBUtils.COL_ROUTE_NAME));
             holder.mRouteOrigin.setText(origin);

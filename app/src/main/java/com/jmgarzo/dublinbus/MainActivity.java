@@ -107,6 +107,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 this.setTitle(getString(R.string.bus_stop_title));
                 break;
             case 1:
+                this.setTitle(getString(R.string.route_title));
+                break;
+            case 2:
                 this.setTitle(getString(R.string.favourite_bus_stop_title));
                 break;
         }

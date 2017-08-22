@@ -43,6 +43,12 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_route_detail, container, false);
 
+        Intent intent = getActivity().getIntent();
+        if (null != intent) {
+            idRoute= intent.getStringExtra(Intent.EXTRA_TEXT);
+        }
+        getActivity().setTitle();
+
         mBusStopRecyclerView =rootView.findViewById(R.id.recyclerview_bus_stop);
 
         LinearLayoutManager busStopLayoutManager =
@@ -57,10 +63,7 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
         mBusStopRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
                 DividerItemDecoration.VERTICAL));
 
-        Intent intent = getActivity().getIntent();
-        if (null != intent) {
-             idRoute= intent.getStringExtra(Intent.EXTRA_TEXT);
-        }
+
 
         getActivity().getSupportLoaderManager().initLoader(BUS_STOPS_LOADER_ID, null, this);
 
