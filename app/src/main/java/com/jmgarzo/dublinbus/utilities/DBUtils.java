@@ -212,8 +212,10 @@ public class DBUtils {
     public static void insertRouteBusStop(Context context, Route route) {
 
         String selection = DublinBusContract.RouteEntry.NAME + " = ? " +
+                " AND " + DublinBusContract.RouteEntry.ORIGIN + " = ? " +
+                " AND " + DublinBusContract.RouteEntry.OPERATOR + " = ? " +
                 " AND " + DublinBusContract.RouteEntry.DESTINATION + " = ? ";
-        String[] selectionArgs = new String[]{route.getName(), route.getDestination()};
+        String[] selectionArgs = new String[]{route.getName(),route.getOrigin(),Long.toString(route.getOperator()), route.getDestination()};
         Cursor cursor = context.getContentResolver().query(DublinBusContract.RouteEntry.CONTENT_URI,
                 new String[]{DublinBusContract.RouteEntry._ID},
                 selection,
@@ -223,6 +225,10 @@ public class DBUtils {
         Long idRoute;
         if (null != cursor && cursor.moveToFirst()) {
             idRoute = cursor.getLong(0);
+            if(cursor.getCount()>1){
+                Log.e(LOG_TAG, "insertRouteBusStop, there are more than one route with the same name, origin, operator and destination");
+            }
+            cursor.close();
         } else {
             return;
         }
@@ -252,6 +258,7 @@ public class DBUtils {
                 null);
         if (cursorBusStop != null && cursorBusStop.moveToFirst()) {
             busStopId = cursorBusStop.getString(0);
+            cursorBusStop.close();
         }
         return busStopId;
     }

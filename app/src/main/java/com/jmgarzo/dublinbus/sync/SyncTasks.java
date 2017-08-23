@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
+import com.jmgarzo.dublinbus.R;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
@@ -82,8 +83,8 @@ public class SyncTasks {
 
             Cursor cursor = context.getContentResolver().query(DublinBusContract.RouteInformationEntry.CONTENT_URI,
                     DBUtils.ROUTE_INFORMATION_COLUMNS,
-                    null,
-                    null,
+                    DublinBusContract.RouteInformationEntry.OPERATOR + " = ? ",
+                    new String[]{context.getString(R.string.constant_dublin_bus_operator)},
                     null);
 
 
@@ -112,6 +113,7 @@ public class SyncTasks {
                     }
 
                 } while (cursor.moveToNext());
+                cursor.close();
             }
         } catch (Exception e) {
             Log.e(LOG_TAG, e.toString());

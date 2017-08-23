@@ -61,5 +61,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_route_maps">Map</string>
 
+    <!--Constants-->
+    <string name = "constant_dublin_bus_operator">bac</string>
+
 
 </resources>
