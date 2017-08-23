@@ -94,7 +94,7 @@ public class SyncTasks {
 
                     if (routeList != null && routeList.size() > 0) {
                         ContentValues[] contentValues = new ContentValues[routeList.size()];
-                        for (int i = 0; i < routeList.size(); i++) {
+                        for (int i = 0; i < routeList.size() ; i++) {
                             Route route = routeList.get(i);
                             contentValues[i] = route.getContentValues();
                         }
@@ -230,6 +230,7 @@ public class SyncTasks {
                 newIdBusStop = insertResultUri.getLastPathSegment();
                 Log.d(LOG_TAG, newIdBusStop + " New Bus Stop inserted");
             }
+            cursor.close();
         }
 
     }

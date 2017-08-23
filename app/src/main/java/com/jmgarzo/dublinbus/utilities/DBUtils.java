@@ -168,6 +168,7 @@ public class DBUtils {
         Long result = null;
         if (cursor.moveToFirst()) {
             result = cursor.getLong(DBUtils.COL_OPERATOR_ID);
+            cursor.close();
         }
 
         return result;
@@ -186,6 +187,7 @@ public class DBUtils {
                 null);
         if (cursor.moveToFirst()) {
             result = cursor.getLong(DBUtils.COL_ROUTE_ID);
+            cursor.close();
         }
         return result;
     }
@@ -200,6 +202,7 @@ public class DBUtils {
                 null);
         if (cursor.moveToFirst()) {
             result = cursor.getLong(DBUtils.COL_BUS_STOP_ID);
+            cursor.close();
         } else {
             Log.e("DB_Utils", "No existe bus stop");
             result = -1l;

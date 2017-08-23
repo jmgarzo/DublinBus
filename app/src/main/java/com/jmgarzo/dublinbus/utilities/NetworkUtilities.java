@@ -313,6 +313,7 @@ public class NetworkUtilities {
                     routeListTotal.addAll(routeListPerQuery);
                 }
             } while (cursor.moveToNext());
+            cursor.close();
         }
         return routeListTotal;
     }
