@@ -19,7 +19,8 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "DublinBus.db";
-    private static String DB_PATH = "/data/data/com.jmgarzo.dublinbus/databases/";
+   private static String DB_PATH;
+
     private SQLiteDatabase myDataBase;
 
     private Context mContext;
@@ -116,6 +117,7 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
     public DublinBusDBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mContext = context;
+        DB_PATH = context.getDatabasePath(DATABASE_NAME).toString();
     }
 
 
@@ -124,16 +126,16 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
 
         boolean dbExist = checkDataBase();
 
-        if(!dbExist){
-            getReadableDatabase();
-            try {
-                copyDataBase();
-            } catch (IOException e) {
-
-                throw new Error("Error copying database");
-
-            }
-        }
+//        if(!dbExist){
+//            getReadableDatabase();
+//            try {
+//                copyDataBase();
+//            } catch (IOException e) {
+//
+//                throw new Error("Error copying database");
+//
+//            }
+//        }
 
 //        db.execSQL(SQL_CREATE_OPERATOR_TABLE);
 //        db.execSQL(SQL_CREATE_BUS_STOP_TABLE);
@@ -188,7 +190,7 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase checkDB = null;
 
         try{
-            String myPath = DB_PATH + DATABASE_NAME;
+            String myPath = DB_PATH;
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
         }catch(SQLiteException e){
@@ -213,7 +215,7 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
         InputStream myInput = mContext.getAssets().open(DATABASE_NAME);
 
         // Path to the just created empty db
-        String outFileName = DB_PATH + DATABASE_NAME;
+        String outFileName = DB_PATH;
 
         //Open the empty db as the output stream
         OutputStream myOutput = new FileOutputStream(outFileName);
@@ -235,7 +237,7 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
     public void openDataBase() throws SQLException {
 
         //Open the database
-        String myPath = DB_PATH + DATABASE_NAME;
+        String myPath = DB_PATH;
         myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
     }

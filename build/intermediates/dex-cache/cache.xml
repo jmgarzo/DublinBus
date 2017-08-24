@@ -3,21 +3,21 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jar="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.3"
-        sha1="ade870b7a25e79cff6bc5bf406e48d639a6384eb">
-        <dex dex="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_5fe118e8faaae6199a698d559619f0564066ae4c\classes.dex" />
+        sha1="6c5f96b62fdea423a994cb62eb006b5d657cb2e2">
+        <dex dex="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_bd38ec354aac5251225562f5caf5015fa8528982/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jar="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.3"
         sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="C:\Users\jmgarzo\Android\Projects\DublinBusProject\DublinBus\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_e2cb5dbfd3e65d7b493f5368217018749383f96a\classes.dex" />
+        <dex dex="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_ea51706b523e1f0114d8a4b7fd704b1f49a13145/classes.dex" />
     </item>
 
 </items>

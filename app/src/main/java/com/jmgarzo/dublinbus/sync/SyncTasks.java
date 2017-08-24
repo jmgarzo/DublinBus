@@ -48,6 +48,9 @@ public class SyncTasks {
                     contentValues[i] = operator.getContentValues();
                 }
                 ContentResolver contentResolver = context.getContentResolver();
+                DBUtils.setIsFilledOperatorInformation(context,false);
+                int deleted = contentResolver.delete(DublinBusContract.OperatorEntry.CONTENT_URI,null,null);
+                Log.d(LOG_TAG, deleted + " Operators Deleted");
 
                 int inserted = contentResolver.bulkInsert(DublinBusContract.OperatorEntry.CONTENT_URI,
                         contentValues);
@@ -72,6 +75,10 @@ public class SyncTasks {
                 }
                 ContentResolver contentResolver = context.getContentResolver();
 
+                int deleted = contentResolver.delete(DublinBusContract.BusStopEntry.CONTENT_URI,
+                        DublinBusContract.BusStopEntry.IS_FAVOURITE  + " = ? ",
+                        new String[]{"0"});
+                Log.d(LOG_TAG, deleted + " Bus Stop Deleted");
                 int inserted = contentResolver.bulkInsert(DublinBusContract.BusStopEntry.CONTENT_URI,
                         contentValues);
                 if (inserted > 0) {
@@ -109,7 +116,10 @@ public class SyncTasks {
                         }
 
                         ContentResolver contentResolver = context.getContentResolver();
-
+                        int deleted = contentResolver.delete(DublinBusContract.RouteEntry.CONTENT_URI,
+                                DublinBusContract.RouteEntry.NAME+ " = ? ",
+                                new String[]{routeList.get(0).getName()});
+                        Log.d(LOG_TAG,deleted + " route records for " + routeList.get(0).getName() + " route.");
                         int inserted = contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
                                 contentValues);
                         if (inserted > 0) {
@@ -142,7 +152,8 @@ public class SyncTasks {
                 }
 
                 ContentResolver contentResolver = context.getContentResolver();
-
+                int deleted = contentResolver.delete(DublinBusContract.RouteInformationEntry.CONTENT_URI,null,null);
+                Log.d(LOG_TAG, deleted + " records from route_information_table");
                 int numInsert = contentResolver.bulkInsert(DublinBusContract.RouteInformationEntry.CONTENT_URI,
                         contentValues);
                 if (numInsert > 0) {
@@ -185,30 +196,38 @@ public class SyncTasks {
         }
     }
 
+    public static void copyDbFromAssets(Context context){
+        DublinBusDBHelper myDbHelper = new DublinBusDBHelper(context);
+        try {
+            myDbHelper.createDataBase();
+        } catch (IOException ioe) {
+            throw new Error("Unable to create database");
+        }
+        try {
+            //myDbHelper.openDataBase();
+            DBUtils.setIsExistDb(context,true);
+        }catch(SQLException sqle){
+            throw sqle;
+        }
+    }
+
     public static void syncDB(Context context) {
 
-        DublinBusDBHelper myDbHelper = new DublinBusDBHelper(context);
+            Intent intentOperatorInformationService = new Intent(context, OperatorInformationService.class);
+            context.startService(intentOperatorInformationService);
 
-        try {
+            Intent intentBusStopInformationService = new Intent(context, BusStopInformationService.class);
+            context.startService(intentBusStopInformationService);
 
-            myDbHelper.createDataBase();
+            Intent intentRouteListInformationService = new Intent(context, RouteListInformationService.class);
+            context.startService(intentRouteListInformationService);
 
-        } catch (IOException ioe) {
+            Intent intentRouteInformationService = new Intent(context, RouteInformationService.class);
+            context.startService(intentRouteInformationService);
 
-            throw new Error("Unable to create database");
 
-        }
 
-        try {
-
-            myDbHelper.openDataBase();
-
-        }catch(SQLException sqle){
-
-            throw sqle;
-
-        }
-
+//TODO:DELETE
 //        if (!DBUtils.isFilledOperatorInformation(context)) {
 //            Intent intentOperatorInformationService = new Intent(context, OperatorInformationService.class);
 //            context.startService(intentOperatorInformationService);

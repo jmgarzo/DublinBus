@@ -51,6 +51,7 @@
     <string name="pref_route_db">route_db</string>
     <string name="pref_bus_stop_db">bus_stop_db</string>
     <string name="pref_operator_information">operator_information</string>
+    <string name="pref_exist_db">exist_db</string>
 
 
     <!--Description content -->

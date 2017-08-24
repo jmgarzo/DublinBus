@@ -10,7 +10,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.jmgarzo.dublinbus.sync.RealTimeSyncUtils;
 import com.jmgarzo.dublinbus.sync.SyncTasks;
+import com.jmgarzo.dublinbus.sync.UpdateDbSyncUtils;
+import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
@@ -26,13 +29,20 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (savedInstanceState == null) {
+            if (!DBUtils.isExistDb(this)) {
+                SyncTasks.copyDbFromAssets(this);
+
+            }
+            UpdateDbSyncUtils.initialize(this);
+        }
 
 
-        SyncTasks.syncDB(this);
+        //SyncTasks.syncDB(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-         toolbar.setLogo(R.mipmap.ic_launcher);
+        toolbar.setLogo(R.mipmap.ic_launcher);
 
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);

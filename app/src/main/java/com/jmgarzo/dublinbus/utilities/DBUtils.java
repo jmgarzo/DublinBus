@@ -252,7 +252,10 @@ public class DBUtils {
 
             }
         }
-
+        int deleted = context.getContentResolver().delete(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
+                DublinBusContract.RouteBusStopEntry.ROUTE_ID + " = ? ",
+                new String[]{idRoute.toString()});
+        Log.d(LOG_TAG, deleted + " records deleted from route_bus_table for route id: "+ idRoute.toString());
         int inserted = context.getContentResolver().bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI, RouteBusStopList.toArray(new ContentValues[RouteBusStopList.size()]));
         if (inserted <= 0) {
             Log.d(LOG_TAG, "insertRouteBusStop() no record Insert");
@@ -334,6 +337,16 @@ public class DBUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(context.getString(R.string.pref_real_time_connection_status),
                 DBUtils.REAL_TIME_STATUS_UNKNOWN);
+    }
+
+    public static void setIsExistDb(Context context, boolean b) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        pref.edit().putBoolean(context.getString(R.string.pref_exist_db), b).apply();
+    }
+
+    public static boolean isExistDb(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return pref.getBoolean(context.getString(R.string.pref_exist_db), false);
     }
 
 
