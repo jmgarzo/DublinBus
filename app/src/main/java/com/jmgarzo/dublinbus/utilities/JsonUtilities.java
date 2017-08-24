@@ -181,11 +181,7 @@ public class JsonUtilities {
         return operatorList;
     }
 
-
-
     public static ArrayList<BusStop> getBusStopsFromJson(String jsonStr) {
-
-
 
         ArrayList<BusStop> busStopList = null;
 

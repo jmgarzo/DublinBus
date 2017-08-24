@@ -24,6 +24,8 @@ import com.jmgarzo.dublinbus.utilities.NetworkUtilities;
 
 import java.util.ArrayList;
 
+import static android.util.Log.e;
+
 /**
  * Created by jmgarzo on 25/07/17.
  */
@@ -51,7 +53,7 @@ public class SyncTasks {
                 }
             }
         } catch (Exception e) {
-            Log.e(LOG_TAG, e.toString());
+            e(LOG_TAG, e.toString());
         }
     }
 
@@ -92,6 +94,10 @@ public class SyncTasks {
                 do {
                     ArrayList<Route> routeList = NetworkUtilities.getRouteInformation(context, cursor.getString(DBUtils.COL_ROUTE_INFORMATION_ROUTE));
 
+                    //TODO: DELETE! JUST FOR DEBUG
+                    if(routeList.size()>2){
+                       Log.e(LOG_TAG, "Route:" + routeList.get(1).getName() +" Have " + routeList.size() + " results");
+                    }
                     if (routeList != null && routeList.size() >1) {
                         ContentValues[] contentValues = new ContentValues[2];
                         for (int i = 0; i < routeList.size() && i<2 ; i++) {
@@ -116,7 +122,7 @@ public class SyncTasks {
                 cursor.close();
             }
         } catch (Exception e) {
-            Log.e(LOG_TAG, e.toString());
+            e(LOG_TAG, e.toString());
         }
 
     }
@@ -172,7 +178,7 @@ public class SyncTasks {
                 }
             }
         } catch (Exception e) {
-            Log.e(LOG_TAG, e.toString());
+            e(LOG_TAG, e.toString());
         }
     }
 
