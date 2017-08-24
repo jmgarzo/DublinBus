@@ -33,7 +33,7 @@ public class RealTimeJobService extends JobService {
             }
         };
         Bundle b =params.getExtras();
-        String stopId =b.getString(DublinBusSyncUtils.STOP_ID_TAG);
+        String stopId =b.getString(RealTimeSyncUtils.STOP_ID_TAG);
         mFetchRealTimeDataTask.execute(stopId);
         return true;
     }

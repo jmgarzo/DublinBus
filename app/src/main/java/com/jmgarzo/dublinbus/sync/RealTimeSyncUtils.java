@@ -17,7 +17,7 @@ import com.jmgarzo.dublinbus.sync.services.RealTimeStopService;
  * Created by jmgar on 16/08/2017.
  */
 
-public class DublinBusSyncUtils {
+public class RealTimeSyncUtils {
 
     private static boolean sInitialized;
 

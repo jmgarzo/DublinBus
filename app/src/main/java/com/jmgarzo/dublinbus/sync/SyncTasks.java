@@ -5,11 +5,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.net.Uri;
 import android.util.Log;
 
 import com.jmgarzo.dublinbus.R;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
+import com.jmgarzo.dublinbus.data.DublinBusDBHelper;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Operator;
 import com.jmgarzo.dublinbus.objects.RealTimeStop;
@@ -22,6 +24,7 @@ import com.jmgarzo.dublinbus.sync.services.RouteListInformationService;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 import com.jmgarzo.dublinbus.utilities.NetworkUtilities;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static android.util.Log.e;
@@ -184,26 +187,48 @@ public class SyncTasks {
 
     public static void syncDB(Context context) {
 
-        if (!DBUtils.isFilledOperatorInformation(context)) {
-            Intent intentOperatorInformationService = new Intent(context, OperatorInformationService.class);
-            context.startService(intentOperatorInformationService);
+        DublinBusDBHelper myDbHelper = new DublinBusDBHelper(context);
+
+        try {
+
+            myDbHelper.createDataBase();
+
+        } catch (IOException ioe) {
+
+            throw new Error("Unable to create database");
+
         }
 
+        try {
 
-        if (!DBUtils.isFilledBusStop(context)) {
-            Intent intentBusStopInformationService = new Intent(context, BusStopInformationService.class);
-            context.startService(intentBusStopInformationService);
+            myDbHelper.openDataBase();
+
+        }catch(SQLException sqle){
+
+            throw sqle;
+
         }
 
-        if (!DBUtils.isFilledRouteInformation(context)) {
-            Intent intentRouteListInformationService = new Intent(context, RouteListInformationService.class);
-            context.startService(intentRouteListInformationService);
-        }
-
-        if (!DBUtils.isFilledRoute(context)) {
-            Intent intentRouteInformationService = new Intent(context, RouteInformationService.class);
-            context.startService(intentRouteInformationService);
-        }
+//        if (!DBUtils.isFilledOperatorInformation(context)) {
+//            Intent intentOperatorInformationService = new Intent(context, OperatorInformationService.class);
+//            context.startService(intentOperatorInformationService);
+//        }
+//
+//
+//        if (!DBUtils.isFilledBusStop(context)) {
+//            Intent intentBusStopInformationService = new Intent(context, BusStopInformationService.class);
+//            context.startService(intentBusStopInformationService);
+//        }
+//
+//        if (!DBUtils.isFilledRouteInformation(context)) {
+//            Intent intentRouteListInformationService = new Intent(context, RouteListInformationService.class);
+//            context.startService(intentRouteListInformationService);
+//        }
+//
+//        if (!DBUtils.isFilledRoute(context)) {
+//            Intent intentRouteInformationService = new Intent(context, RouteInformationService.class);
+//            context.startService(intentRouteInformationService);
+//        }
 
 //        Intent intentOperatorInformationService = new Intent(getActivity(), OperatorInformationService.class);
 //        getContext().startService(intentOperatorInformationService);

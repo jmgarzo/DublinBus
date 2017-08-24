@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jmgarzo.dublinbus.data.DublinBusContract;
-import com.jmgarzo.dublinbus.sync.DublinBusSyncUtils;
+import com.jmgarzo.dublinbus.sync.RealTimeSyncUtils;
 import com.jmgarzo.dublinbus.sync.services.AddFavouriteBusStopService;
 import com.jmgarzo.dublinbus.sync.services.DeleteFromFavoriteBusStopService;
 import com.jmgarzo.dublinbus.sync.services.RealTimeStopService;
@@ -116,7 +116,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         super.onResume();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sp.registerOnSharedPreferenceChangeListener(this);
-        DublinBusSyncUtils.initialize(getContext(), mBusStopNumber);
+        RealTimeSyncUtils.initialize(getContext(), mBusStopNumber);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         super.onPause();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sp.unregisterOnSharedPreferenceChangeListener(this);
-        DublinBusSyncUtils.cancelDispach();
+        RealTimeSyncUtils.cancelDispach();
 
     }
 
