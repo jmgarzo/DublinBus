@@ -264,7 +264,7 @@ public class JsonUtilities {
 
                     JSONObject jsonStop = stopsArray.getJSONObject(j);
                     stopsList.add(jsonStop.getString(BUS_STOP_NUMBER));
-                }
+                 }
                 route.setStops(stopsList);
 
 

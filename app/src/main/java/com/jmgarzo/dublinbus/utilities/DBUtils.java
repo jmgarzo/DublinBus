@@ -11,6 +11,8 @@ import com.jmgarzo.dublinbus.R;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.Route;
 
+import java.util.ArrayList;
+
 /**
  * Created by jmgarzo on 27/07/17.
  */
@@ -61,7 +63,6 @@ public class DBUtils {
     public static final int COL_BUS_STOP_LAST_UPDATED = 9;
     public static final int COL_BUS_STOP_IS_FAVORITE = 10;
     public static final int COL_BUS_STOP_IS_ALIAS = 11;
-
 
 
     public static final String[] ROUTE_COLUMNS = {
@@ -154,7 +155,7 @@ public class DBUtils {
     public static final int REAL_TIME_STATUS_SERVER_DOWN = 6;
     public static final int REAL_TIME_STATUS_SERVER_INVALID = 7;
     public static final int REAL_TIME_STATUS_UNKNOWN = 8;
-    public static final int REAL_TIME_STATUS_NETWORK_NOT_AVAILABLE=9;
+    public static final int REAL_TIME_STATUS_NETWORK_NOT_AVAILABLE = 9;
 
 
     public static long getOperator(Context contect, String operatorReference) {
@@ -218,7 +219,7 @@ public class DBUtils {
                 " AND " + DublinBusContract.RouteEntry.ORIGIN + " = ? " +
                 " AND " + DublinBusContract.RouteEntry.OPERATOR + " = ? " +
                 " AND " + DublinBusContract.RouteEntry.DESTINATION + " = ? ";
-        String[] selectionArgs = new String[]{route.getName(),route.getOrigin(),Long.toString(route.getOperator()), route.getDestination()};
+        String[] selectionArgs = new String[]{route.getName(), route.getOrigin(), Long.toString(route.getOperator()), route.getDestination()};
         Cursor cursor = context.getContentResolver().query(DublinBusContract.RouteEntry.CONTENT_URI,
                 new String[]{DublinBusContract.RouteEntry._ID},
                 selection,
@@ -228,25 +229,31 @@ public class DBUtils {
         Long idRoute;
         if (null != cursor && cursor.moveToFirst()) {
             idRoute = cursor.getLong(0);
-            if(cursor.getCount()>1){
+            if (cursor.getCount() > 1) {
                 Log.e(LOG_TAG, "insertRouteBusStop, there are more than one route with the same name, origin, operator and destination");
             }
             cursor.close();
         } else {
             return;
         }
-        ContentValues[] cvArray = new ContentValues[route.getStops().size()];
+        ArrayList <ContentValues> RouteBusStopList = new ArrayList<>();
         for (int i = 0; i < route.getStops().size(); i++) {
 
-            ContentValues cv = new ContentValues();
-            cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID, idRoute);
-            cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID, getBusStopIdFromNumber(context, route.getStops().get(i)));
-            cv.put(DublinBusContract.RouteBusStopEntry.RECORD_ORDER, i);
+            String busStopId = getBusStopIdFromNumber(context, route.getStops().get(i));
+            if (!busStopId.isEmpty()) {
+                ContentValues cv = new ContentValues();
+                cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID, idRoute);
+                cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID, busStopId);
+                cv.put(DublinBusContract.RouteBusStopEntry.RECORD_ORDER, i);
 
-            cvArray[i] = cv;
+                RouteBusStopList.add(cv);
+            }else{
+                Log.e(LOG_TAG, "Bus Stop: "+route.getStops().get(i)+  "within idRoute: "+ idRoute +" Unknown in bus_stop_table "  );
+
+            }
         }
 
-        int inserted = context.getContentResolver().bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI, cvArray);
+        int inserted = context.getContentResolver().bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI, RouteBusStopList.toArray(new ContentValues[RouteBusStopList.size()]));
         if (inserted <= 0) {
             Log.d(LOG_TAG, "insertRouteBusStop() no record Insert");
         }
@@ -323,7 +330,7 @@ public class DBUtils {
         pref.edit().putInt(context.getString(R.string.pref_real_time_connection_status), i).apply();
     }
 
-    static public  int getRealTimeConnectionStatus(Context context) {
+    static public int getRealTimeConnectionStatus(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(context.getString(R.string.pref_real_time_connection_status),
                 DBUtils.REAL_TIME_STATUS_UNKNOWN);

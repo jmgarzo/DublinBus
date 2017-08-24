@@ -92,9 +92,9 @@ public class SyncTasks {
                 do {
                     ArrayList<Route> routeList = NetworkUtilities.getRouteInformation(context, cursor.getString(DBUtils.COL_ROUTE_INFORMATION_ROUTE));
 
-                    if (routeList != null && routeList.size() > 0) {
-                        ContentValues[] contentValues = new ContentValues[routeList.size()];
-                        for (int i = 0; i < routeList.size() ; i++) {
+                    if (routeList != null && routeList.size() >1) {
+                        ContentValues[] contentValues = new ContentValues[2];
+                        for (int i = 0; i < routeList.size() && i<2 ; i++) {
                             Route route = routeList.get(i);
                             contentValues[i] = route.getContentValues();
                         }
