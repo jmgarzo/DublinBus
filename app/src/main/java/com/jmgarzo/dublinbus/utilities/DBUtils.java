@@ -262,6 +262,50 @@ public class DBUtils {
         }
     }
 
+    public static ArrayList<ContentValues> insertRouteBusStop2(Context context, Route route) {
+
+        String selection = DublinBusContract.RouteEntry.NAME + " = ? " +
+                " AND " + DublinBusContract.RouteEntry.ORIGIN + " = ? " +
+                " AND " + DublinBusContract.RouteEntry.OPERATOR + " = ? " +
+                " AND " + DublinBusContract.RouteEntry.DESTINATION + " = ? ";
+        String[] selectionArgs = new String[]{route.getName(), route.getOrigin(), Long.toString(route.getOperator()), route.getDestination()};
+        Cursor cursor = context.getContentResolver().query(DublinBusContract.RouteEntry.CONTENT_URI,
+                new String[]{DublinBusContract.RouteEntry._ID},
+                selection,
+                selectionArgs,
+                null);
+
+        Long idRoute;
+        if (null != cursor && cursor.moveToFirst()) {
+            idRoute = cursor.getLong(0);
+            if (cursor.getCount() > 1) {
+                Log.e(LOG_TAG, "insertRouteBusStop, there are more than one route with the same name, origin, operator and destination");
+            }
+            cursor.close();
+        } else {
+            return null;
+        }
+        ArrayList<ContentValues> routeBusStopList = new ArrayList<>();
+        for (int i = 0; i < route.getStops().size(); i++) {
+
+            String busStopId = getBusStopIdFromNumber(context, route.getStops().get(i));
+            if (!busStopId.isEmpty()) {
+                ContentValues cv = new ContentValues();
+                cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID, idRoute);
+                cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID, busStopId);
+                cv.put(DublinBusContract.RouteBusStopEntry.RECORD_ORDER, i);
+
+                routeBusStopList.add(cv);
+            } else {
+                Log.e(LOG_TAG, "Bus Stop: " + route.getStops().get(i) + "within idRoute: " + idRoute + " Unknown in bus_stop_table ");
+
+            }
+        }
+        return routeBusStopList;
+    }
+
+
+
     private static String getBusStopIdFromNumber(Context context, String busStopNumber) {
         String busStopId = "";
         Cursor cursorBusStop = context.getContentResolver().query(DublinBusContract.BusStopEntry.CONTENT_URI,
