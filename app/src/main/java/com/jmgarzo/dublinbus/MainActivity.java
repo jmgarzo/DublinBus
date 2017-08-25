@@ -34,11 +34,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 SyncTasks.copyDbFromAssets(this);
 
             }
-            UpdateDbSyncUtils.initialize(this);
+            //UpdateDbSyncUtils.initialize(this);
         }
 
-
-        //SyncTasks.syncDB(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

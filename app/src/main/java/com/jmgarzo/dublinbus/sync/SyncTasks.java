@@ -63,32 +63,7 @@ public class SyncTasks {
         }
     }
 
-    synchronized public static void syncBusStops2(Context context) {
-        try {
-            ArrayList<BusStop> busStopList = NetworkUtilities.getBusStopInformation();
 
-            if (busStopList != null && busStopList.size() > 0) {
-                ContentValues[] contentValues = new ContentValues[busStopList.size()];
-                for (int i = 0; i < busStopList.size(); i++) {
-                    BusStop busStop = busStopList.get(i);
-                    contentValues[i] = busStop.getContentValues();
-                }
-                ContentResolver contentResolver = context.getContentResolver();
-
-                int deleted = contentResolver.delete(DublinBusContract.BusStopEntry.CONTENT_URI,
-                        DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ",
-                        new String[]{"0"});
-                Log.d(LOG_TAG, deleted + " Bus Stop Deleted");
-                int inserted = contentResolver.bulkInsert(DublinBusContract.BusStopEntry.CONTENT_URI,
-                        contentValues);
-                if (inserted > 0) {
-                    DBUtils.setIsFilledBusStop(context, true);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     synchronized public static ArrayList<ContentValues> syncBusStops(Context context) {
         ArrayList<ContentValues> busStopCVList = null;
@@ -110,54 +85,7 @@ public class SyncTasks {
         return busStopCVList;
     }
 
-    synchronized public static void syncRoute2(Context context) {
-        try {
 
-            Cursor cursor = context.getContentResolver().query(DublinBusContract.RouteInformationEntry.CONTENT_URI,
-                    DBUtils.ROUTE_INFORMATION_COLUMNS,
-                    DublinBusContract.RouteInformationEntry.OPERATOR + " = ? ",
-                    new String[]{context.getString(R.string.constant_dublin_bus_operator)},
-                    null);
-
-
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    ArrayList<Route> routeList = NetworkUtilities.getRouteInformation(context, cursor.getString(DBUtils.COL_ROUTE_INFORMATION_ROUTE));
-
-                    //TODO: DELETE! JUST FOR DEBUG
-                    if (routeList.size() > 2) {
-                        Log.e(LOG_TAG, "Route:" + routeList.get(1).getName() + " Have " + routeList.size() + " results");
-                    }
-                    if (routeList != null && routeList.size() > 1) {
-                        ContentValues[] contentValues = new ContentValues[2];
-                        for (int i = 0; i < routeList.size() && i < 2; i++) {
-                            Route route = routeList.get(i);
-                            contentValues[i] = route.getContentValues();
-                        }
-
-                        ContentResolver contentResolver = context.getContentResolver();
-                        int deleted = contentResolver.delete(DublinBusContract.RouteEntry.CONTENT_URI,
-                                DublinBusContract.RouteEntry.NAME + " = ? ",
-                                new String[]{routeList.get(0).getName()});
-                        Log.d(LOG_TAG, deleted + " route records for " + routeList.get(0).getName() + " route.");
-                        int inserted = contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
-                                contentValues);
-                        if (inserted > 0) {
-                            DBUtils.setIsFilledRoute(context, true);
-                        }
-
-                        for (int j = 0; j < routeList.size(); j++) {
-                            DBUtils.insertRouteBusStop(context, routeList.get(j));
-                        }
-                    }
-                } while (cursor.moveToNext());
-                cursor.close();
-            }
-        } catch (Exception e) {
-            e(LOG_TAG, e.toString());
-        }
-
-    }
 
 
     synchronized public static ArrayList<Route> syncRoute(Context context) {
@@ -273,23 +201,13 @@ public class SyncTasks {
 
     public static void syncDB(Context context) {
 
-
         ContentResolver contentResolver = context.getContentResolver();
-
 
         syncOperators(context);
 
-
-
-
         ArrayList<ContentValues> busStopContententValues = syncBusStops(context);
 
-
-
         syncRouteInformation(context);
-
-
-        //GET ROUTES
 
         ArrayList<Route> totalRoutes = syncRoute(context);
         ArrayList<ContentValues> routeContentValues = new ArrayList<>();
@@ -308,8 +226,6 @@ public class SyncTasks {
         int routeInserted = contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
                 routeContentValues.toArray(new ContentValues[routeContentValues.size()]));
 
-
-
         //ROUTE BUS STOP
 
         ArrayList<ContentValues> routeBusStopContentValues = new ArrayList<>();
@@ -324,7 +240,6 @@ public class SyncTasks {
         int routeBusStopInserted = contentResolver.bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
                 routeBusStopContentValues.toArray(new ContentValues[routeBusStopContentValues.size()]));
 
-
         Log.d(LOG_TAG, busStopDeleted + " Bus Stop Deleted");
         Log.d(LOG_TAG, busStopInserted + " Bus Stop Inserted");
 
@@ -334,8 +249,6 @@ public class SyncTasks {
         Log.d(LOG_TAG, routeBusStopDeleted + " Route Bus Stop Deleted");
         Log.d(LOG_TAG, routeBusStopInserted + " Route Bus Stop Inserted");
     }
-
-
 
 
     public static void addFavoriteBusStop(Context context, String busStopNumber) {
