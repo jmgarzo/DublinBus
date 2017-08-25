@@ -15,7 +15,7 @@ import java.util.List;
  * Created by jmgarzo on 27/07/17.
  */
 
-public class Route {
+public class Route implements Parcelable {
 
     private long id;
     private String timestamp;
@@ -147,6 +147,8 @@ public class Route {
 
     }
 
+
+
 //    public void writeToParcel(Parcel dest, int flags) {
 //        dest.writeLong(id);
 //        dest.writeString(timestamp);
@@ -180,7 +182,7 @@ public class Route {
 //            parcel.readStringList(stops);
 //        }
 //    }
-
+//
 //    public static final Parcelable.Creator<Route> CREATOR = new Parcelable.Creator<Route>() {
 //
 //        @Override
@@ -199,4 +201,47 @@ public class Route {
 //    }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.timestamp);
+        dest.writeString(this.name);
+        dest.writeLong(this.operator);
+        dest.writeString(this.origin);
+        dest.writeString(this.originLocalized);
+        dest.writeString(this.destination);
+        dest.writeString(this.destinationLocalized);
+        dest.writeString(this.lastUpdated);
+        dest.writeStringList(this.stops);
+    }
+
+    protected Route(Parcel in) {
+        this.id = in.readLong();
+        this.timestamp = in.readString();
+        this.name = in.readString();
+        this.operator = in.readLong();
+        this.origin = in.readString();
+        this.originLocalized = in.readString();
+        this.destination = in.readString();
+        this.destinationLocalized = in.readString();
+        this.lastUpdated = in.readString();
+        this.stops = in.createStringArrayList();
+    }
+
+    public static final Parcelable.Creator<Route> CREATOR = new Parcelable.Creator<Route>() {
+        @Override
+        public Route createFromParcel(Parcel source) {
+            return new Route(source);
+        }
+
+        @Override
+        public Route[] newArray(int size) {
+            return new Route[size];
+        }
+    };
 }

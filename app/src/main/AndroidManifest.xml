@@ -81,7 +81,12 @@
         <activity
             android:name=".RouteDetailActivity"
             android:label="@string/title_activity_route_detail"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".RouteActivity"
+             >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jmgarzo.dublinbus.RouteActivity" />
+            </activity>
         <activity
             android:name=".RealTimeStopActivity"
             android:parentActivityName=".BusStopActivity">

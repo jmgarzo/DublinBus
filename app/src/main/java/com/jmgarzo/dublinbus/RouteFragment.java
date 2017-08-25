@@ -34,6 +34,8 @@ public class RouteFragment extends Fragment implements LoaderManager.LoaderCallb
     private RouteAdapter mRouteAdapter;
     private RecyclerView recyclerView;
     private static final String ROUTE_FILTER_TAG = "route_filter_tag";
+    public static final String ROUTE_EXTRA_TAG = "route_extra_tag";
+
 
     private static final String SEARCH_VIEW_TEXT_TAG="search_view_text_tag";
     private String searchViewText = "";
@@ -187,6 +189,7 @@ public class RouteFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onClick(Route route) {
         Intent intent = new Intent(getContext(),RouteDetailActivity.class);
         intent.putExtra(Intent.EXTRA_TEXT,String.valueOf(route.getId()));
+        intent.putExtra(ROUTE_EXTRA_TAG,route);
         startActivity(intent);
     }
 

@@ -1,6 +1,5 @@
 package com.jmgarzo.dublinbus;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -8,11 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.jmgarzo.dublinbus.sync.RealTimeSyncUtils;
 import com.jmgarzo.dublinbus.sync.SyncTasks;
-import com.jmgarzo.dublinbus.sync.UpdateDbSyncUtils;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
@@ -88,22 +84,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void goToRoute(View v) {
-        Intent intent = new Intent(this, RouteActivity.class);
-        this.startActivity(intent);
-    }
-
-
-    public void goToNearMe(View v) {
-        Intent intent = new Intent(this, StopsNearActivity.class);
-        this.startActivity(intent);
-    }
-
-    public void goToBusStop(View view) {
-        Intent intent = new Intent(this, BusStopActivity.class);
-        this.startActivity(intent);
     }
 
     @Override

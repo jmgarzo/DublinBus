@@ -38,14 +38,16 @@
 
     <string name="pref_real_time_connection_status">connection_status</string>
 
-
     <string name="empty_real_time_stop_list">No Bus Stop Information Available</string>
     <string name="empty_real_time_stop_no_network">No Bus Stop Information Available. The network is not available to fetch bus stop data.</string>
     <string name="empty_real_time_stop_server_down">No Bus Stop information available. The server is not returning data.</string>
     <string name="empty_real_time_stop_server_error">No Bus Stop information available. The server is not returning valid data.</string>
     <string name="empty_real_time_stop_invalid_stop">No Bus Stop information available. The Bus Stop is not recognized by the server.</string>
 
+    <!--route detail-->
 
+    <string name="route_detail_activity_fragment_title"> Stops </string>
+    <string name="route_label">Route:</string>
     <!--Strings for SharedPreference-->
     <string name="pref_route_information_db">route_information_db</string>
     <string name="pref_route_db">route_db</string>

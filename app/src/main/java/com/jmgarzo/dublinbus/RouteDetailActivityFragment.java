@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.model.LatLng;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
+import com.jmgarzo.dublinbus.objects.Route;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 import java.util.ArrayList;
@@ -49,6 +50,10 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_route_detail, container, false);
 
+        setHasOptionsMenu(true);
+        getActivity().setTitle(getString(R.string.route_detail_activity_fragment_title));
+
+
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +67,14 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
         });
         Intent intent = getActivity().getIntent();
         if (null != intent) {
-            idRoute= intent.getStringExtra(Intent.EXTRA_TEXT);
+
+            Route route = intent.getParcelableExtra(RouteFragment.ROUTE_EXTRA_TAG);
+            idRoute= Long.toString(route.getId());
+            route.getName();
+            getActivity().setTitle(getString(R.string.route_detail_activity_fragment_title)
+            +" " + getString(R.string.route_label) + route.getName());
+
+
         }
 
         mBusStopRecyclerView =rootView.findViewById(R.id.recyclerview_bus_stop);
@@ -140,4 +152,6 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
     public void onClick(BusStop busStop) {
 
     }
+
+
 }
