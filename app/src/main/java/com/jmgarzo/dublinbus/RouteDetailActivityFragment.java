@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * A placeholder fragment containing a simple view.
  */
 public class RouteDetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        BusStopAdapter.BusStopAdapterOnClickHandler{
+        BusStopAdapter.BusStopAdapterOnClickHandler {
 
 
     private String idRoute;
@@ -36,10 +36,9 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
     private BusStopAdapter mBusStopAdapter;
     private RecyclerView mBusStopRecyclerView;
 
-    private final int BUS_STOPS_LOADER_ID =223;
+    private final int BUS_STOPS_LOADER_ID = 223;
     public static final String BUS_STOP_LIST_TAG = "bus_top_list_tag";
     private ArrayList<LatLng> busStopList;
-
 
 
     public RouteDetailActivityFragment() {
@@ -54,13 +53,12 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
         getActivity().setTitle(getString(R.string.route_detail_activity_fragment_title));
 
 
-
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(),RouteMapsActivity.class);
-                intent.putExtra(BUS_STOP_LIST_TAG,busStopList);
+                Intent intent = new Intent(getContext(), RouteMapsActivity.class);
+                intent.putExtra(BUS_STOP_LIST_TAG, busStopList);
                 startActivity(intent);
 
             }
@@ -68,16 +66,14 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
         Intent intent = getActivity().getIntent();
         if (null != intent) {
 
-            Route route = intent.getParcelableExtra(RouteFragment.ROUTE_EXTRA_TAG);
-            idRoute= Long.toString(route.getId());
+            Route route = intent.getParcelableExtra(RouteActivityFragment.ROUTE_EXTRA_TAG);
+            idRoute = Long.toString(route.getId());
             route.getName();
             getActivity().setTitle(getString(R.string.route_detail_activity_fragment_title)
-            +" " + getString(R.string.route_label) + route.getName());
-
-
+                    + " " + route.getName());
         }
 
-        mBusStopRecyclerView =rootView.findViewById(R.id.recyclerview_bus_stop);
+        mBusStopRecyclerView = rootView.findViewById(R.id.recyclerview_bus_stop);
 
         LinearLayoutManager busStopLayoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -90,7 +86,6 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
 
         mBusStopRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
                 DividerItemDecoration.VERTICAL));
-
 
 
         getActivity().getSupportLoaderManager().initLoader(BUS_STOPS_LOADER_ID, null, this);
@@ -121,25 +116,25 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()){
-            case BUS_STOPS_LOADER_ID:{
+        switch (loader.getId()) {
+            case BUS_STOPS_LOADER_ID: {
                 mBusStopAdapter.swapCursor(data);
-                if(data.moveToFirst()){
+                if (data.moveToFirst()) {
                     busStopList = cursorToLatLongList(data);
                 }
                 break;
-                }
             }
+        }
     }
 
-    private ArrayList<LatLng> cursorToLatLongList(Cursor data){
+    private ArrayList<LatLng> cursorToLatLongList(Cursor data) {
         ArrayList<LatLng> routeList = new ArrayList<>();
-        do{
+        do {
             Double lat = Double.valueOf(data.getString(DBUtils.COL_BUS_STOP_LATITUDE));
             Double lon = Double.valueOf(data.getString(DBUtils.COL_BUS_STOP_LONGITUDE));
-            LatLng latLng = new LatLng(lat,lon);
+            LatLng latLng = new LatLng(lat, lon);
             routeList.add(latLng);
-        }while (data.moveToNext());
+        } while (data.moveToNext());
         return routeList;
     }
 

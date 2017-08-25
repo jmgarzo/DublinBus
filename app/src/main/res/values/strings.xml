@@ -46,7 +46,7 @@
 
     <!--route detail-->
 
-    <string name="route_detail_activity_fragment_title"> Stops </string>
+    <string name="route_detail_activity_fragment_title"> Route Stops: </string>
     <string name="route_label">Route:</string>
     <!--Strings for SharedPreference-->
     <string name="pref_route_information_db">route_information_db</string>
