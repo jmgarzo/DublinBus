@@ -38,6 +38,9 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
     BusStopAdapter mBusStopAdapter;
     private RecyclerView mRecyclerView;
 
+    private static final String SEARCH_VIEW_TEXT_TAG = "search_view_text_tag";
+    private String searchViewText = "";
+
     public BusStopFragment() {
         // Required empty public constructor
     }
@@ -46,6 +49,10 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if (savedInstanceState != null) {
+            searchViewText = savedInstanceState.getString(SEARCH_VIEW_TEXT_TAG);
+        }
         View rootView = inflater.inflate(R.layout.fragment_bus_stop, container, false);
 
         getActivity().setTitle(getString(R.string.bus_stop_title));
@@ -65,11 +72,20 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
 
         getActivity().getSupportLoaderManager().initLoader(ID_BUS_STOP_LOADER, null, this);
 
+
         return rootView;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(SEARCH_VIEW_TEXT_TAG, searchViewText);
+        super.onSaveInstanceState(outState);
+    }
+
+
     public boolean onQueryTextChanged(String newText) {
 
+        searchViewText = newText;
         Bundle args = new Bundle();
         args.putString(FILTER_TAG, newText);
         getLoaderManager().restartLoader(ID_BUS_STOP_LOADER, args, this);
@@ -81,13 +97,13 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
 
         switch (id) {
             case ID_BUS_STOP_LOADER: {
-                String[] selectionArgs= new String[]{"0"};
+                String[] selectionArgs = new String[]{"0"};
 
                 if (args != null) {
                     String filterArg = args.getString(FILTER_TAG);
 //                    String selection = DublinBusContract.BusStopEntry.NUMBER + " LIKE '"+ filterArg + "%' ";
-                    String selection = DublinBusContract.BusStopEntry.IS_FAVOURITE +" = ?  AND " +DublinBusContract.BusStopEntry.NUMBER + " LIKE '" + filterArg + "%' " +
-                    " OR " + DublinBusContract.BusStopEntry.SHORT_NAME + " LIKE '" + filterArg + "%' ";
+                    String selection = DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ?  AND " + DublinBusContract.BusStopEntry.NUMBER + " LIKE '" + filterArg + "%' " +
+                            " OR " + DublinBusContract.BusStopEntry.SHORT_NAME + " LIKE '" + filterArg + "%' ";
 
                     return new CursorLoader(getContext(),
                             DublinBusContract.BusStopEntry.CONTENT_URI,
@@ -136,6 +152,7 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
         inflater.inflate(R.menu.menu_bus_stop_fragment, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
 //        mSearchView = rootView.findViewById(R.id.search);
@@ -145,25 +162,39 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
             searchView = (SearchView) searchItem.getActionView();
         }
         if (searchView != null) {
+
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+            searchView.setActivated(true);
+            searchView.setQueryHint(getString(R.string.bus_stop_search_hint));
+
+            searchView.onActionViewExpanded();
+
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    onQueryTextChanged(newText);
+                    return false;
+                }
+            });
+
+
+            if (!searchViewText.isEmpty()) {
+
+                searchView.setIconified(false);
+                searchView.setQuery(searchViewText, false);
+                searchView.onActionViewExpanded();
+
+
+            }
+
+//
         }
-        searchView.setActivated(true);
-        searchView.setQueryHint(getString(R.string.bus_stop_search_hint));
-        searchView.onActionViewExpanded();
-
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                onQueryTextChanged(newText);
-                return false;
-            }
-        });
 
 
     }
