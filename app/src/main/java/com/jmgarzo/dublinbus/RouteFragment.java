@@ -35,6 +35,9 @@ public class RouteFragment extends Fragment implements LoaderManager.LoaderCallb
     private RecyclerView recyclerView;
     private static final String ROUTE_FILTER_TAG = "route_filter_tag";
 
+    private static final String SEARCH_VIEW_TEXT_TAG="search_view_text_tag";
+    private String searchViewText = "";
+
     private static final int ID_ROUTES_LOADER = 14;
 
 
@@ -45,8 +48,14 @@ public class RouteFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_route2, container, false);
+
+        if(savedInstanceState!=null){
+            searchViewText = savedInstanceState.getString(SEARCH_VIEW_TEXT_TAG);
+        }
 
         getActivity().setTitle(getString(R.string.route_title));
         setHasOptionsMenu(true);
@@ -70,8 +79,15 @@ public class RouteFragment extends Fragment implements LoaderManager.LoaderCallb
         return rootView;
     }
 
-    public boolean onQueryTextChanged(String newText) {
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(SEARCH_VIEW_TEXT_TAG, searchViewText);
+        super.onSaveInstanceState(outState);
+    }
 
+
+    public boolean onQueryTextChanged(String newText) {
+        searchViewText = newText;
         Bundle args = new Bundle();
         args.putString(ROUTE_FILTER_TAG, newText);
         getLoaderManager().restartLoader(ID_ROUTES_LOADER, args, this);
@@ -109,6 +125,11 @@ public class RouteFragment extends Fragment implements LoaderManager.LoaderCallb
             }
         });
 
+        if (!searchViewText.isEmpty()) {
+            searchView.setIconified(false);
+            searchView.setQuery(searchViewText, false);
+            searchView.onActionViewExpanded();
+        }
 
     }
 

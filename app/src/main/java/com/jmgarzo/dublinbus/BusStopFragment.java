@@ -190,10 +190,7 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
                 searchView.setQuery(searchViewText, false);
                 searchView.onActionViewExpanded();
 
-
             }
-
-//
         }
 
 
