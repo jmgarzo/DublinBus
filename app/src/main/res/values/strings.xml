@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DublinBus</string>
+    <string name="app_name">Dublin Bus</string>
     <string name="action_settings">Settings</string>
 
     <string name="content_authority">com.jmgarzo.dublinbus</string>
@@ -20,7 +20,7 @@
 
 
     <!--Bus Stop Strings-->
-    <string name="bus_stop_title">Bus Stop</string>
+    <string name="bus_stop_title">Bus Stops</string>
     <string name="bus_stop_search_hint">Bus Stop, i.e.:4747</string>
     <string name="bus_stop_label">Bus Stop: </string>
 
