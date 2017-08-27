@@ -12,6 +12,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.jmgarzo.dublinbus.objects.BusStop;
+import com.jmgarzo.dublinbus.objects.Route;
 
 import java.util.ArrayList;
 
@@ -19,7 +21,8 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
 
     private GoogleMap mMap;
     boolean mapReady=false;
-    private ArrayList<LatLng> busStopLanLngList;
+    private ArrayList<BusStop> mBusStopList;
+    private Route mRoute;
     private CameraPosition camera;
 
     @Override
@@ -29,12 +32,13 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
 
         Intent intent = getIntent();
         if (null != intent) {
-            busStopLanLngList = getIntent().getParcelableArrayListExtra(RouteDetailActivityFragment.BUS_STOP_LIST_TAG);
+            mBusStopList = getIntent().getParcelableArrayListExtra(RouteDetailActivityFragment.BUS_STOP_LIST_EXTRA_TAG);
+            mRoute = getIntent().getParcelableExtra(RouteDetailActivityFragment.ROUTE_EXTRA_TAG);
         }
-        LatLng firstStop = busStopLanLngList.get(0);
+        LatLng firstStop = mBusStopList.get(0).getLatLng();
         camera = CameraPosition.builder()
                 .target(firstStop)
-                .zoom(10)
+                .zoom(16)
                 .bearing(0)
                 .tilt(45)
                 .build();
@@ -49,15 +53,16 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
     public void onMapReady(GoogleMap map){
         mapReady=true;
         mMap = map;
-        //MapsInitializer.initialize(getApplicationContext());
-        for (LatLng  latLgn : busStopLanLngList){
-            MarkerOptions newMarker = new MarkerOptions().position(latLgn).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_directions_bus_black_24dp));
-            mMap.addMarker(newMarker);
 
+        for (BusStop  busStop : mBusStopList){
+            MarkerOptions newMarker = new MarkerOptions()
+                    .position(busStop.getLatLng())
+                    .title(busStop.getNumber())
+                    .snippet(busStop.getFullName())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_directions_bus_black_24dp));
+            mMap.addMarker(newMarker);
         }
         mapReady=true;
-
-
         flyTo(camera);
     }
 

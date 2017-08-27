@@ -20,6 +20,7 @@ public class DublinBusContract {
     public static final String PATH_ROUTE_BUS_STOP="route_bus_stop";
     public static final String PATH_ROUTE_INFORMATION="route_information";
     public static final String PATH_REAL_TIME_STOP = "real_time_stop";
+    public static final String PATH_ROUTE_PER_BUS_STOP = "route_per_bus_stop";
 
 
     public static final class OperatorEntry implements BaseColumns {
@@ -89,6 +90,7 @@ public class DublinBusContract {
 
     public static final class RouteBusStopEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ROUTE_BUS_STOP).build();
+
         public static final String TABLE_NAME = "route_bus_stop";
         public static final String ROUTE_ID = "route_id";
         public static final String BUS_STOP_ID = "bus_stop_id";
@@ -143,6 +145,52 @@ public class DublinBusContract {
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+
+    }
+
+
+    public static final class RoutesPerBusStopEntry implements BaseColumns{
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ROUTE_PER_BUS_STOP).build();
+
+//        select *  from
+//        route_bus_stop inner join route  ON
+//        route_bus_stop.route_id = route._id
+//        where route_bus_stop.bus_stop_id = "2";
+        public static final String TABLE_NAME = RouteBusStopEntry.TABLE_NAME +
+                " INNER JOIN " + RouteEntry.TABLE_NAME +
+                " ON " +
+                RouteBusStopEntry.TABLE_NAME + "."+ RouteBusStopEntry.ROUTE_ID  +
+                " = "+ RouteEntry.TABLE_NAME + "."+ RouteEntry._ID;
+
+
+        public static final String NAME = "name";
+        public static final String OPERATOR = "operator";
+        public static final String ORIGIN = "origin";
+        public static final String ORIGIN_LOCALIZED = "origin_localized";
+        public static final String DESTINATION = "destination";
+        public static final String DESTINATION_LOCALIZED = "destination_localized";
+
+        public static final String COLUMN_ROUTE_ID = RouteEntry.TABLE_NAME + "." +
+                RouteEntry._ID;
+        public static final String COLUMN_ROUTE_NAME = RouteEntry.TABLE_NAME + "." +
+                RouteEntry.NAME;
+        public static final String COLUMN_ROUTE_ORIGIN = RouteEntry.TABLE_NAME + "." +
+                RouteEntry.ORIGIN;
+        public static final String COLUMN_ROUTE_ORIGIN_LOCALIZED = RouteEntry.TABLE_NAME + "." +
+                RouteEntry.ORIGIN_LOCALIZED;
+        public static final String COLUMN_ROUTE_DESTINATION = RouteEntry.TABLE_NAME + "." +
+                RouteEntry.DESTINATION;
+        public static final String COLUMN_ROUTE_DESTINATION_LOCALIZED = RouteEntry.TABLE_NAME + "." +
+                RouteEntry.DESTINATION_LOCALIZED;
+
+
+        public static final String CONTENT_DIR_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
+
+
 
     }
 

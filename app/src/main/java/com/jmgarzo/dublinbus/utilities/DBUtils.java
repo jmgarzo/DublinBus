@@ -101,6 +101,25 @@ public class DBUtils {
     public static final int COL_ROUTE_INFORMATION_ROUTE = 2;
 
 
+
+    public static final String[] ROUTE_PER_BUS_STOP_COLUMNS = {
+
+    DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry._ID,
+    DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.NAME,
+    DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.ORIGIN,
+    DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.ORIGIN_LOCALIZED,
+    DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.DESTINATION,
+    DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.DESTINATION_LOCALIZED
+    };
+
+    public static final int COL_ROUTE_PER_BUS_STOP_ID = 0;
+    public static final int COL_ROUTE_PER_BUS_STOP_NAME = 1;
+    public static final int COL_ROUTE_PER_BUS_STOP_ORIGIN = 2;
+    public static final int COL_ROUTE_PER_BUS_STOP_ORIGIN_LOCALIZED = 3;
+    public static final int COL_ROUTE_PER_BUS_STOP_DESTINATION = 4;
+    public static final int COL_ROUTE_PER_BUS_STOP_DESTINATION_LOCALIZED = 5;
+
+
     public static final String[] REAL_TIME_STOP_COLUMNS = {
             DublinBusContract.RealTimeStopEntry._ID,
             DublinBusContract.RealTimeStopEntry.STOP_NUMBER,
@@ -156,6 +175,11 @@ public class DBUtils {
     public static final int REAL_TIME_STATUS_SERVER_INVALID = 7;
     public static final int REAL_TIME_STATUS_UNKNOWN = 8;
     public static final int REAL_TIME_STATUS_NETWORK_NOT_AVAILABLE = 9;
+
+
+
+
+
 
 
     public static long getOperator(Context contect, String operatorReference) {

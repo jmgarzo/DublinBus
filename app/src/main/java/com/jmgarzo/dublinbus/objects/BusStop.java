@@ -5,14 +5,17 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
+
+import java.util.ArrayList;
 
 /**
  * Created by jmgarzo on 27/07/17.
  */
 
-public class BusStop  implements Parcelable {
+public class BusStop implements Parcelable {
     private int id;
     private String number;
     private String displayStopId;
@@ -25,6 +28,7 @@ public class BusStop  implements Parcelable {
     private String lastUpdated;
     private boolean isFavourite;
     private String alias;
+    private ArrayList<String> routesList;
 
     public BusStop(){}
 
@@ -130,6 +134,20 @@ public class BusStop  implements Parcelable {
         this.alias = alias;
     }
 
+    public ArrayList<String> getRoutesList() {
+        return routesList;
+    }
+
+    public void setRoutesList(ArrayList<String> routesList) {
+        this.routesList = routesList;
+    }
+
+    public LatLng getLatLng(){
+        return new LatLng(Double.valueOf(getLatitude()),Double.valueOf(getLongitude()));
+    }
+
+
+
     public void cursorToBusStop(Cursor cursor) {
 
         id = cursor.getInt(DBUtils.COL_BUS_STOP_ID);
@@ -169,55 +187,107 @@ public class BusStop  implements Parcelable {
     }
 
 
+
+
+//    public void writeToParcel(Parcel dest, int flags) {
+//        dest.writeLong(id);
+//        dest.writeString(number);
+//        dest.writeString(displayStopId);
+//        dest.writeString(shortName);
+//        dest.writeString(shortNameLocalized);
+//        dest.writeString(fullName);
+//        dest.writeString(fullNameLocalized);
+//        dest.writeString(latitude);
+//        dest.writeString(longitude);
+//        dest.writeString(lastUpdated);
+//        dest.writeByte((byte) (isFavourite ? 1 : 0));
+//        dest.writeString(alias);
+//
+//    }
+//
+//
+//
+//
+//    public BusStop(Parcel parcel) {
+//        id = parcel.readInt();
+//        number = parcel.readString();
+//        displayStopId = parcel.readString();
+//        shortName = parcel.readString();
+//        shortNameLocalized = parcel.readString();
+//        fullName = parcel.readString();
+//        fullNameLocalized = parcel.readString();
+//        latitude = parcel.readString();
+//        longitude = parcel.readString();
+//        lastUpdated = parcel.readString();
+//        isFavourite = parcel.readByte() != 0;
+//        alias = parcel.readString();
+//
+//    }
+//
+//    public static final Parcelable.Creator<BusStop> CREATOR = new Parcelable.Creator<BusStop>() {
+//
+//        @Override
+//        public BusStop createFromParcel(Parcel parcel) {
+//            return new BusStop(parcel);
+//        }
+//
+//        @Override
+//        public BusStop[] newArray(int size) {
+//            return new BusStop[0];
+//        }
+//    };
+//
+//    public int describeContents() {
+//        return hashCode();
+//    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
-        dest.writeString(number);
-        dest.writeString(displayStopId);
-        dest.writeString(shortName);
-        dest.writeString(shortNameLocalized);
-        dest.writeString(fullName);
-        dest.writeString(fullNameLocalized);
-        dest.writeString(latitude);
-        dest.writeString(longitude);
-        dest.writeString(lastUpdated);
-        dest.writeByte((byte) (isFavourite ? 1 : 0));
-        dest.writeString(alias);
-
+        dest.writeInt(this.id);
+        dest.writeString(this.number);
+        dest.writeString(this.displayStopId);
+        dest.writeString(this.shortName);
+        dest.writeString(this.shortNameLocalized);
+        dest.writeString(this.fullName);
+        dest.writeString(this.fullNameLocalized);
+        dest.writeString(this.latitude);
+        dest.writeString(this.longitude);
+        dest.writeString(this.lastUpdated);
+        dest.writeByte(this.isFavourite ? (byte) 1 : (byte) 0);
+        dest.writeString(this.alias);
+        dest.writeStringList(this.routesList);
     }
 
-
-
-
-    public BusStop(Parcel parcel) {
-        id = parcel.readInt();
-        number = parcel.readString();
-        displayStopId = parcel.readString();
-        shortName = parcel.readString();
-        shortNameLocalized = parcel.readString();
-        fullName = parcel.readString();
-        fullNameLocalized = parcel.readString();
-        latitude = parcel.readString();
-        longitude = parcel.readString();
-        lastUpdated = parcel.readString();
-        isFavourite = parcel.readByte() != 0;
-        alias = parcel.readString();
-
+    protected BusStop(Parcel in) {
+        this.id = in.readInt();
+        this.number = in.readString();
+        this.displayStopId = in.readString();
+        this.shortName = in.readString();
+        this.shortNameLocalized = in.readString();
+        this.fullName = in.readString();
+        this.fullNameLocalized = in.readString();
+        this.latitude = in.readString();
+        this.longitude = in.readString();
+        this.lastUpdated = in.readString();
+        this.isFavourite = in.readByte() != 0;
+        this.alias = in.readString();
+        this.routesList = in.createStringArrayList();
     }
 
-    public static final Parcelable.Creator<BusStop> CREATOR = new Parcelable.Creator<BusStop>() {
-
+    public static final Creator<BusStop> CREATOR = new Creator<BusStop>() {
         @Override
-        public BusStop createFromParcel(Parcel parcel) {
-            return new BusStop(parcel);
+        public BusStop createFromParcel(Parcel source) {
+            return new BusStop(source);
         }
 
         @Override
         public BusStop[] newArray(int size) {
-            return new BusStop[0];
+            return new BusStop[size];
         }
     };
-
-    public int describeContents() {
-        return hashCode();
-    }
 }
