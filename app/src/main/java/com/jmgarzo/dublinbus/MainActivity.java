@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             //UpdateDbSyncUtils.initialize(this);
         }
 
+        setTitle(getString(R.string.bus_stop_title));
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

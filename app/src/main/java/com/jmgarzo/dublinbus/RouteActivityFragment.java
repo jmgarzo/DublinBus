@@ -58,7 +58,7 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
             searchViewText = savedInstanceState.getString(SEARCH_VIEW_TEXT_TAG);
         }
 
-        getActivity().setTitle(getString(R.string.route_title));
+       // getActivity().setTitle(getString(R.string.route_title));
         setHasOptionsMenu(true);
         LinearLayoutManager routeLayoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
