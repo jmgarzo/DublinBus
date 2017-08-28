@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
@@ -29,6 +31,8 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
 
     private static final int ID_BUS_FAVOURITE_STOP_LOADER = 99;
     private TextView tvMessageError;
+    private AdView mAdView;
+
 
 
     FavouriteBusStopAdapter mFavouriteBusStopAdapter;
@@ -44,6 +48,14 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
          View rootView =  inflater.inflate(R.layout.fragment_favourite_bus_stop, container, false);
+
+        mAdView = rootView.findViewById(R.id.ad_view);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        mAdView.loadAd(adRequest);
 
         tvMessageError = rootView.findViewById(R.id.tv_favorite_error_message);
 

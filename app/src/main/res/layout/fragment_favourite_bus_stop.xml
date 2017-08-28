@@ -13,7 +13,7 @@
 
         <TextView
             android:id="@+id/tv_favorite_error_message"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:gravity="center"
@@ -24,19 +24,34 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_bus_stop"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:clipToPadding="false"
             android:paddingBottom="16dp"
             android:paddingTop="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/ad_view" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/ad_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            app:adSize="BANNER"
+            app:adUnitId="@string/banner_favourite_id"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+
     </android.support.constraint.ConstraintLayout>
 
 

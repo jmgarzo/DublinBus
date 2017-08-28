@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Route;
@@ -36,6 +38,8 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
 
     private BusStopAdapter mBusStopAdapter;
     private RecyclerView mBusStopRecyclerView;
+    private AdView mAdView;
+
 
 
     private final int BUS_STOPS_LOADER_ID = 223;
@@ -57,6 +61,15 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
 
         setHasOptionsMenu(true);
         getActivity().setTitle(getString(R.string.route_detail_activity_fragment_title));
+
+        mAdView = rootView.findViewById(R.id.ad_view);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        mAdView.loadAd(adRequest);
+
 
 
         FloatingActionButton fab =  rootView.findViewById(R.id.fab);

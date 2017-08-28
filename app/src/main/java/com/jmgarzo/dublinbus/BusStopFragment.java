@@ -21,6 +21,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
@@ -41,6 +44,8 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
     private static final String SEARCH_VIEW_TEXT_TAG = "search_view_text_tag";
     private String searchViewText = "";
 
+    private AdView mAdView;
+
     public BusStopFragment() {
         // Required empty public constructor
     }
@@ -54,6 +59,18 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
             searchViewText = savedInstanceState.getString(SEARCH_VIEW_TEXT_TAG);
         }
         View rootView = inflater.inflate(R.layout.fragment_bus_stop, container, false);
+
+
+        MobileAds.initialize(getActivity(), "ca-app-pub-3940256099942544~3347511713");
+
+
+        mAdView = rootView.findViewById(R.id.ad_view);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        mAdView.loadAd(adRequest);
 
         //getActivity().setTitle(getString(R.string.bus_stop_title));
         setHasOptionsMenu(true);

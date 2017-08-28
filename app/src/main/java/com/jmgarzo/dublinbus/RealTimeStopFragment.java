@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.sync.RealTimeSyncUtils;
 import com.jmgarzo.dublinbus.sync.services.AddFavouriteBusStopService;
@@ -43,6 +45,8 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     private TextView mError;
     private FloatingActionButton fab;
     private boolean isFavorite;
+    private AdView mAdView;
+
 
     public RealTimeStopFragment() {
     }
@@ -52,6 +56,14 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_real_time_stop, container, false);
         setHasOptionsMenu(true);
+
+        mAdView = rootView.findViewById(R.id.ad_view);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        mAdView.loadAd(adRequest);
 
         isFavorite = false;
         fab = rootView.findViewById(R.id.fab);
@@ -77,7 +89,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
             mBusStopNumber = getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT);
         }
 
-        getActivity().setTitle(getString(R.string.real_time_stop_title)+ " " +(mBusStopNumber));
+        getActivity().setTitle(getString(R.string.real_time_stop_title) + " " + (mBusStopNumber));
 
 
         mSwipeRefreshLayout = rootView.findViewById(R.id.swiperl_real_time_stop);
@@ -104,7 +116,6 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
 
         getActivity().getSupportLoaderManager().initLoader(ID_REAL_TIME_STOP_LOADER, null, this);
         getActivity().getSupportLoaderManager().initLoader(ID_FAB_FAVOURITE_FAB_LOADER, null, this);
-
 
 
         return rootView;

@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.Route;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
@@ -32,6 +34,8 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
 
     private RouteAdapter mRouteAdapter;
     private RecyclerView recyclerView;
+    private AdView mAdView;
+
     private static final String ROUTE_FILTER_TAG = "route_filter_tag";
     public static final String ROUTE_EXTRA_TAG = "route_extra_tag";
 
@@ -53,6 +57,15 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_route, container, false);
+
+
+        mAdView = rootView.findViewById(R.id.ad_view);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        mAdView.loadAd(adRequest);
 
         if(savedInstanceState!=null){
             searchViewText = savedInstanceState.getString(SEARCH_VIEW_TEXT_TAG);

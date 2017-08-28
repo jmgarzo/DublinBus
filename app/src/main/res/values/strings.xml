@@ -67,5 +67,13 @@
     <!--Constants-->
     <string name = "constant_dublin_bus_operator">bac</string>
 
+    <!--Admod-->
+    <string name="banner_ad_unit_id">ca-app-pub-9433862228892990/5634404368</string>
+    <string name="banner_bus_stop_id">ca-app-pub-9433862228892990/9517986669</string>
+    <string name="banner_route_id">ca-app-pub-9433862228892990/2952578317</string>
+    <string name="banner_route_detail_id">ca-app-pub-9433862228892990/3951455909</string>
+    <string name="banner_favourite_id">ca-app-pub-9433862228892990/8324502109</string>
+    <string name="banner_real_time_id">ca-app-pub-9433862228892990/1567522066</string>
+
 
 </resources>
