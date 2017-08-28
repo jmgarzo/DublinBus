@@ -52,7 +52,6 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
         mAdView = rootView.findViewById(R.id.ad_view);
 
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
 
         mAdView.loadAd(adRequest);

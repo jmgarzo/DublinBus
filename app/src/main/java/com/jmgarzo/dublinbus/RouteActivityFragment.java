@@ -62,7 +62,6 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
         mAdView = rootView.findViewById(R.id.ad_view);
 
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
 
         mAdView.loadAd(adRequest);
