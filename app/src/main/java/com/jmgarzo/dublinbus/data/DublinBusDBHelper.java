@@ -191,23 +191,25 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
 //        db.execSQL(SQL_CREATE_ROUTE_INFORMATION_TABLE);
 //        db.execSQL(SQL_CREATE_REAL_TIME_STOP);
 
+            upgradeVersion2(db);
+
     }
 
     private void  upgradeVersion2(SQLiteDatabase db){
 
-        db.execSQL("ALTER TABLE TABLE " + DublinBusContract.OperatorEntry.TABLE_NAME +
+        db.execSQL("ALTER TABLE " + DublinBusContract.OperatorEntry.TABLE_NAME +
         " ADD COLUMN " + DublinBusContract.OperatorEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
 
-        db.execSQL("ALTER TABLE TABLE " + DublinBusContract.BusStopEntry.TABLE_NAME +
+        db.execSQL("ALTER TABLE " + DublinBusContract.BusStopEntry.TABLE_NAME +
                 " ADD COLUMN " + DublinBusContract.BusStopEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
 
-        db.execSQL("ALTER TABLE TABLE " + DublinBusContract.RouteEntry.TABLE_NAME +
+        db.execSQL("ALTER TABLE " + DublinBusContract.RouteEntry.TABLE_NAME +
                 " ADD COLUMN " + DublinBusContract.RouteEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
 
-        db.execSQL("ALTER TABLE TABLE " + DublinBusContract.RouteBusStopEntry.TABLE_NAME +
+        db.execSQL("ALTER TABLE " + DublinBusContract.RouteBusStopEntry.TABLE_NAME +
                 " ADD COLUMN " + DublinBusContract.RouteBusStopEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
 
-        db.execSQL("ALTER TABLE TABLE " + DublinBusContract.RouteInformationEntry.TABLE_NAME +
+        db.execSQL("ALTER TABLE " + DublinBusContract.RouteInformationEntry.TABLE_NAME +
                 " ADD COLUMN " + DublinBusContract.RouteInformationEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
 
 
