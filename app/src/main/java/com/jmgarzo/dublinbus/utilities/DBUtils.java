@@ -343,8 +343,8 @@ public class DBUtils {
         String busStopId = "";
         Cursor cursorBusStop = context.getContentResolver().query(DublinBusContract.BusStopEntry.CONTENT_URI,
                 new String[]{DublinBusContract.BusStopEntry._ID},
-                DublinBusContract.BusStopEntry.NUMBER + " = ? ",
-                new String[]{busStopNumber},
+                DublinBusContract.BusStopEntry.NUMBER + " = ?  AND " + DublinBusContract.BusStopEntry.IS_NEW + " = ? ",
+                new String[]{busStopNumber, "1"},
                 null);
         if (cursorBusStop != null && cursorBusStop.moveToFirst()) {
             busStopId = cursorBusStop.getString(0);

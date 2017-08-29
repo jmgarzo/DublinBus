@@ -115,6 +115,7 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
                         null,
                         null,
                         DublinBusContract.RouteBusStopEntry.RECORD_ORDER);
+
             }
 //            case ROUTE_BUS_STOP_LOADER_ID: {
 //                return new CursorLoader(
