@@ -79,41 +79,85 @@ public class SyncTasks {
 
 
         deleteOldValues(context);
+        setFavouritesBusStop(context);
         updateNewValues(context);
-
-
+        setFavouritesBusStop(context);
 
     }
 
-    private static void updateNewValues(Context context){
+    private static void setFavouritesBusStop(Context context) {
+
+        ArrayList<BusStop> oldfavouritesList = getFavouriteBusStop(context);
+        ArrayList<BusStop> newFavouriteSList = new ArrayList<>();
+
+        String selection = DublinBusContract.BusStopEntry._ID + " ? AND " +
+                DublinBusContract.BusStopEntry.IS_FAVOURITE;
+        for (BusStop oldFavourite : oldfavouritesList) {
+
+            context.getContentResolver().delete(DublinBusContract.BusStopEntry.CONTENT_URI,
+                    DublinBusContract.BusStopEntry._ID + " = ? ",
+                    new String[]{Integer.toString(oldFavourite.getId())}
+                    );
+
+            BusStop newFavourite = getNewFavouriteFromOld(context, oldFavourite);
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DublinBusContract.BusStopEntry.IS_FAVOURITE, 1);
+            context.getContentResolver().update(
+                    DublinBusContract.BusStopEntry.CONTENT_URI,
+                    contentValues,
+                    selection,
+                    new String[]{Integer.toString(newFavourite.getId()), "0"});
+        }
+    }
+
+
+
+
+    private static BusStop getNewFavouriteFromOld(Context context, BusStop oldFavourite) {
+        BusStop newFavoriteBusStop = null;
+        String selection = DublinBusContract.BusStopEntry.NUMBER + " =? AND " +
+                DublinBusContract.BusStopEntry.IS_NEW;
+        Cursor cursor = context.getContentResolver().query(
+                DublinBusContract.BusStopEntry.CONTENT_URI,
+                DBUtils.BUS_STOP_COLUMNS,
+                selection,
+                new String[]{oldFavourite.getNumber(), "0"},
+                null);
+        if (null != cursor && cursor.moveToFirst()) {
+            newFavoriteBusStop = new BusStop();
+            newFavoriteBusStop.cursorToBusStop(cursor);
+        }
+        return newFavoriteBusStop;
+    }
+
+    private static void updateNewValues(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
 
         ContentValues routeBusStopCv = new ContentValues();
-        routeBusStopCv.put(DublinBusContract.RouteBusStopEntry.IS_NEW,0);
-        int routeBusStopUpdated = contentResolver.update(DublinBusContract.RouteBusStopEntry.CONTENT_URI,routeBusStopCv,null,null);
-        Log.d(LOG_TAG,"Route Updated: " + routeBusStopUpdated);
+        routeBusStopCv.put(DublinBusContract.RouteBusStopEntry.IS_NEW, 0);
+        int routeBusStopUpdated = contentResolver.update(DublinBusContract.RouteBusStopEntry.CONTENT_URI, routeBusStopCv, null, null);
+        Log.d(LOG_TAG, "Route Updated: " + routeBusStopUpdated);
 
         ContentValues operatorCv = new ContentValues();
-        operatorCv.put(DublinBusContract.OperatorEntry.IS_NEW,0);
-        int operatorsUpdated = contentResolver.update(DublinBusContract.OperatorEntry.CONTENT_URI,operatorCv,null,null);
-        Log.d(LOG_TAG,"Operators Updated : " + operatorsUpdated);
+        operatorCv.put(DublinBusContract.OperatorEntry.IS_NEW, 0);
+        int operatorsUpdated = contentResolver.update(DublinBusContract.OperatorEntry.CONTENT_URI, operatorCv, null, null);
+        Log.d(LOG_TAG, "Operators Updated : " + operatorsUpdated);
 
 
         ContentValues busStopCv = new ContentValues();
-        busStopCv.put(DublinBusContract.BusStopEntry.IS_NEW,0);
-        int busStopsUpdated = contentResolver.update(DublinBusContract.BusStopEntry.CONTENT_URI,busStopCv,null,null);
-        Log.d(LOG_TAG,"Bus Stop Updated: " + busStopsUpdated);
+        busStopCv.put(DublinBusContract.BusStopEntry.IS_NEW, 0);
+        int busStopsUpdated = contentResolver.update(DublinBusContract.BusStopEntry.CONTENT_URI, busStopCv, null, null);
+        Log.d(LOG_TAG, "Bus Stop Updated: " + busStopsUpdated);
 
         ContentValues routeInformationCv = new ContentValues();
-        routeInformationCv.put(DublinBusContract.RouteInformationEntry.IS_NEW,0);
-        int routeInformationUpdated = contentResolver.update(DublinBusContract.RouteInformationEntry.CONTENT_URI,routeInformationCv,null,null);
-        Log.d(LOG_TAG,"Route Information Updated: " + routeInformationUpdated);
+        routeInformationCv.put(DublinBusContract.RouteInformationEntry.IS_NEW, 0);
+        int routeInformationUpdated = contentResolver.update(DublinBusContract.RouteInformationEntry.CONTENT_URI, routeInformationCv, null, null);
+        Log.d(LOG_TAG, "Route Information Updated: " + routeInformationUpdated);
 
         ContentValues routeCv = new ContentValues();
-        routeCv.put(DublinBusContract.RouteEntry.IS_NEW,0);
-        int routeUpdated = contentResolver.update(DublinBusContract.RouteEntry.CONTENT_URI,routeCv,null,null);
-        Log.d(LOG_TAG,"Route Updated: " + routeUpdated);
-
+        routeCv.put(DublinBusContract.RouteEntry.IS_NEW, 0);
+        int routeUpdated = contentResolver.update(DublinBusContract.RouteEntry.CONTENT_URI, routeCv, null, null);
+        Log.d(LOG_TAG, "Route Updated: " + routeUpdated);
 
 
     }
@@ -124,34 +168,29 @@ public class SyncTasks {
         int routeBusStopDeleted = contentResolver.delete(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
                 DublinBusContract.RouteBusStopEntry.IS_NEW + " = ? ",
                 new String[]{"0"});
-        Log.d(LOG_TAG,"Route Bus Stop Deleted: " + routeBusStopDeleted);
+        Log.d(LOG_TAG, "Route Bus Stop Deleted: " + routeBusStopDeleted);
 
         int operatorsDeleted = contentResolver.delete(DublinBusContract.OperatorEntry.CONTENT_URI,
                 DublinBusContract.OperatorEntry.IS_NEW + " = ? ",
                 new String[]{"0"});
-        Log.d(LOG_TAG,"Operator Deleted: " + operatorsDeleted);
+        Log.d(LOG_TAG, "Operator Deleted: " + operatorsDeleted);
 
         int busStopDeleted = contentResolver.delete(DublinBusContract.BusStopEntry.CONTENT_URI,
                 DublinBusContract.BusStopEntry.IS_NEW + " = ? AND " + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ",
                 new String[]{"0", "0"});
-        Log.d(LOG_TAG,"Bus Stop Deleted: " + busStopDeleted);
-
+        Log.d(LOG_TAG, "Bus Stop Deleted: " + busStopDeleted);
 
 
         int routeInformationDeleted = contentResolver.delete(DublinBusContract.RouteInformationEntry.CONTENT_URI,
                 DublinBusContract.RouteInformationEntry.IS_NEW + " = ? ",
                 new String[]{"0"});
-        Log.d(LOG_TAG,"Route Information Deleted: " + routeInformationDeleted);
+        Log.d(LOG_TAG, "Route Information Deleted: " + routeInformationDeleted);
 
 
         int routeDeleted = contentResolver.delete(DublinBusContract.RouteEntry.CONTENT_URI,
                 DublinBusContract.RouteEntry.IS_NEW + " = ? ",
                 new String[]{"0"});
-        Log.d(LOG_TAG,"Route Deleted: " + routeDeleted);
-
-
-
-
+        Log.d(LOG_TAG, "Route Deleted: " + routeDeleted);
 
 
     }
@@ -341,6 +380,32 @@ public class SyncTasks {
                 DublinBusContract.BusStopEntry.CONTENT_URI,
                 selection,
                 selectionArgs);
+    }
+
+    public static ArrayList<BusStop> getFavouriteBusStop(Context context) {
+        ArrayList<BusStop> favouriteList = null;
+
+        String selection = DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? AND " +
+                DublinBusContract.BusStopEntry.IS_NEW + " = ? ";
+
+        Cursor cursor = context.getContentResolver().query(
+                DublinBusContract.BusStopEntry.CONTENT_URI,
+                DBUtils.BUS_STOP_COLUMNS,
+                selection,
+                new String[]{"1", "0"},
+                null
+        );
+
+        if (null != cursor && cursor.moveToFirst()) {
+            favouriteList = new ArrayList<>();
+            do {
+                BusStop favourite = new BusStop();
+                favourite.cursorToBusStop(cursor);
+
+                favouriteList.add(favourite);
+            } while (cursor.moveToNext());
+        }
+        return favouriteList;
     }
 
 }
