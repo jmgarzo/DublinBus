@@ -298,13 +298,15 @@ public class DBUtils {
         }
     }
 
-    public static ArrayList<ContentValues> insertRouteBusStop2(Context context, Route route) {
+    public static ArrayList<ContentValues> getRouteBusStop(Context context, Route route) {
 
         String selection = DublinBusContract.RouteEntry.NAME + " = ? " +
                 " AND " + DublinBusContract.RouteEntry.ORIGIN + " = ? " +
                 " AND " + DublinBusContract.RouteEntry.OPERATOR + " = ? " +
-                " AND " + DublinBusContract.RouteEntry.DESTINATION + " = ? ";
-        String[] selectionArgs = new String[]{route.getName(), route.getOrigin(), Long.toString(route.getOperator()), route.getDestination()};
+                " AND " + DublinBusContract.RouteEntry.DESTINATION + " = ? " +
+                " AND " + DublinBusContract.RouteEntry.IS_NEW + " = ? ";
+        String[] selectionArgs = new String[]{route.getName(), route.getOrigin(),
+                Long.toString(route.getOperator()), route.getDestination(), "1"};
         Cursor cursor = context.getContentResolver().query(DublinBusContract.RouteEntry.CONTENT_URI,
                 new String[]{DublinBusContract.RouteEntry._ID},
                 selection,
@@ -330,6 +332,7 @@ public class DBUtils {
                 cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID, idRoute);
                 cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID, busStopId);
                 cv.put(DublinBusContract.RouteBusStopEntry.RECORD_ORDER, i);
+                cv.put(DublinBusContract.RouteBusStopEntry.IS_NEW,1);
 
                 routeBusStopList.add(cv);
             } else {

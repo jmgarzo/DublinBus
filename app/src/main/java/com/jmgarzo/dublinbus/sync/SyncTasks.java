@@ -37,52 +37,74 @@ public class SyncTasks {
         ContentResolver contentResolver = context.getContentResolver();
 
         ArrayList<ContentValues> operatorContentValues = getSyncOperators(context);
+        int operatorsInserted = contentResolver.bulkInsert(DublinBusContract.OperatorEntry.CONTENT_URI,
+                operatorContentValues.toArray(new ContentValues[operatorContentValues.size()]));
 
         ArrayList<ContentValues> busStopContententValues = getSyncBusStops(context);
-
-        ArrayList<ContentValues> routeInformationContentValues = getSyncRouteInformation(context);
-
-        ArrayList<Route> totalRoutes = syncRoute(context);
-        ArrayList<ContentValues> routeContentValues = new ArrayList<>();
-        for (Route route : totalRoutes) {
-            routeContentValues.add(route.getContentValues());
-        }
-
-
-        int busStopDeleted = contentResolver.delete(DublinBusContract.BusStopEntry.CONTENT_URI,
-                DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ",
-                new String[]{"0"});
         int busStopInserted = contentResolver.bulkInsert(DublinBusContract.BusStopEntry.CONTENT_URI,
                 busStopContententValues.toArray(new ContentValues[busStopContententValues.size()]));
 
-        int routeDelete = contentResolver.delete(DublinBusContract.RouteEntry.CONTENT_URI, null, null);
+        ArrayList<ContentValues> routeInformationContentValues = getSyncRouteInformation(context);
+        int routeInformationInserted = contentResolver.bulkInsert(DublinBusContract.RouteInformationEntry.CONTENT_URI,
+                routeInformationContentValues.toArray(new ContentValues[routeInformationContentValues.size()]));
+
+        ArrayList<Route> newTotalRoutes = getNewSyncRoute(context);
+        ArrayList<ContentValues> newRouteContentValues = new ArrayList<>();
+        for (Route route : newTotalRoutes) {
+            newRouteContentValues.add(route.getContentValues());
+        }
+
         int routeInserted = contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
-                routeContentValues.toArray(new ContentValues[routeContentValues.size()]));
+                newRouteContentValues.toArray(new ContentValues[newRouteContentValues.size()]));
 
         //ROUTE BUS STOP
 
         ArrayList<ContentValues> routeBusStopContentValues = new ArrayList<>();
-        for (int j = 0; j < totalRoutes.size(); j++) {
-            ArrayList<ContentValues> routeBusStop = DBUtils.insertRouteBusStop2(context, totalRoutes.get(j));
+        for (int j = 0; j < newTotalRoutes.size(); j++) {
+            ArrayList<ContentValues> routeBusStop = DBUtils.getRouteBusStop(context, newTotalRoutes.get(j));
             if (null != routeBusStop) {
                 routeBusStopContentValues.addAll(routeBusStop);
             }
         }
 
-        int routeBusStopDeleted = contentResolver.delete(DublinBusContract.RouteBusStopEntry.CONTENT_URI, null, null);
         int routeBusStopInserted = contentResolver.bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
                 routeBusStopContentValues.toArray(new ContentValues[routeBusStopContentValues.size()]));
 
-        Log.d(LOG_TAG, busStopDeleted + " Bus Stop Deleted");
-        Log.d(LOG_TAG, busStopInserted + " Bus Stop Inserted");
+        deleteOldValues(context);
 
-        Log.d(LOG_TAG, routeDelete + " Route Deleted");
-        Log.d(LOG_TAG, routeInserted + " Route Inserted");
 
-        Log.d(LOG_TAG, routeBusStopDeleted + " Route Bus Stop Deleted");
-        Log.d(LOG_TAG, routeBusStopInserted + " Route Bus Stop Inserted");
     }
 
+    private static void deleteOldValues(Context context){
+        ContentResolver contentResolver = context.getContentResolver();
+
+
+
+        contentResolver.delete(DublinBusContract.OperatorEntry.CONTENT_URI,
+                DublinBusContract.OperatorEntry.IS_NEW + " = ? ",
+                new String[]{"0"});
+
+        contentResolver.delete(DublinBusContract.BusStopEntry.CONTENT_URI,
+                DublinBusContract.BusStopEntry.IS_NEW + " = ? ",
+                new String[]{"0"});
+
+        contentResolver.delete(DublinBusContract.RouteInformationEntry.CONTENT_URI,
+                DublinBusContract.RouteInformationEntry.IS_NEW + " = ? ",
+                new String[]{"0"});
+
+        contentResolver.delete(DublinBusContract.RouteEntry.CONTENT_URI,
+                DublinBusContract.RouteEntry.IS_NEW + " = ? ",
+                new String[]{"0"});
+
+        contentResolver.delete(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
+                DublinBusContract.RouteBusStopEntry.IS_NEW + " = ? ",
+                new String[]{"0"});
+
+
+
+
+
+    }
 
 
 
@@ -113,17 +135,14 @@ public class SyncTasks {
 
     synchronized public static ArrayList<ContentValues> getSyncBusStops(Context context) {
         ArrayList<ContentValues> busStopCVList = null;
-
         try {
             ArrayList<BusStop> busStopList = NetworkUtilities.getBusStopInformation();
-
             if (busStopList != null && busStopList.size() > 0) {
                 busStopCVList = new ArrayList<>();
                 for (int i = 0; i < busStopList.size(); i++) {
                     BusStop busStop = busStopList.get(i);
                     busStopCVList.add(busStop.getContentValues());
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,22 +153,20 @@ public class SyncTasks {
 
 
 
-    synchronized public static ArrayList<Route> syncRoute(Context context) {
+    synchronized public static ArrayList<Route> getNewSyncRoute(Context context) {
         ArrayList<Route> totalRouteList = new ArrayList<>();
-
         try {
-
+            String selection = DublinBusContract.RouteInformationEntry.OPERATOR + " = ?  AND " +
+                    DublinBusContract.RouteInformationEntry.IS_NEW + " = ? ";
+            String[] selectionArgs = new String[]{context.getString(R.string.constant_dublin_bus_operator),"1"};
             Cursor cursor = context.getContentResolver().query(DublinBusContract.RouteInformationEntry.CONTENT_URI,
                     DBUtils.ROUTE_INFORMATION_COLUMNS,
-                    DublinBusContract.RouteInformationEntry.OPERATOR + " = ? ",
-                    new String[]{context.getString(R.string.constant_dublin_bus_operator)},
+                    selection,
+                    selectionArgs,
                     null);
-
-
             if (cursor != null && cursor.moveToFirst()) {
                 do {
                     ArrayList<Route> routeList = NetworkUtilities.getRouteInformation(context, cursor.getString(DBUtils.COL_ROUTE_INFORMATION_ROUTE));
-
                     //TODO: DELETE! JUST FOR DEBUG
                     if (routeList.size() > 2) {
                         Log.e(LOG_TAG, "Route:" + routeList.get(1).getName() + " Have " + routeList.size() + " results");

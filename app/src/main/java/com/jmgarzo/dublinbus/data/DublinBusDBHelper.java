@@ -173,23 +173,43 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
         @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
 
-        db.execSQL("DROP TABLE IF EXISTS " + DublinBusContract.OperatorEntry.TABLE_NAME );
-        db.execSQL("DROP TABLE IF EXISTS " + DublinBusContract.BusStopEntry.TABLE_NAME );
-        db.execSQL("DROP TABLE IF EXISTS " + DublinBusContract.RouteEntry.TABLE_NAME );
-        db.execSQL("DROP TABLE IF EXISTS " + DublinBusContract.RouteBusStopEntry.TABLE_NAME );
-        db.execSQL("DROP TABLE IF EXISTS " + DublinBusContract.RouteInformationEntry.TABLE_NAME );
-        db.execSQL("DROP TABLE IF EXISTS " + DublinBusContract.RealTimeStopEntry.TABLE_NAME );
+//        db.execSQL("DROP TABLE IF EXISTS " + DublinBusContract.OperatorEntry.TABLE_NAME );
+//        db.execSQL("DROP TABLE IF EXISTS " + DublinBusContract.BusStopEntry.TABLE_NAME );
+//        db.execSQL("DROP TABLE IF EXISTS " + DublinBusContract.RouteEntry.TABLE_NAME );
+//        db.execSQL("DROP TABLE IF EXISTS " + DublinBusContract.RouteBusStopEntry.TABLE_NAME );
+//        db.execSQL("DROP TABLE IF EXISTS " + DublinBusContract.RouteInformationEntry.TABLE_NAME );
+//        db.execSQL("DROP TABLE IF EXISTS " + DublinBusContract.RealTimeStopEntry.TABLE_NAME );
+//
+//
+//
+//
+//
+//        db.execSQL(SQL_CREATE_OPERATOR_TABLE);
+//        db.execSQL(SQL_CREATE_BUS_STOP_TABLE);
+//        db.execSQL(SQL_CREATE_ROUTE_TABLE);
+//        db.execSQL(SQL_CREATE_ROUTE_BUS_STOP_TABLE);
+//        db.execSQL(SQL_CREATE_ROUTE_INFORMATION_TABLE);
+//        db.execSQL(SQL_CREATE_REAL_TIME_STOP);
 
+    }
 
+    private void  upgradeVersion2(SQLiteDatabase db){
 
+        db.execSQL("ALTER TABLE TABLE " + DublinBusContract.OperatorEntry.TABLE_NAME +
+        " ADD COLUMN " + DublinBusContract.OperatorEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
 
+        db.execSQL("ALTER TABLE TABLE " + DublinBusContract.BusStopEntry.TABLE_NAME +
+                " ADD COLUMN " + DublinBusContract.BusStopEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
 
-        db.execSQL(SQL_CREATE_OPERATOR_TABLE);
-        db.execSQL(SQL_CREATE_BUS_STOP_TABLE);
-        db.execSQL(SQL_CREATE_ROUTE_TABLE);
-        db.execSQL(SQL_CREATE_ROUTE_BUS_STOP_TABLE);
-        db.execSQL(SQL_CREATE_ROUTE_INFORMATION_TABLE);
-        db.execSQL(SQL_CREATE_REAL_TIME_STOP);
+        db.execSQL("ALTER TABLE TABLE " + DublinBusContract.RouteEntry.TABLE_NAME +
+                " ADD COLUMN " + DublinBusContract.RouteEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
+
+        db.execSQL("ALTER TABLE TABLE " + DublinBusContract.RouteBusStopEntry.TABLE_NAME +
+                " ADD COLUMN " + DublinBusContract.RouteBusStopEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
+
+        db.execSQL("ALTER TABLE TABLE " + DublinBusContract.RouteInformationEntry.TABLE_NAME +
+                " ADD COLUMN " + DublinBusContract.RouteInformationEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
+
 
     }
 

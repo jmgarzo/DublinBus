@@ -170,6 +170,7 @@ public class JsonUtilities {
                 operator.setReference(jsonOperator.getString(OPERATOR_REFERENCE));
                 operator.setName(jsonOperator.getString(OPERATOR_NAME));
                 operator.setDescription(jsonOperator.getString(OPERATOR_DESCRIPTION));
+                operator.setNew(true);
 
                 operatorList.add(operator);
             }
@@ -184,7 +185,6 @@ public class JsonUtilities {
     public static ArrayList<BusStop> getBusStopsFromJson(String jsonStr) {
 
         ArrayList<BusStop> busStopList = null;
-
         JSONObject busStopJson = null;
         try {
             busStopJson = new JSONObject(jsonStr);
@@ -206,6 +206,7 @@ public class JsonUtilities {
                 busStop.setLastUpdated(jsonBusStop.getString(BUS_STOP_LAST_UPDATED));
                 busStop.setFavourite(false);
                 busStop.setAlias("");
+                busStop.setNew(true);
 
                 busStopList.add(busStop);
             }
@@ -234,15 +235,11 @@ public class JsonUtilities {
             JSONArray routeArray = routeJson.getJSONArray(ROUTE_RESULTS);
             routeList = new ArrayList<>();
             for (int i = 0; i < routeArray.length(); i++) {
-
-
                 JSONObject jsonRoute = routeArray.getJSONObject(i);
-
                 Route route = new Route();
 
                 route.setTimestamp(timestamp);
                 route.setName(name);
-
                 Long operator = DBUtils.getOperator(context,jsonRoute.getString(ROUTE_OPERATOR));
 
                 //TODO: query to save operator_id
@@ -254,6 +251,7 @@ public class JsonUtilities {
                 route.setLastUpdated(jsonRoute.getString(ROUTE_LAST_UPDATED));
 
                 JSONArray stopsArray = jsonRoute.getJSONArray(ROUTE_STOPS);
+                route.setNew(true);
                 stopsList = new ArrayList<>();
 
                 for (int j = 0; j < stopsArray.length(); j++) {
@@ -276,10 +274,7 @@ public class JsonUtilities {
 
 
     public static ArrayList<RouteInformation> getRouteInformationFromJson(String jsonStr) {
-
-
         ArrayList<RouteInformation> routeInformationList = null;
-
         JSONObject routeInformationJson = null;
         try {
             routeInformationJson = new JSONObject(jsonStr);
@@ -292,14 +287,13 @@ public class JsonUtilities {
 
                 routeInformation.setOperator(jsonRouteInformation.getString(ROUTE_INFORMATION_OPERATOR));
                 routeInformation.setRoute(jsonRouteInformation.getString(ROUTE_INFORMATION_ROUTE));
+                routeInformation.setNew(true);
 
                 routeInformationList.add(routeInformation);
             }
-
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.toString());
         }
-
         return routeInformationList;
     }
 
