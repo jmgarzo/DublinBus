@@ -19,13 +19,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.sync.RealTimeSyncUtils;
 import com.jmgarzo.dublinbus.sync.services.AddFavouriteBusStopService;
 import com.jmgarzo.dublinbus.sync.services.DeleteFromFavoriteBusStopService;
 import com.jmgarzo.dublinbus.sync.services.RealTimeStopService;
+import com.jmgarzo.dublinbus.utilities.AdUtils;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 import com.jmgarzo.dublinbus.utilities.NetworkUtilities;
 
@@ -59,10 +59,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
 
         mAdView = rootView.findViewById(R.id.ad_view);
 
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-
-        mAdView.loadAd(adRequest);
+        mAdView.loadAd(AdUtils.getAdRequest());
 
         isFavorite = false;
         fab = rootView.findViewById(R.id.fab);

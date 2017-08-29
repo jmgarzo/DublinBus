@@ -20,10 +20,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.utilities.AdUtils;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 /**
@@ -58,13 +58,9 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_route, container, false);
 
-
         mAdView = rootView.findViewById(R.id.ad_view);
 
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-
-        mAdView.loadAd(adRequest);
+        mAdView.loadAd(AdUtils.getAdRequest());
 
         if(savedInstanceState!=null){
             searchViewText = savedInstanceState.getString(SEARCH_VIEW_TEXT_TAG);

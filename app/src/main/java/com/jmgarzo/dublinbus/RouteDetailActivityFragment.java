@@ -16,11 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.utilities.AdUtils;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 import java.util.ArrayList;
@@ -63,11 +63,8 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
         getActivity().setTitle(getString(R.string.route_detail_activity_fragment_title));
 
         mAdView = rootView.findViewById(R.id.ad_view);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
 
-
+        mAdView.loadAd(AdUtils.getAdRequest());
 
         FloatingActionButton fab =  rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

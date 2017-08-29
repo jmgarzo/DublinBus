@@ -21,11 +21,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
+import com.jmgarzo.dublinbus.utilities.AdUtils;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 
@@ -60,18 +60,10 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
         }
         View rootView = inflater.inflate(R.layout.fragment_bus_stop, container, false);
 
-
         MobileAds.initialize(getActivity(), "ca-app-pub-3940256099942544~3347511713");
-
-
         mAdView = rootView.findViewById(R.id.ad_view);
+        mAdView.loadAd(AdUtils.getAdRequest());
 
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-
-        mAdView.loadAd(adRequest);
-
-        //getActivity().setTitle(getString(R.string.bus_stop_title));
         setHasOptionsMenu(true);
 
         LinearLayoutManager stopBusLayoutManager =
@@ -87,7 +79,6 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
         mRecyclerView.setAdapter(mBusStopAdapter);
 
         getActivity().getSupportLoaderManager().initLoader(ID_BUS_STOP_LOADER, null, this);
-
 
         return rootView;
     }

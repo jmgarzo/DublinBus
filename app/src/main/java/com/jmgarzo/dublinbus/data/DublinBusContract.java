@@ -31,6 +31,7 @@ public class DublinBusContract {
         public static final String REFERENCE="reference";
         public static final String NAME="name";
         public static final String DESCRIPTION="description";
+        public static final String IS_NEW = "is_new";
 
         public static final String CONTENT_DIR_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
@@ -53,6 +54,7 @@ public class DublinBusContract {
         public static final String LAST_UPDATED = "last_updated";
         public static final String IS_FAVOURITE =  "is_favorite";
         public static final String ALIAS = "alias";
+        public static final String IS_NEW = "is_new";
 
         public static final String CONTENT_DIR_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
@@ -80,6 +82,7 @@ public class DublinBusContract {
         public static final String DESTINATION = "destination";
         public static final String DESTINATION_LOCALIZED = "destination_localized";
         public static final String LAST_UPDATED = "last_updated";
+        public static final String IS_NEW = "is_new";
 
         public static final String CONTENT_DIR_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
@@ -95,6 +98,7 @@ public class DublinBusContract {
         public static final String ROUTE_ID = "route_id";
         public static final String BUS_STOP_ID = "bus_stop_id";
         public static final String RECORD_ORDER = "record_insert_order";
+        public static final String IS_NEW = "is_new";
 
 
         public static final String CONTENT_DIR_TYPE =
@@ -110,6 +114,7 @@ public class DublinBusContract {
         public static final String _ID = "_id";
         public static final String OPERATOR = "operator";
         public static final String ROUTE = "route";
+        public static final String IS_NEW = "is_new";
 
         public static final String CONTENT_DIR_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;

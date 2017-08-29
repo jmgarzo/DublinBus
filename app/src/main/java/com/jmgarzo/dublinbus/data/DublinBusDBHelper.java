@@ -32,7 +32,8 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
                     DublinBusContract.OperatorEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
                     DublinBusContract.OperatorEntry.REFERENCE + " TEXT NOT NULL, " +
                     DublinBusContract.OperatorEntry.NAME + " TEXT NOT NULL, " +
-                    DublinBusContract.OperatorEntry.DESCRIPTION + " TEXT NOT NULL " +
+                    DublinBusContract.OperatorEntry.DESCRIPTION + " TEXT NOT NULL, " +
+                    DublinBusContract.OperatorEntry.IS_NEW + " INTEGER NOT NULL " +
                     " );";
 
     private final String SQL_CREATE_BUS_STOP_TABLE =
@@ -48,7 +49,8 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
                     DublinBusContract.BusStopEntry.LONGITUDE + " TEXT NOT NULL, " +
                     DublinBusContract.BusStopEntry.LAST_UPDATED + " TEXT NOT NULL, " +
                     DublinBusContract.BusStopEntry.IS_FAVOURITE + " INTEGER NOT NULL, " +
-                    DublinBusContract.BusStopEntry.ALIAS + " INTEGER NOT NULL " +
+                    DublinBusContract.BusStopEntry.ALIAS + " INTEGER NOT NULL, " +
+                    DublinBusContract.BusStopEntry.IS_NEW + " INTEGER NOT NULL " +
                     " );";
 
     private final String SQL_CREATE_ROUTE_TABLE =
@@ -62,6 +64,8 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
                     DublinBusContract.RouteEntry.DESTINATION + " TEXT NOT NULL, " +
                     DublinBusContract.RouteEntry.DESTINATION_LOCALIZED + " TEXT NOT NULL, " +
                     DublinBusContract.RouteEntry.LAST_UPDATED + " TEXT NOT NULL, " +
+                    DublinBusContract.RouteEntry.IS_NEW + " INTEGER NOT NULL, " +
+
                     " FOREIGN KEY (" + DublinBusContract.RouteEntry.OPERATOR + ") REFERENCES " +
                     DublinBusContract.OperatorEntry.TABLE_NAME + " (" + DublinBusContract.OperatorEntry._ID + ") ON DELETE CASCADE " +
                     ");";
@@ -71,9 +75,11 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
                     DublinBusContract.RouteBusStopEntry.ROUTE_ID + " INTEGER , " +
                     DublinBusContract.RouteBusStopEntry.BUS_STOP_ID + " INTEGER, " +
                     DublinBusContract.RouteBusStopEntry.RECORD_ORDER  + " INTEGER NOT NULL,  " +
+                    DublinBusContract.RouteBusStopEntry.IS_NEW + " INTEGER NOT NULL, " +
                     " PRIMARY KEY( " +
                     DublinBusContract.RouteBusStopEntry.ROUTE_ID + " , "+
                     DublinBusContract.RouteBusStopEntry.BUS_STOP_ID  +
+
                     " ), " +
                     " FOREIGN KEY( " +  DublinBusContract.RouteBusStopEntry.ROUTE_ID + " ) REFERENCES " +
                     DublinBusContract.RouteEntry.TABLE_NAME + " ( " + DublinBusContract.RouteEntry._ID +") ON DELETE CASCADE, " +
@@ -87,7 +93,9 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + DublinBusContract.RouteInformationEntry.TABLE_NAME + " ( " +
                     DublinBusContract.RouteInformationEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
                     DublinBusContract.RouteInformationEntry.OPERATOR + " TEXT NOT NULL, " +
-                    DublinBusContract.RouteInformationEntry.ROUTE + " TEXT NOT NULL " +
+                    DublinBusContract.RouteInformationEntry.ROUTE + " TEXT NOT NULL, " +
+                    DublinBusContract.RouteInformationEntry.IS_NEW + " INTEGER NOT NULL " +
+
                     " );";
 
     private final String SQL_CREATE_REAL_TIME_STOP =
