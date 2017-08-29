@@ -17,7 +17,7 @@ import java.io.OutputStream;
 
 public class DublinBusDBHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "DublinBus.db";
    private static String DB_PATH;
 

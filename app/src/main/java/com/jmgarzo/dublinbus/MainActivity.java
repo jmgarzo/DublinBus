@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.jmgarzo.dublinbus.sync.SyncTasks;
+import com.jmgarzo.dublinbus.sync.UpdateDbSyncUtils;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 SyncTasks.copyDbFromAssets(this);
 
             }
-            //UpdateDbSyncUtils.initialize(this);
+            UpdateDbSyncUtils.initialize(this);
         }
 
         setTitle(getString(R.string.bus_stop_title));
