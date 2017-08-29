@@ -79,7 +79,6 @@ public class SyncTasks {
 
 
         deleteOldValues(context);
-        setFavouritesBusStop(context);
         updateNewValues(context);
         setFavouritesBusStop(context);
 
@@ -115,8 +114,8 @@ public class SyncTasks {
 
     private static BusStop getNewFavouriteFromOld(Context context, BusStop oldFavourite) {
         BusStop newFavoriteBusStop = null;
-        String selection = DublinBusContract.BusStopEntry.NUMBER + " =? AND " +
-                DublinBusContract.BusStopEntry.IS_NEW;
+        String selection = DublinBusContract.BusStopEntry.NUMBER + " = ? AND " +
+                DublinBusContract.BusStopEntry.IS_NEW + " = ? " ;
         Cursor cursor = context.getContentResolver().query(
                 DublinBusContract.BusStopEntry.CONTENT_URI,
                 DBUtils.BUS_STOP_COLUMNS,
