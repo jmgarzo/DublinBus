@@ -31,7 +31,6 @@ import static android.util.Log.e;
 public class SyncTasks {
 
 
-
     public static void syncDB(Context context) {
 
         ContentResolver contentResolver = context.getContentResolver();
@@ -39,14 +38,19 @@ public class SyncTasks {
         ArrayList<ContentValues> operatorContentValues = getSyncOperators(context);
         int operatorsInserted = contentResolver.bulkInsert(DublinBusContract.OperatorEntry.CONTENT_URI,
                 operatorContentValues.toArray(new ContentValues[operatorContentValues.size()]));
+        Log.d(LOG_TAG, "Operator inserted: " + operatorsInserted);
 
         ArrayList<ContentValues> busStopContententValues = getSyncBusStops(context);
         int busStopInserted = contentResolver.bulkInsert(DublinBusContract.BusStopEntry.CONTENT_URI,
                 busStopContententValues.toArray(new ContentValues[busStopContententValues.size()]));
+        Log.d(LOG_TAG, "Bus Stop inserted: " + busStopInserted);
+
 
         ArrayList<ContentValues> routeInformationContentValues = getSyncRouteInformation(context);
         int routeInformationInserted = contentResolver.bulkInsert(DublinBusContract.RouteInformationEntry.CONTENT_URI,
                 routeInformationContentValues.toArray(new ContentValues[routeInformationContentValues.size()]));
+        Log.d(LOG_TAG, "Route Information Inserted: " + routeInformationInserted);
+
 
         ArrayList<Route> newTotalRoutes = getNewSyncRoute(context);
         ArrayList<ContentValues> newRouteContentValues = new ArrayList<>();
@@ -56,6 +60,8 @@ public class SyncTasks {
 
         int routeInserted = contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
                 newRouteContentValues.toArray(new ContentValues[newRouteContentValues.size()]));
+        Log.d(LOG_TAG, "Route Inserted: " + routeInserted);
+
 
         //ROUTE BUS STOP
 
@@ -69,49 +75,57 @@ public class SyncTasks {
 
         int routeBusStopInserted = contentResolver.bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
                 routeBusStopContentValues.toArray(new ContentValues[routeBusStopContentValues.size()]));
+        Log.d(LOG_TAG, "Route Bus Stop Inserted: " + routeBusStopInserted);
+
 
         deleteOldValues(context);
 
 
     }
 
-    private static void deleteOldValues(Context context){
+    private static void deleteOldValues(Context context) {
         ContentResolver contentResolver = context.getContentResolver();
 
 
-
-        contentResolver.delete(DublinBusContract.OperatorEntry.CONTENT_URI,
+        int operatorsDeleted = contentResolver.delete(DublinBusContract.OperatorEntry.CONTENT_URI,
                 DublinBusContract.OperatorEntry.IS_NEW + " = ? ",
                 new String[]{"0"});
+        Log.d(LOG_TAG,"Operator Deleted: " + operatorsDeleted);
 
-        contentResolver.delete(DublinBusContract.BusStopEntry.CONTENT_URI,
+        int busStopDeleted = contentResolver.delete(DublinBusContract.BusStopEntry.CONTENT_URI,
                 DublinBusContract.BusStopEntry.IS_NEW + " = ? AND " + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ",
-                new String[]{"0","0"});
+                new String[]{"0", "0"});
+        Log.d(LOG_TAG,"Bus Stop Deleted: " + busStopDeleted);
 
-        contentResolver.delete(DublinBusContract.RouteInformationEntry.CONTENT_URI,
+
+
+        int routeInformationDeleted = contentResolver.delete(DublinBusContract.RouteInformationEntry.CONTENT_URI,
                 DublinBusContract.RouteInformationEntry.IS_NEW + " = ? ",
                 new String[]{"0"});
+        Log.d(LOG_TAG,"Route Information Deleted: " + routeInformationDeleted);
 
-        contentResolver.delete(DublinBusContract.RouteEntry.CONTENT_URI,
+
+        int routeDeleted = contentResolver.delete(DublinBusContract.RouteEntry.CONTENT_URI,
                 DublinBusContract.RouteEntry.IS_NEW + " = ? ",
                 new String[]{"0"});
+        Log.d(LOG_TAG,"Route Deleted: " + routeDeleted);
 
-        contentResolver.delete(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
+
+        int routeBusStopDeleted = contentResolver.delete(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
                 DublinBusContract.RouteBusStopEntry.IS_NEW + " = ? ",
                 new String[]{"0"});
 
-
+        Log.d(LOG_TAG,"Route Bus Stop Deleted: " + routeBusStopDeleted);
 
 
 
     }
 
 
-
     private static String LOG_TAG = SyncTasks.class.getSimpleName();
 
     synchronized public static ArrayList<ContentValues> getSyncOperators(Context context) {
-        ArrayList<ContentValues> contentValuesList=null;
+        ArrayList<ContentValues> contentValuesList = null;
 
         try {
             ArrayList<Operator> operatorList = NetworkUtilities.getOperatorInformation();
@@ -132,7 +146,6 @@ public class SyncTasks {
     }
 
 
-
     synchronized public static ArrayList<ContentValues> getSyncBusStops(Context context) {
         ArrayList<ContentValues> busStopCVList = null;
         try {
@@ -151,14 +164,12 @@ public class SyncTasks {
     }
 
 
-
-
     synchronized public static ArrayList<Route> getNewSyncRoute(Context context) {
         ArrayList<Route> totalRouteList = new ArrayList<>();
         try {
             String selection = DublinBusContract.RouteInformationEntry.OPERATOR + " = ?  AND " +
                     DublinBusContract.RouteInformationEntry.IS_NEW + " = ? ";
-            String[] selectionArgs = new String[]{context.getString(R.string.constant_dublin_bus_operator),"1"};
+            String[] selectionArgs = new String[]{context.getString(R.string.constant_dublin_bus_operator), "1"};
             Cursor cursor = context.getContentResolver().query(DublinBusContract.RouteInformationEntry.CONTENT_URI,
                     DBUtils.ROUTE_INFORMATION_COLUMNS,
                     selection,
@@ -253,7 +264,6 @@ public class SyncTasks {
             throw sqle;
         }
     }
-
 
 
     public static void addFavoriteBusStop(Context context, String busStopNumber) {

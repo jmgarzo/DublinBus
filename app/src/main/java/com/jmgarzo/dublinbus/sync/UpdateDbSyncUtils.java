@@ -21,7 +21,7 @@ public class UpdateDbSyncUtils {
 
     private static boolean sInitialized;
 
-    private static final int SYNC_INTERVAL_SECONDS = 60 * 5  ;
+    private static final int SYNC_INTERVAL_SECONDS = 60 * 3  ;
     private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS + 60;
 
     private static FirebaseJobDispatcher dispatcher;
