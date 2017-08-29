@@ -79,7 +79,40 @@ public class SyncTasks {
 
 
         deleteOldValues(context);
+        updateNewValues(context);
 
+
+
+    }
+
+    private static void updateNewValues(Context context){
+        ContentResolver contentResolver = context.getContentResolver();
+
+        ContentValues operatorCv = new ContentValues();
+        operatorCv.put(DublinBusContract.OperatorEntry.IS_NEW,0);
+        int operatorsUpdated = contentResolver.update(DublinBusContract.OperatorEntry.CONTENT_URI,operatorCv,null,null);
+        Log.d(LOG_TAG,"Operators Updated : " + operatorsUpdated);
+
+
+        ContentValues busStopCv = new ContentValues();
+        busStopCv.put(DublinBusContract.BusStopEntry.IS_NEW,0);
+        int busStopsUpdated = contentResolver.update(DublinBusContract.BusStopEntry.CONTENT_URI,busStopCv,null,null);
+        Log.d(LOG_TAG,"Bus Stop Updated: " + busStopsUpdated);
+
+        ContentValues routeInformationCv = new ContentValues();
+        routeInformationCv.put(DublinBusContract.RouteInformationEntry.IS_NEW,0);
+        int routeInformationUpdated = contentResolver.update(DublinBusContract.RouteInformationEntry.CONTENT_URI,routeInformationCv,null,null);
+        Log.d(LOG_TAG,"Route Information Updated: " + routeInformationUpdated);
+
+        ContentValues routeCv = new ContentValues();
+        routeCv.put(DublinBusContract.RouteEntry.IS_NEW,0);
+        int routeUpdated = contentResolver.update(DublinBusContract.RouteEntry.CONTENT_URI,routeCv,null,null);
+        Log.d(LOG_TAG,"Route Updated: " + routeUpdated);
+
+        ContentValues routeBusStopCv = new ContentValues();
+        routeBusStopCv.put(DublinBusContract.RouteBusStopEntry.IS_NEW,0);
+        int routeBusStopUpdated = contentResolver.update(DublinBusContract.RouteBusStopEntry.CONTENT_URI,routeCv,null,null);
+        Log.d(LOG_TAG,"Route Updated: " + routeBusStopUpdated);
 
     }
 
@@ -114,7 +147,6 @@ public class SyncTasks {
         int routeBusStopDeleted = contentResolver.delete(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
                 DublinBusContract.RouteBusStopEntry.IS_NEW + " = ? ",
                 new String[]{"0"});
-
         Log.d(LOG_TAG,"Route Bus Stop Deleted: " + routeBusStopDeleted);
 
 

@@ -57,18 +57,6 @@
             android:name=".sync.services.FullTimetableBusInformationService"
             android:exported="false" />
         <service
-            android:name=".sync.services.BusStopInformationService"
-            android:exported="false" />
-        <service
-            android:name=".sync.services.RouteInformationService"
-            android:exported="false" />
-        <service
-            android:name=".sync.services.OperatorInformationService"
-            android:exported="false" />
-        <service
-            android:name=".sync.services.RouteListInformationService"
-            android:exported="false" />
-        <service
             android:name=".sync.services.AddFavouriteBusStopService"
             android:exported="false" />
         <service

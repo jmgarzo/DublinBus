@@ -21,7 +21,7 @@ public class UpdateDbSyncUtils {
 
     private static boolean sInitialized;
 
-    private static final int SYNC_INTERVAL_SECONDS = 60 * 3  ;
+    private static final int SYNC_INTERVAL_SECONDS = 60   ;
     private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS + 60;
 
     private static FirebaseJobDispatcher dispatcher;
@@ -79,7 +79,7 @@ public class UpdateDbSyncUtils {
 //            }
 //        });
 //        checkForEmpty.start();
-        //startImmediateSync(context);
+        startImmediateSync(context);
     }
 
     public static void startImmediateSync(@NonNull final Context context) {
