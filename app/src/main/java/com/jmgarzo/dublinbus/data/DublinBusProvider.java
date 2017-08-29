@@ -571,9 +571,9 @@ public class DublinBusProvider extends ContentProvider {
             default:
                 return super.bulkInsert(uri, values);
         }
-        if (numInserted > 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
-        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+
         return numInserted;
     }
 }
