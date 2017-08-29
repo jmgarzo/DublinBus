@@ -89,8 +89,8 @@ public class SyncTasks {
         ArrayList<BusStop> oldfavouritesList = getFavouriteBusStop(context);
         ArrayList<BusStop> newFavouriteSList = new ArrayList<>();
 
-        String selection = DublinBusContract.BusStopEntry._ID + " ? AND " +
-                DublinBusContract.BusStopEntry.IS_FAVOURITE;
+        String selection = DublinBusContract.BusStopEntry._ID + " = ? AND " +
+                DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ";
         for (BusStop oldFavourite : oldfavouritesList) {
 
             context.getContentResolver().delete(DublinBusContract.BusStopEntry.CONTENT_URI,
