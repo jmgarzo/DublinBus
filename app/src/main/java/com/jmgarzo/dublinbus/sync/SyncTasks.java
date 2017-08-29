@@ -85,8 +85,8 @@ public class SyncTasks {
                 new String[]{"0"});
 
         contentResolver.delete(DublinBusContract.BusStopEntry.CONTENT_URI,
-                DublinBusContract.BusStopEntry.IS_NEW + " = ? ",
-                new String[]{"0"});
+                DublinBusContract.BusStopEntry.IS_NEW + " = ? AND " + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ",
+                new String[]{"0","0"});
 
         contentResolver.delete(DublinBusContract.RouteInformationEntry.CONTENT_URI,
                 DublinBusContract.RouteInformationEntry.IS_NEW + " = ? ",
