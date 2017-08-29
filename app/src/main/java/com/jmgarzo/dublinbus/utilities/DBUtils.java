@@ -25,7 +25,8 @@ public class DBUtils {
             DublinBusContract.OperatorEntry._ID,
             DublinBusContract.OperatorEntry.REFERENCE,
             DublinBusContract.OperatorEntry.NAME,
-            DublinBusContract.OperatorEntry.DESCRIPTION
+            DublinBusContract.OperatorEntry.DESCRIPTION,
+            DublinBusContract.OperatorEntry.IS_NEW
 
     };
 
@@ -33,6 +34,7 @@ public class DBUtils {
     public static final int COL_OPERATOR_REFERENCE = 1;
     public static final int COL_OPERATOR_NAME = 2;
     public static final int COL_OPERATOR_DESCRIPTION = 3;
+    public static final int COL_OPERATOR_IS_NEW = 4;
 
 
     public static final String[] BUS_STOP_COLUMNS = {
@@ -47,7 +49,8 @@ public class DBUtils {
             DublinBusContract.BusStopEntry.LONGITUDE,
             DublinBusContract.BusStopEntry.LAST_UPDATED,
             DublinBusContract.BusStopEntry.IS_FAVOURITE,
-            DublinBusContract.BusStopEntry.ALIAS
+            DublinBusContract.BusStopEntry.ALIAS,
+            DublinBusContract.BusStopEntry.IS_NEW
 
     };
 
@@ -63,6 +66,7 @@ public class DBUtils {
     public static final int COL_BUS_STOP_LAST_UPDATED = 9;
     public static final int COL_BUS_STOP_IS_FAVORITE = 10;
     public static final int COL_BUS_STOP_IS_ALIAS = 11;
+    public static final int COL_BUS_STOP_IS_NEW = 12;
 
 
     public static final String[] ROUTE_COLUMNS = {
@@ -74,7 +78,9 @@ public class DBUtils {
             DublinBusContract.RouteEntry.ORIGIN_LOCALIZED,
             DublinBusContract.RouteEntry.DESTINATION,
             DublinBusContract.RouteEntry.DESTINATION_LOCALIZED,
-            DublinBusContract.RouteEntry.LAST_UPDATED
+            DublinBusContract.RouteEntry.LAST_UPDATED,
+            DublinBusContract.RouteEntry.IS_NEW
+
     };
 
 
@@ -87,18 +93,24 @@ public class DBUtils {
     public static final int COL_ROUTE_DESTINATION = 6;
     public static final int COL_ROUTE_DESTINATION_LOCALIZED = 7;
     public static final int COL_ROUTE_LAST_UPDATE = 8;
+    public static final int COL_ROUTE_IS_NEW = 9;
+
 
 
     public static final String[] ROUTE_INFORMATION_COLUMNS = {
             DublinBusContract.RouteInformationEntry._ID,
             DublinBusContract.RouteInformationEntry.OPERATOR,
-            DublinBusContract.RouteInformationEntry.ROUTE
+            DublinBusContract.RouteInformationEntry.ROUTE,
+            DublinBusContract.RouteInformationEntry.IS_NEW
+
 
     };
 
     public static final int COL_ROUTE_INFORMATION_ID = 0;
     public static final int COL_ROUTE_INFORMATION_OPERATOR = 1;
     public static final int COL_ROUTE_INFORMATION_ROUTE = 2;
+    public static final int COL_ROUTE_INFORMATION_IS_NEW = 3;
+
 
 
 

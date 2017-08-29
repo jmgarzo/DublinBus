@@ -17,6 +17,6 @@ public class OperatorInformationService extends IntentService {
     }
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        SyncTasks.syncOperators(this);
+        SyncTasks.getSyncOperators(this);
     }
 }

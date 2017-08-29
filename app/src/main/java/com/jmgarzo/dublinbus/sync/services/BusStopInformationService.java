@@ -17,6 +17,6 @@ public class BusStopInformationService extends IntentService {
     }
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        SyncTasks.syncBusStops(this);
+        SyncTasks.getSyncBusStops(this);
     }
 }
