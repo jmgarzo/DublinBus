@@ -1,5 +1,6 @@
 package com.jmgarzo.dublinbus;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -10,6 +11,8 @@ import android.view.MenuItem;
 
 import com.jmgarzo.dublinbus.sync.SyncTasks;
 import com.jmgarzo.dublinbus.sync.UpdateDbSyncUtils;
+import com.jmgarzo.dublinbus.sync.services.RealTimeStopService;
+import com.jmgarzo.dublinbus.sync.services.SyncDatabaseService;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
@@ -31,7 +34,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 SyncTasks.copyDbFromAssets(this);
 
             }
-            UpdateDbSyncUtils.initialize(this);
+            //UpdateDbSyncUtils.initialize(this);
+            Intent intentSyncDbService = new Intent(this, SyncDatabaseService.class);
+            this.startService(intentSyncDbService);
         }
 
         setTitle(getString(R.string.bus_stop_title));
