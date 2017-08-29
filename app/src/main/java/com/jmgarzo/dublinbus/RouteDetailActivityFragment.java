@@ -32,14 +32,13 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
         BusStopAdapter.BusStopAdapterOnClickHandler {
 
 
-//    private String idRoute;
-      private Route mRoute;
+    //    private String idRoute;
+    private Route mRoute;
 
 
     private BusStopAdapter mBusStopAdapter;
     private RecyclerView mBusStopRecyclerView;
     private AdView mAdView;
-
 
 
     private final int BUS_STOPS_LOADER_ID = 223;
@@ -48,7 +47,6 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
     public static final String ROUTE_EXTRA_TAG = "route_extra_tag";
     private ArrayList<BusStop> mBusStopsList;
     private ArrayList<Route> mRoutesList;
-
 
 
     public RouteDetailActivityFragment() {
@@ -66,13 +64,13 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
 
         mAdView.loadAd(AdUtils.getAdRequest());
 
-        FloatingActionButton fab =  rootView.findViewById(R.id.fab);
+        FloatingActionButton fab = rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), RouteMapsActivity.class);
                 intent.putExtra(BUS_STOP_LIST_EXTRA_TAG, mBusStopsList);
-                intent.putExtra(ROUTE_EXTRA_TAG,mRoute);
+                intent.putExtra(ROUTE_EXTRA_TAG, mRoute);
                 startActivity(intent);
 
             }
@@ -80,7 +78,7 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
         Intent intent = getActivity().getIntent();
         if (null != intent) {
 
-             mRoute = intent.getParcelableExtra(RouteActivityFragment.ROUTE_EXTRA_TAG);
+            mRoute = intent.getParcelableExtra(RouteActivityFragment.ROUTE_EXTRA_TAG);
             getActivity().setTitle(getString(R.string.route_detail_activity_fragment_title)
                     + " " + mRoute.getName());
         }
@@ -118,15 +116,15 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
                         null,
                         DublinBusContract.RouteBusStopEntry.RECORD_ORDER);
             }
-            case ROUTE_BUS_STOP_LOADER_ID:{
-                return new CursorLoader(
-                        getActivity(),
-                        DublinBusContract.RoutesPerBusStopEntry.CONTENT_URI,
-                        DBUtils.ROUTE_PER_BUS_STOP_COLUMNS,
-                        DublinBusContract.BusStopEntry.TABLE_NAME+ "." +DublinBusContract.BusStopEntry._ID + " = ? ",
-                        new String[]{Long.toString(mRoute.getId())},
-                        null);
-            }
+//            case ROUTE_BUS_STOP_LOADER_ID: {
+//                return new CursorLoader(
+//                        getActivity(),
+//                        DublinBusContract.RoutesPerBusStopEntry.CONTENT_URI,
+//                        DBUtils.ROUTE_PER_BUS_STOP_COLUMNS,
+//                        DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry._ID + " = ? ",
+//                        new String[]{Long.toString(mRoute.getId())},
+//                        null);
+//            }
             default:
                 throw new RuntimeException("Loader Not Implemented: " + id);
         }
@@ -162,7 +160,6 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
 //            }
         }
     }
-
 
 
     @Override

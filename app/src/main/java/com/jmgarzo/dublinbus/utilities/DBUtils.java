@@ -96,7 +96,6 @@ public class DBUtils {
     public static final int COL_ROUTE_IS_NEW = 9;
 
 
-
     public static final String[] ROUTE_INFORMATION_COLUMNS = {
             DublinBusContract.RouteInformationEntry._ID,
             DublinBusContract.RouteInformationEntry.OPERATOR,
@@ -112,16 +111,15 @@ public class DBUtils {
     public static final int COL_ROUTE_INFORMATION_IS_NEW = 3;
 
 
-
-
     public static final String[] ROUTE_PER_BUS_STOP_COLUMNS = {
 
-    DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry._ID,
-    DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.NAME,
-    DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.ORIGIN,
-    DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.ORIGIN_LOCALIZED,
-    DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.DESTINATION,
-    DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.DESTINATION_LOCALIZED
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry._ID,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.NAME,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.ORIGIN,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.ORIGIN_LOCALIZED,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.DESTINATION,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.DESTINATION_LOCALIZED,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.IS_NEW
     };
 
     public static final int COL_ROUTE_PER_BUS_STOP_ID = 0;
@@ -130,6 +128,8 @@ public class DBUtils {
     public static final int COL_ROUTE_PER_BUS_STOP_ORIGIN_LOCALIZED = 3;
     public static final int COL_ROUTE_PER_BUS_STOP_DESTINATION = 4;
     public static final int COL_ROUTE_PER_BUS_STOP_DESTINATION_LOCALIZED = 5;
+    public static final int COL_ROUTE_PER_BUS_STOP_IS_NEW = 6;
+
 
 
     public static final String[] REAL_TIME_STOP_COLUMNS = {
@@ -187,11 +187,6 @@ public class DBUtils {
     public static final int REAL_TIME_STATUS_SERVER_INVALID = 7;
     public static final int REAL_TIME_STATUS_UNKNOWN = 8;
     public static final int REAL_TIME_STATUS_NETWORK_NOT_AVAILABLE = 9;
-
-
-
-
-
 
 
     public static long getOperator(Context contect, String operatorReference) {
@@ -272,7 +267,7 @@ public class DBUtils {
         } else {
             return;
         }
-        ArrayList <ContentValues> RouteBusStopList = new ArrayList<>();
+        ArrayList<ContentValues> RouteBusStopList = new ArrayList<>();
         for (int i = 0; i < route.getStops().size(); i++) {
 
             String busStopId = getBusStopIdFromNumber(context, route.getStops().get(i));
@@ -283,15 +278,15 @@ public class DBUtils {
                 cv.put(DublinBusContract.RouteBusStopEntry.RECORD_ORDER, i);
 
                 RouteBusStopList.add(cv);
-            }else{
-                Log.e(LOG_TAG, "Bus Stop: "+route.getStops().get(i)+  "within idRoute: "+ idRoute +" Unknown in bus_stop_table "  );
+            } else {
+                Log.e(LOG_TAG, "Bus Stop: " + route.getStops().get(i) + "within idRoute: " + idRoute + " Unknown in bus_stop_table ");
 
             }
         }
         int deleted = context.getContentResolver().delete(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
                 DublinBusContract.RouteBusStopEntry.ROUTE_ID + " = ? ",
                 new String[]{idRoute.toString()});
-        Log.d(LOG_TAG, deleted + " records deleted from route_bus_table for route id: "+ idRoute.toString());
+        Log.d(LOG_TAG, deleted + " records deleted from route_bus_table for route id: " + idRoute.toString());
         int inserted = context.getContentResolver().bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI, RouteBusStopList.toArray(new ContentValues[RouteBusStopList.size()]));
         if (inserted <= 0) {
             Log.d(LOG_TAG, "insertRouteBusStop() no record Insert");
@@ -332,7 +327,7 @@ public class DBUtils {
                 cv.put(DublinBusContract.RouteBusStopEntry.ROUTE_ID, idRoute);
                 cv.put(DublinBusContract.RouteBusStopEntry.BUS_STOP_ID, busStopId);
                 cv.put(DublinBusContract.RouteBusStopEntry.RECORD_ORDER, i);
-                cv.put(DublinBusContract.RouteBusStopEntry.IS_NEW,1);
+                cv.put(DublinBusContract.RouteBusStopEntry.IS_NEW, 1);
 
                 routeBusStopList.add(cv);
             } else {
@@ -342,7 +337,6 @@ public class DBUtils {
         }
         return routeBusStopList;
     }
-
 
 
     private static String getBusStopIdFromNumber(Context context, String busStopNumber) {

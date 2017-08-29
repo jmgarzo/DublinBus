@@ -98,7 +98,7 @@ public class DublinBusContract {
         public static final String ROUTE_ID = "route_id";
         public static final String BUS_STOP_ID = "bus_stop_id";
         public static final String RECORD_ORDER = "record_insert_order";
-        public static final String IS_NEW = "is_new";
+        public static final String IS_NEW = "route_bus_stop_is_new";
 
 
         public static final String CONTENT_DIR_TYPE =
@@ -158,10 +158,7 @@ public class DublinBusContract {
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ROUTE_PER_BUS_STOP).build();
 
-//        select *  from
-//        route_bus_stop inner join route  ON
-//        route_bus_stop.route_id = route._id
-//        where route_bus_stop.bus_stop_id = "2";
+
         public static final String TABLE_NAME = RouteBusStopEntry.TABLE_NAME +
                 " INNER JOIN " + RouteEntry.TABLE_NAME +
                 " ON " +
