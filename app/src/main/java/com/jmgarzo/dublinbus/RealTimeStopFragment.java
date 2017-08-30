@@ -17,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdView;
@@ -45,6 +46,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     private TextView mError;
     private FloatingActionButton fab;
     private boolean isFavorite;
+    private ProgressBar progressBar;
     private AdView mAdView;
 
 
@@ -62,6 +64,9 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         mAdView.loadAd(AdUtils.getAdRequest());
 
         isFavorite = false;
+        progressBar = rootView.findViewById(R.id.progress_bar);
+        showProgressBar();
+
         fab = rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,10 +125,15 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onResume() {
-        super.onResume();
+        showProgressBar();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sp.registerOnSharedPreferenceChangeListener(this);
         RealTimeSyncUtils.initialize(getContext(), mBusStopNumber);
+        super.onResume();
+
+
+
+
     }
 
     @Override
@@ -132,6 +142,8 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sp.unregisterOnSharedPreferenceChangeListener(this);
         RealTimeSyncUtils.cancelDispach();
+
+
 
     }
 
@@ -144,11 +156,14 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     }
 
 
+
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
 
             case ID_REAL_TIME_STOP_LOADER: {
+
                 return new CursorLoader(getContext(),
                         DublinBusContract.RealTimeStopEntry.CONTENT_URI,
                         DBUtils.REAL_TIME_STOP_COLUMNS,
@@ -179,6 +194,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
                 mRealTimeStopAdapter.swapCursor(data);
                 mSwipeRefreshLayout.setRefreshing(false);
 //                updateEmptyView();
+                hideProgressBar();
                 break;
             }
             case ID_FAB_FAVOURITE_FAB_LOADER: {
@@ -192,7 +208,9 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
                 break;
             }
         }
+
     }
+
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
@@ -203,6 +221,18 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
                 break;
         }
     }
+
+    private void showProgressBar() {
+        mRecyclerView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+    private void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+
+
 
     private void showError() {
         mRecyclerView.setVisibility(View.GONE);
