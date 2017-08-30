@@ -34,9 +34,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 SyncTasks.copyDbFromAssets(this);
 
             }
-            //UpdateDbSyncUtils.initialize(this);
-            Intent intentSyncDbService = new Intent(this, SyncDatabaseService.class);
-            this.startService(intentSyncDbService);
+            UpdateDbSyncUtils.initialize(this);
+
         }
 
         setTitle(getString(R.string.bus_stop_title));

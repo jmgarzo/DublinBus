@@ -149,21 +149,22 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
             case ID_ROUTES_LOADER: {
                 if(args!=null) {
                     String filterArg = args.getString(ROUTE_FILTER_TAG);
-                    String selection = DublinBusContract.RouteEntry.NAME + " LIKE '" + filterArg + "%' " +
+                    String selection = DublinBusContract.RouteEntry.IS_NEW  + " = ? AND " +
+                            DublinBusContract.RouteEntry.NAME + " LIKE '" + filterArg + "%' " +
                             " OR " + DublinBusContract.RouteEntry.ORIGIN + " LIKE '" + filterArg + "%' " +
                             " OR " + DublinBusContract.RouteEntry.DESTINATION + " LIKE '" + filterArg + "%' ";
                     return new CursorLoader(getContext(),
                             DublinBusContract.RouteEntry.CONTENT_URI,
                             DBUtils.ROUTE_COLUMNS,
                             selection,
-                            null,
+                            new String[]{"0"},
                             null);
                 }else{
                     return new CursorLoader(getContext(),
                             DublinBusContract.RouteEntry.CONTENT_URI,
                             DBUtils.ROUTE_COLUMNS,
-                            null,
-                            null,
+                            DublinBusContract.RouteEntry.IS_NEW + " = ? ",
+                            new String[]{"0"},
                             null);
                 }
             }

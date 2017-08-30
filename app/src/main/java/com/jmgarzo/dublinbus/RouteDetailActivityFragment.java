@@ -112,8 +112,8 @@ public class RouteDetailActivityFragment extends Fragment implements LoaderManag
                 return new CursorLoader(getActivity(),
                         stopBusWithRouteIdUri,
                         DBUtils.BUS_STOP_COLUMNS,
-                        null,
-                        null,
+                        DublinBusContract.BusStopEntry.IS_NEW + " = ?",
+                        new String[]{"0"},
                         DublinBusContract.RouteBusStopEntry.RECORD_ORDER);
 
             }

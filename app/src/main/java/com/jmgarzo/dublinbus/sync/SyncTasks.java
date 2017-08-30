@@ -29,6 +29,7 @@ import static android.util.Log.e;
  */
 
 public class SyncTasks {
+    private static int numUpdates = 0;
 
 
     public static void syncDB(Context context) {
@@ -81,6 +82,8 @@ public class SyncTasks {
         deleteOldValues(context);
         updateNewValues(context);
         setFavouritesBusStop(context);
+        numUpdates++;
+        Log.d(LOG_TAG,"NumUpdates: " + numUpdates);
 
     }
 

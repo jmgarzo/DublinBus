@@ -86,8 +86,8 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
                 return new CursorLoader(getContext(),
                         DublinBusContract.BusStopEntry.CONTENT_URI,
                         DBUtils.BUS_STOP_COLUMNS,
-                        DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ",
-                        new  String[]{"1"},
+                        DublinBusContract.BusStopEntry.IS_NEW +" = ? AND " +DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ",
+                        new  String[]{"0","1"},
                         null);
             }
         }

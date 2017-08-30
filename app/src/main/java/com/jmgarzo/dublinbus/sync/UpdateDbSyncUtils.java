@@ -58,27 +58,6 @@ public class UpdateDbSyncUtils {
         if(sInitialized) return;
         sInitialized= true;
         scheduleFirebaseJobDispatcherSync(context);
-
-
-//        Thread checkForEmpty = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                Cursor cursor = context.getContentResolver().query(
-//                        PopularMovieContract.MovieEntry.CONTENT_URI,
-//                        new String[]{PopularMovieContract.MovieEntry._ID},
-//                        PopularMovieContract.MovieEntry.REGISTRY_TYPE + " <> ? ",
-//                        new String[]{PopularMovieContract.FAVORITE_REGISTRY_TYPE},
-//                        null
-//                );
-//
-//                if(cursor == null || cursor.getCount() == 0){
-//                    startImmediateSync(context);
-//                }
-//                cursor.close();
-//            }
-//        });
-//        checkForEmpty.start();
         startImmediateSync(context);
     }
 
