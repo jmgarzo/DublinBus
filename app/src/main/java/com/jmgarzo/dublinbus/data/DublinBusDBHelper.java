@@ -5,6 +5,11 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.jmgarzo.dublinbus.sync.SyncTasks;
+import com.jmgarzo.dublinbus.sync.UpdateDbJobService;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,12 +24,12 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "DublinBus.db";
-   private static String DB_PATH;
+    private static String DB_PATH;
+    private static final String LOG_TAG = SQLiteOpenHelper.class.getSimpleName();
 
     private SQLiteDatabase myDataBase;
 
     private Context mContext;
-
 
 
     private final String SQL_CREATE_OPERATOR_TABLE =
@@ -74,19 +79,18 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + DublinBusContract.RouteBusStopEntry.TABLE_NAME + " ( " +
                     DublinBusContract.RouteBusStopEntry.ROUTE_ID + " INTEGER , " +
                     DublinBusContract.RouteBusStopEntry.BUS_STOP_ID + " INTEGER, " +
-                    DublinBusContract.RouteBusStopEntry.RECORD_ORDER  + " INTEGER NOT NULL,  " +
+                    DublinBusContract.RouteBusStopEntry.RECORD_ORDER + " INTEGER NOT NULL,  " +
                     DublinBusContract.RouteBusStopEntry.IS_NEW + " INTEGER NOT NULL, " +
                     " PRIMARY KEY( " +
-                    DublinBusContract.RouteBusStopEntry.ROUTE_ID + " , "+
-                    DublinBusContract.RouteBusStopEntry.BUS_STOP_ID  +
+                    DublinBusContract.RouteBusStopEntry.ROUTE_ID + " , " +
+                    DublinBusContract.RouteBusStopEntry.BUS_STOP_ID +
 
                     " ), " +
-                    " FOREIGN KEY( " +  DublinBusContract.RouteBusStopEntry.ROUTE_ID + " ) REFERENCES " +
-                    DublinBusContract.RouteEntry.TABLE_NAME + " ( " + DublinBusContract.RouteEntry._ID +") ON DELETE CASCADE, " +
+                    " FOREIGN KEY( " + DublinBusContract.RouteBusStopEntry.ROUTE_ID + " ) REFERENCES " +
+                    DublinBusContract.RouteEntry.TABLE_NAME + " ( " + DublinBusContract.RouteEntry._ID + ") ON DELETE CASCADE, " +
                     "FOREIGN KEY ( " + DublinBusContract.RouteBusStopEntry.BUS_STOP_ID + " ) REFERENCES " +
                     DublinBusContract.BusStopEntry.TABLE_NAME + " ( " + DublinBusContract.BusStopEntry._ID + ") ON DELETE CASCADE " +
                     ");";
-
 
 
     private final String SQL_CREATE_ROUTE_INFORMATION_TABLE =
@@ -122,7 +126,7 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
 
                     " );";
 
-    public DublinBusDBHelper(Context context){
+    public DublinBusDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mContext = context;
         DB_PATH = context.getDatabasePath(DATABASE_NAME).toString();
@@ -153,6 +157,7 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
 //        db.execSQL(SQL_CREATE_REAL_TIME_STOP);
 
     }
+
     public void createDataBase() throws IOException {
 
         boolean dbExist = checkDataBase();
@@ -170,7 +175,7 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
     }
 
 
-        @Override
+    @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
 
 //        db.execSQL("DROP TABLE IF EXISTS " + DublinBusContract.OperatorEntry.TABLE_NAME );
@@ -191,14 +196,15 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
 //        db.execSQL(SQL_CREATE_ROUTE_INFORMATION_TABLE);
 //        db.execSQL(SQL_CREATE_REAL_TIME_STOP);
 
-            upgradeVersion2(db);
+        upgradeVersion2(db);
+
 
     }
 
-    private void  upgradeVersion2(SQLiteDatabase db){
+    private void upgradeVersion2(SQLiteDatabase db) {
 
         db.execSQL("ALTER TABLE " + DublinBusContract.OperatorEntry.TABLE_NAME +
-        " ADD COLUMN " + DublinBusContract.OperatorEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
+                " ADD COLUMN " + DublinBusContract.OperatorEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
 
         db.execSQL("ALTER TABLE " + DublinBusContract.BusStopEntry.TABLE_NAME +
                 " ADD COLUMN " + DublinBusContract.BusStopEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
@@ -212,24 +218,25 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
         db.execSQL("ALTER TABLE " + DublinBusContract.RouteInformationEntry.TABLE_NAME +
                 " ADD COLUMN " + DublinBusContract.RouteInformationEntry.IS_NEW + " INTEGER NOT NULL DEFAULT 0");
 
+        new UpdateDB().execute();
 
     }
 
-    private boolean checkDataBase(){
+    private boolean checkDataBase() {
 
         SQLiteDatabase checkDB = null;
 
-        try{
+        try {
             String myPath = DB_PATH;
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
-        }catch(SQLiteException e){
+        } catch (SQLiteException e) {
 
             //database does't exist yet.
 
         }
 
-        if(checkDB != null){
+        if (checkDB != null) {
 
             checkDB.close();
 
@@ -239,7 +246,7 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
     }
 
 
-    private void copyDataBase() throws IOException{
+    private void copyDataBase() throws IOException {
 
         //Open your local db as the input stream
         InputStream myInput = mContext.getAssets().open(DATABASE_NAME);
@@ -253,7 +260,7 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
         //transfer bytes from the inputfile to the outputfile
         byte[] buffer = new byte[1024];
         int length;
-        while ((length = myInput.read(buffer))>0){
+        while ((length = myInput.read(buffer)) > 0) {
             myOutput.write(buffer, 0, length);
         }
 
@@ -270,5 +277,19 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
         String myPath = DB_PATH;
         myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
+    }
+
+    private class UpdateDB extends AsyncTask<Void, Void, Void> {
+        protected Void doInBackground(Void... params) {
+            SyncTasks.syncDB(mContext);
+            return null;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+        }
+
+        protected void onPostExecute(Long result) {
+            Log.d(LOG_TAG,"Database AsyncTask Updated");
+        }
     }
 }
