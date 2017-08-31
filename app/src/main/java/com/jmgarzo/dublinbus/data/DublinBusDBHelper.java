@@ -134,16 +134,16 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
 
         boolean dbExist = checkDataBase();
 
-        if(!dbExist){
-            getReadableDatabase();
-            try {
-                copyDataBase();
-            } catch (IOException e) {
-
-                throw new Error("Error copying database");
-
-            }
-        }
+//        if(!dbExist){
+//            getReadableDatabase();
+//            try {
+//                copyDataBase();
+//            } catch (IOException e) {
+//
+//                throw new Error("Error copying database");
+//
+//            }
+//        }
 
 //        db.execSQL(SQL_CREATE_OPERATOR_TABLE);
 //        db.execSQL(SQL_CREATE_BUS_STOP_TABLE);

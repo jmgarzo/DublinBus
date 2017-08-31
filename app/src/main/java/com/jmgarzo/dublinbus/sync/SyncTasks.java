@@ -90,25 +90,27 @@ public class SyncTasks {
     private static void setFavouritesBusStop(Context context) {
 
         ArrayList<BusStop> oldfavouritesList = getFavouriteBusStop(context);
+        int favoritesInserted = 0;
 
-        String selection = DublinBusContract.BusStopEntry._ID + " = ? AND " +
-                DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ";
-        int favoritesInserted =0;
-        for (BusStop oldFavourite : oldfavouritesList) {
+        if(null != oldfavouritesList && !oldfavouritesList.isEmpty()) {
+            String selection = DublinBusContract.BusStopEntry._ID + " = ? AND " +
+                    DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ";
+            for (BusStop oldFavourite : oldfavouritesList) {
 
-            context.getContentResolver().delete(DublinBusContract.BusStopEntry.CONTENT_URI,
-                    DublinBusContract.BusStopEntry._ID + " = ? ",
-                    new String[]{Integer.toString(oldFavourite.getId())}
-                    );
+                context.getContentResolver().delete(DublinBusContract.BusStopEntry.CONTENT_URI,
+                        DublinBusContract.BusStopEntry._ID + " = ? ",
+                        new String[]{Integer.toString(oldFavourite.getId())}
+                );
 
-            BusStop newFavourite = getNewFavouriteFromOld(context, oldFavourite);
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(DublinBusContract.BusStopEntry.IS_FAVOURITE, 1);
-            favoritesInserted+=context.getContentResolver().update(
-                    DublinBusContract.BusStopEntry.CONTENT_URI,
-                    contentValues,
-                    selection,
-                    new String[]{Integer.toString(newFavourite.getId()), "0"});
+                BusStop newFavourite = getNewFavouriteFromOld(context, oldFavourite);
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(DublinBusContract.BusStopEntry.IS_FAVOURITE, 1);
+                favoritesInserted += context.getContentResolver().update(
+                        DublinBusContract.BusStopEntry.CONTENT_URI,
+                        contentValues,
+                        selection,
+                        new String[]{Integer.toString(newFavourite.getId()), "0"});
+            }
         }
         Log.d(LOG_TAG,"Favorites Inserted " +favoritesInserted);
     }
