@@ -119,6 +119,8 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
         searchView.setActivated(true);
         searchView.setQueryHint(getString(R.string.route_search_hint));
         searchView.onActionViewExpanded();
+        searchView.clearFocus();
+
 
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

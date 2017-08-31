@@ -55,8 +55,10 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         if (savedInstanceState != null) {
             searchViewText = savedInstanceState.getString(SEARCH_VIEW_TEXT_TAG);
+
         }
         View rootView = inflater.inflate(R.layout.fragment_bus_stop, container, false);
 
@@ -69,6 +71,7 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
         LinearLayoutManager stopBusLayoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
+
         mRecyclerView = rootView.findViewById(R.id.recyclerview_bus_stop);
         mRecyclerView.setLayoutManager(stopBusLayoutManager);
         mRecyclerView.setHasFixedSize(true);
@@ -77,7 +80,6 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
 
         mBusStopAdapter = new BusStopAdapter(getContext(), this);
         mRecyclerView.setAdapter(mBusStopAdapter);
-
         getActivity().getSupportLoaderManager().initLoader(ID_BUS_STOP_LOADER, null, this);
 
         return rootView;
@@ -170,10 +172,11 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
         if (searchView != null) {
 
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-            searchView.setActivated(true);
+            searchView.setActivated(false);
             searchView.setQueryHint(getString(R.string.bus_stop_search_hint));
 
             searchView.onActionViewExpanded();
+            searchView.clearFocus();
 
 
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

@@ -1,6 +1,5 @@
 package com.jmgarzo.dublinbus;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -11,8 +10,6 @@ import android.view.MenuItem;
 
 import com.jmgarzo.dublinbus.sync.SyncTasks;
 import com.jmgarzo.dublinbus.sync.UpdateDbSyncUtils;
-import com.jmgarzo.dublinbus.sync.services.RealTimeStopService;
-import com.jmgarzo.dublinbus.sync.services.SyncDatabaseService;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
@@ -45,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         setSupportActionBar(toolbar);
         toolbar.setLogo(R.mipmap.ic_launcher);
 
-
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
         //Adding the tabs using addTab() method
@@ -67,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         //Adding onTabSelectedListener to swipe views
         tabLayout.setOnTabSelectedListener(this);
+
+
 
 
     }
