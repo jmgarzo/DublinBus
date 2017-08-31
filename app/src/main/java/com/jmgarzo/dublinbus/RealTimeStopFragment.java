@@ -65,7 +65,6 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
 
         isFavorite = false;
         progressBar = rootView.findViewById(R.id.progress_bar);
-        showProgressBar();
 
         fab = rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +124,6 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onResume() {
-        showProgressBar();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sp.registerOnSharedPreferenceChangeListener(this);
         RealTimeSyncUtils.initialize(getContext(), mBusStopNumber);
@@ -193,8 +191,6 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
             case ID_REAL_TIME_STOP_LOADER: {
                 mRealTimeStopAdapter.swapCursor(data);
                 mSwipeRefreshLayout.setRefreshing(false);
-//                updateEmptyView();
-                hideProgressBar();
                 break;
             }
             case ID_FAB_FAVOURITE_FAB_LOADER: {
@@ -222,14 +218,14 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         }
     }
 
-    private void showProgressBar() {
-        mRecyclerView.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
-    }
-    private void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-    }
+//    private void showProgressBar() {
+//        mRecyclerView.setVisibility(View.GONE);
+//        progressBar.setVisibility(View.VISIBLE);
+//    }
+//    private void hideProgressBar() {
+//        progressBar.setVisibility(View.GONE);
+//        mRecyclerView.setVisibility(View.VISIBLE);
+//    }
 
 
 
