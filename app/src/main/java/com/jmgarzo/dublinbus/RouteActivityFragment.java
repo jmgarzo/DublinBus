@@ -178,7 +178,7 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public void onClick(Route route) {
-        Intent intent = new Intent(getContext(), RouteDetailActivity.class);
+        Intent intent = new Intent(getContext(), RouteMapsActivity.class);
         intent.putExtra(ROUTE_EXTRA_TAG, route);
         startActivity(intent);
     }
