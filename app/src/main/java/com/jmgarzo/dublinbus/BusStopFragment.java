@@ -37,24 +37,20 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
 
     private static final int ID_BUS_STOP_LOADER = 66;
     public static final String FILTER_TAG = "arg_filter_tag";
+    private static final String SEARCH_VIEW_TEXT_TAG = "search_view_text_tag";
 
     BusStopAdapter mBusStopAdapter;
     private RecyclerView mRecyclerView;
-
-    private static final String SEARCH_VIEW_TEXT_TAG = "search_view_text_tag";
     private String searchViewText = "";
-
     private AdView mAdView;
 
     public BusStopFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
         if (savedInstanceState != null) {
             searchViewText = savedInstanceState.getString(SEARCH_VIEW_TEXT_TAG);
@@ -70,7 +66,6 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
 
         LinearLayoutManager stopBusLayoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-
 
         mRecyclerView = rootView.findViewById(R.id.recyclerview_bus_stop);
         mRecyclerView.setLayoutManager(stopBusLayoutManager);
@@ -91,7 +86,6 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
         super.onSaveInstanceState(outState);
     }
 
-
     public boolean onQueryTextChanged(String newText) {
 
         searchViewText = newText;
@@ -103,7 +97,6 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
         switch (id) {
             case ID_BUS_STOP_LOADER: {
                 if (args != null) {
@@ -163,7 +156,6 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
 
         inflater.inflate(R.menu.menu_bus_stop_fragment, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-//        mSearchView = rootView.findViewById(R.id.search);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = null;
         if (searchItem != null) {
@@ -188,7 +180,6 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
                 }
             });
 
-
             if (!searchViewText.isEmpty()) {
 
                 searchView.setIconified(false);
@@ -197,7 +188,5 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
 
             }
         }
-
-
     }
 }

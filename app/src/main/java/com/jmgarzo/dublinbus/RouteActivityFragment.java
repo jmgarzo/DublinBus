@@ -29,7 +29,7 @@ import com.jmgarzo.dublinbus.utilities.DBUtils;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RouteActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, RouteAdapter.RouteAdapterOnClickHandler{
+public class RouteActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, RouteAdapter.RouteAdapterOnClickHandler {
 
 
     private RouteAdapter mRouteAdapter;
@@ -38,13 +38,10 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
 
     private static final String ROUTE_FILTER_TAG = "route_filter_tag";
     public static final String ROUTE_EXTRA_TAG = "route_extra_tag";
-
-
-    private static final String SEARCH_VIEW_TEXT_TAG="search_view_text_tag";
-    private String searchViewText = "";
-
+    private static final String SEARCH_VIEW_TEXT_TAG = "search_view_text_tag";
     private static final int ID_ROUTES_LOADER = 14;
 
+    private String searchViewText = "";
 
     public RouteActivityFragment() {
         // Required empty public constructor
@@ -54,34 +51,28 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_route, container, false);
 
         mAdView = rootView.findViewById(R.id.ad_view);
-
         mAdView.loadAd(AdUtils.getAdRequest());
 
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
             searchViewText = savedInstanceState.getString(SEARCH_VIEW_TEXT_TAG);
         }
 
-       // getActivity().setTitle(getString(R.string.route_title));
         setHasOptionsMenu(true);
         LinearLayoutManager routeLayoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
         recyclerView = rootView.findViewById(R.id.recyclerview_route);
-
         recyclerView.setLayoutManager(routeLayoutManager);
         recyclerView.setHasFixedSize(true);
 
         mRouteAdapter = new RouteAdapter(getContext(), this);
-        recyclerView.setAdapter(mRouteAdapter);
 
+        recyclerView.setAdapter(mRouteAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
                 DividerItemDecoration.VERTICAL));
-
 
         getActivity().getSupportLoaderManager().initLoader(ID_ROUTES_LOADER, null, this);
 
@@ -93,7 +84,6 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
         outState.putString(SEARCH_VIEW_TEXT_TAG, searchViewText);
         super.onSaveInstanceState(outState);
     }
-
 
     public boolean onQueryTextChanged(String newText) {
         searchViewText = newText;
@@ -107,7 +97,6 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_route_fragment, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-//        mSearchView = rootView.findViewById(R.id.search);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = null;
         if (searchItem != null) {
@@ -118,7 +107,6 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
         }
         searchView.setActivated(true);
         searchView.setQueryHint(getString(R.string.route_search_hint));
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -137,7 +125,6 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
             searchView.setQuery(searchViewText, false);
             searchView.onActionViewExpanded();
         }
-
     }
 
     @Override
@@ -145,9 +132,9 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
 
         switch (id) {
             case ID_ROUTES_LOADER: {
-                if(args!=null) {
+                if (args != null) {
                     String filterArg = args.getString(ROUTE_FILTER_TAG);
-                    String selection = DublinBusContract.RouteEntry.IS_NEW  + " = ? AND " +
+                    String selection = DublinBusContract.RouteEntry.IS_NEW + " = ? AND " +
                             DublinBusContract.RouteEntry.NAME + " LIKE '" + filterArg + "%' " +
                             " OR " + DublinBusContract.RouteEntry.ORIGIN + " LIKE '" + filterArg + "%' " +
                             " OR " + DublinBusContract.RouteEntry.DESTINATION + " LIKE '" + filterArg + "%' ";
@@ -157,7 +144,7 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
                             selection,
                             new String[]{"0"},
                             null);
-                }else{
+                } else {
                     return new CursorLoader(getContext(),
                             DublinBusContract.RouteEntry.CONTENT_URI,
                             DBUtils.ROUTE_COLUMNS,
@@ -172,7 +159,6 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
         switch (loader.getId()) {
             case ID_ROUTES_LOADER: {
                 mRouteAdapter.swapCursor(data);
@@ -183,7 +169,6 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
         switch (loader.getId()) {
             case ID_ROUTES_LOADER:
                 mRouteAdapter.swapCursor(null);
@@ -193,8 +178,8 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public void onClick(Route route) {
-        Intent intent = new Intent(getContext(),RouteDetailActivity.class);
-        intent.putExtra(ROUTE_EXTRA_TAG,route);
+        Intent intent = new Intent(getContext(), RouteDetailActivity.class);
+        intent.putExtra(ROUTE_EXTRA_TAG, route);
         startActivity(intent);
     }
 
