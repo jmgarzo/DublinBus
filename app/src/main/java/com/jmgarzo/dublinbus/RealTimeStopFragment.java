@@ -47,7 +47,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     private TextView mError;
     private FloatingActionButton fab;
     private boolean isFavorite;
-    private ContentLoadingProgressBar mProgressBar;
+    private ProgressBar mProgressBar;
     private AdView mAdView;
 
     public RealTimeStopFragment() {
@@ -176,7 +176,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         switch (loader.getId()) {
             case ID_REAL_TIME_STOP_LOADER: {
                 mRealTimeStopAdapter.swapCursor(data);
-                if(data != null && data.moveToFirst()){
+                if (data != null && data.moveToFirst()) {
                     hideProgressBar();
                 }
                 break;
@@ -209,17 +209,14 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     private void showProgressBar() {
 //        mRecyclerView.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
-        mProgressBar.show();
+        //mProgressBar.show();
     }
+
     private void hideProgressBar() {
         mProgressBar.setVisibility(View.GONE);
-        mProgressBar.hide();
+        //mProgressBar.hide();
 //        mRecyclerView.setVisibility(View.VISIBLE);
     }
-
-
-
-
 
 
     private void showError() {
