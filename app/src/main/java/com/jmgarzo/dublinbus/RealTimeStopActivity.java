@@ -15,15 +15,17 @@ public class RealTimeStopActivity extends AppCompatActivity {
         // Create the detail fragment and add it to the activity
         // using a fragment transaction.
 
-        Bundle arguments = new Bundle();
-        arguments.putString(Intent.EXTRA_TEXT, getIntent().getStringExtra(Intent.EXTRA_TEXT));
+        if(savedInstanceState == null ) {
+            Bundle arguments = new Bundle();
+            arguments.putString(Intent.EXTRA_TEXT, getIntent().getStringExtra(Intent.EXTRA_TEXT));
 
-        RealTimeStopFragment fragment = new RealTimeStopFragment();
-        fragment.setArguments(arguments);
+            RealTimeStopFragment fragment = new RealTimeStopFragment();
+            fragment.setArguments(arguments);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.real_time_stop_activity, fragment)
-                .commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.real_time_stop_activity, fragment)
+                    .commit();
+        }
 
 
     }
