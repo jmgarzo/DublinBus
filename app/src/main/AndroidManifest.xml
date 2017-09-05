@@ -68,6 +68,9 @@
         <service
             android:name=".sync.services.SyncDatabaseService"
             android:exported="false" />
+        <service
+            android:name=".sync.services.DeleteRealTimeStopBusService"
+            android:exported="false" />
 
         <activity
             android:name=".RouteActivity"

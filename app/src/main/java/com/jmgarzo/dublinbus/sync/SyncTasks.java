@@ -329,6 +329,11 @@ public class SyncTasks {
         }
     }
 
+    public static void deleteRealTimeBusStop(Context context){
+        int deleted = context.getContentResolver().delete(DublinBusContract.RealTimeStopEntry.CONTENT_URI, null, null);
+        Log.d(LOG_TAG, "Time real stop bus deleted: " + deleted);
+    }
+
     public static void copyDbFromAssets(Context context) {
         DublinBusDBHelper myDbHelper = new DublinBusDBHelper(context);
         try {

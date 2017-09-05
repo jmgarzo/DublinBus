@@ -53,6 +53,14 @@ public class RealTimeStopAdapter extends RecyclerView.Adapter<RealTimeStopAdapte
             String sToDestination = mContext.getString(R.string.list_label_to) + " " + mCursor.getString(DBUtils.COL_REAL_TIME_STOP_DESTINATION);
             holder.mOrigin.setText(sFromOrigin);
             holder.mDestination.setText(sToDestination);
+        }else{
+            Glide.with(mContext).load(R.drawable.blue_circle).
+                    apply(RequestOptions.circleCropTransform()).into(holder.mImageView);
+            holder.mRouteName.setText("");
+
+            holder.mDueTime.setText("");
+            holder.mOrigin.setText("");
+            holder.mDestination.setText("");
         }
     }
 
@@ -64,6 +72,9 @@ public class RealTimeStopAdapter extends RecyclerView.Adapter<RealTimeStopAdapte
 
     public void swapCursor(Cursor newCursor) {
         mCursor = newCursor;
+        if(newCursor== null){
+
+        }
         notifyDataSetChanged();
     }
 
