@@ -61,7 +61,7 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
                     .position(busStop.getLatLng())
                     .title(busStop.getNumber())
                     .snippet(busStop.getFullName())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_bus_marker));
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_directions_bus_black_24dp));
             mMap.addMarker(newMarker);
 
         }
