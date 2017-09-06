@@ -3,6 +3,7 @@ package com.jmgarzo.dublinbus;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -15,13 +16,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.sync.RealTimeSyncUtils;
 import com.jmgarzo.dublinbus.sync.services.AddFavouriteBusStopService;
@@ -244,5 +250,8 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         updateEmptyView();
     }
+
+
+
 
 }

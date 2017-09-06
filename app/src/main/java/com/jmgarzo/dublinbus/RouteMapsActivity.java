@@ -2,12 +2,18 @@ package com.jmgarzo.dublinbus;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,6 +23,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
@@ -28,7 +35,10 @@ import java.util.List;
 
 import static com.jmgarzo.dublinbus.R.id.map;
 
-public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCallback, LoaderManager.LoaderCallbacks<Cursor> {
+public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCallback,
+        GoogleMap.OnInfoWindowClickListener,
+        GoogleMap.OnMarkerClickListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private GoogleMap mMap;
     boolean mapReady = false;
@@ -65,6 +75,10 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
             mMap.addMarker(newMarker);
 
         }
+
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+        mMap.setOnMarkerClickListener(this);
+        mMap.setOnInfoWindowClickListener(this);
         setupCamera();
     }
 
@@ -155,5 +169,81 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
             }
         }
         return (latLngBusStop);
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        String busStopNumber = marker.getTitle();
+
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        String busStopNumber = marker.getTitle();
+
+        return false;
+    }
+
+    class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
+        // These are both viewgroups containing an ImageView with id "badge" and two TextViews with id
+        // "title" and "snippet".
+        private final View mWindow;
+
+
+        CustomInfoWindowAdapter() {
+            mWindow = getLayoutInflater().inflate(R.layout.custom_info_map_window, null);
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+
+            render(marker, mWindow);
+            return mWindow;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            render(marker, mWindow);
+            return mWindow;
+        }
+
+/*        @Override
+        public View getInfoContents(Marker marker) {
+            if (mOptions.getCheckedRadioButtonId() != R.id.custom_info_contents) {
+                // This means that the default info contents will be used.
+                return null;
+            }
+            render(marker, mContents);
+            return mContents;
+        }*/
+
+        private void render(Marker marker, View view) {
+
+
+            ((ImageView) view.findViewById(R.id.badge)).setImageResource(R.drawable.yellow_a700_circle_480x480);
+            String title = marker.getTitle();
+//            TextView titleUi = ((TextView) view.findViewById(R.id.title));
+            TextView textImageBadge = view.findViewById(R.id.text_title_badge);
+            if (title != null) {
+                textImageBadge.setText(title);
+                // Spannable string allows us to edit the formatting of the text.
+                SpannableString titleText = new SpannableString(title);
+                titleText.setSpan(new ForegroundColorSpan(Color.RED), 0, titleText.length(), 0);
+//                titleUi.setText(titleText);
+            } else {
+//                titleUi.setText("");
+                textImageBadge.setText("");
+            }
+
+            String snippet = marker.getSnippet();
+            TextView snippetUi = view.findViewById(R.id.snippet);
+            if (snippet != null && snippet.length() > 12) {
+                snippetUi.setText(snippet);
+            } else {
+                snippetUi.setText("");
+            }
+        }
     }
 }
