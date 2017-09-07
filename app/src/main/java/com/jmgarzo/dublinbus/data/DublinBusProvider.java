@@ -25,6 +25,7 @@ public class DublinBusProvider extends ContentProvider {
     static final int BUS_STOP_WITH_ROUTE_ID = 201;
 
     static final int ROUTE = 300;
+    static final int ROUTE_WITH_STOP_BUS = 301;
 
     static final int ROUTE_BUS_STOP = 400;
 
@@ -35,7 +36,9 @@ public class DublinBusProvider extends ContentProvider {
     private DublinBusDBHelper mOpenHelper;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
+    private static final SQLiteQueryBuilder sRoutesByBusStopQueryBuilder;
     private static final SQLiteQueryBuilder sStopsByRouteQueryBuilder;
+
 
     static {
         sStopsByRouteQueryBuilder = new SQLiteQueryBuilder();
@@ -49,6 +52,31 @@ public class DublinBusProvider extends ContentProvider {
                         "." + DublinBusContract.BusStopEntry._ID +
                         " = " + DublinBusContract.RouteBusStopEntry.TABLE_NAME +
                         "." + DublinBusContract.RouteBusStopEntry.BUS_STOP_ID);
+    }
+
+    static {
+        sRoutesByBusStopQueryBuilder = new SQLiteQueryBuilder();
+        sRoutesByBusStopQueryBuilder.setTables(DublinBusContract.BusStopEntry.TABLE_NAME +
+                " INNER JOIN " + DublinBusContract.RouteBusStopEntry.TABLE_NAME +
+                " INNER JOIN " + DublinBusContract.RouteEntry.TABLE_NAME +
+                " ON " +
+                DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry._ID +
+                " = " + DublinBusContract.RouteBusStopEntry.TABLE_NAME + "." + DublinBusContract.RouteBusStopEntry.BUS_STOP_ID +
+                " AND " + DublinBusContract.RouteBusStopEntry.TABLE_NAME + "." + DublinBusContract.RouteBusStopEntry.ROUTE_ID +
+                " = " + DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry._ID);
+    }
+
+    public Cursor getRoutesByBusStopNumber(Uri uri, String[] projection, String sortOrder) {
+        String selection = DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.NUMBER + " = ? ";
+        String[] selectionArgs = new String[]{DublinBusContract.RouteEntry.getBusNumberFromUri(uri)};
+        return sRoutesByBusStopQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
     }
 
 
@@ -77,6 +105,8 @@ public class DublinBusProvider extends ContentProvider {
 
 
         matcher.addURI(DublinBusContract.CONTENT_AUTHORITY, DublinBusContract.PATH_ROUTE, ROUTE);
+        matcher.addURI(DublinBusContract.CONTENT_AUTHORITY, DublinBusContract.PATH_ROUTE + "/*", ROUTE_WITH_STOP_BUS);
+
 
         matcher.addURI(DublinBusContract.CONTENT_AUTHORITY, DublinBusContract.PATH_ROUTE_BUS_STOP, ROUTE_BUS_STOP);
 
@@ -152,6 +182,20 @@ public class DublinBusProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
+                break;
+            }
+
+            case ROUTE_WITH_STOP_BUS: {
+//                returnCursor = mOpenHelper.getReadableDatabase().query(
+//                        DublinBusContract.BusStopEntry.TABLE_NAME,
+//                        projection,
+//                        selection,
+//                        selectionArgs,
+//                        null,
+//                        null,
+//                        sortOrder
+//                );
+                returnCursor = getRoutesByBusStopNumber(uri, projection, sortOrder);
                 break;
             }
 

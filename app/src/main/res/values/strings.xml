@@ -75,5 +75,9 @@
     <string name="banner_favourite_id">ca-app-pub-9433862228892990/8324502109</string>
     <string name="banner_real_time_id">ca-app-pub-9433862228892990/1567522066</string>
 
+    <!--maps-->
+    <string name="location_permission_denied">Dublin Bus requires location permission to enable the \'Route in google maps\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'Dublin Bus\'.</string>
+    <string name="permission_rationale_location">Access to the location service is required run the \'Route in google maps\' feature, which shows your current location on the map.</string>
+    <string name="permission_required_toast">Location permission is required for this layer.</string>
 
 </resources>

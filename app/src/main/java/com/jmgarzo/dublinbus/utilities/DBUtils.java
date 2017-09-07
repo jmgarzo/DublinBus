@@ -111,24 +111,35 @@ public class DBUtils {
     public static final int COL_ROUTE_INFORMATION_IS_NEW = 3;
 
 
-    public static final String[] ROUTE_PER_BUS_STOP_COLUMNS = {
+//    public static final String[] ROUTE_PER_BUS_STOP_COLUMNS = {
+//
+//            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry._ID,
+//            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.NAME,
+//            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.ORIGIN,
+//            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.ORIGIN_LOCALIZED,
+//            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.DESTINATION,
+//            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.DESTINATION_LOCALIZED,
+//            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.IS_NEW
+//    };
+//
+//    public static final int COL_ROUTE_PER_BUS_STOP_ID = 0;
+//    public static final int COL_ROUTE_PER_BUS_STOP_NAME = 1;
+//    public static final int COL_ROUTE_PER_BUS_STOP_ORIGIN = 2;
+//    public static final int COL_ROUTE_PER_BUS_STOP_ORIGIN_LOCALIZED = 3;
+//    public static final int COL_ROUTE_PER_BUS_STOP_DESTINATION = 4;
+//    public static final int COL_ROUTE_PER_BUS_STOP_DESTINATION_LOCALIZED = 5;
+//    public static final int COL_ROUTE_PER_BUS_STOP_IS_NEW = 6;
 
-            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry._ID,
-            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.NAME,
-            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.ORIGIN,
-            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.ORIGIN_LOCALIZED,
-            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.DESTINATION,
-            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.DESTINATION_LOCALIZED,
-            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.IS_NEW
+    public static final String[] ROUTES_PER_BUS_STOP_COLUMNS = {
+            DublinBusContract.RouteEntry.TABLE_NAME+"."+ DublinBusContract.RouteEntry.NAME,
+            DublinBusContract.RouteEntry.TABLE_NAME+"."+ DublinBusContract.RouteEntry.ORIGIN,
+            DublinBusContract.RouteEntry.TABLE_NAME+"."+ DublinBusContract.RouteEntry.DESTINATION
+
     };
 
-    public static final int COL_ROUTE_PER_BUS_STOP_ID = 0;
-    public static final int COL_ROUTE_PER_BUS_STOP_NAME = 1;
-    public static final int COL_ROUTE_PER_BUS_STOP_ORIGIN = 2;
-    public static final int COL_ROUTE_PER_BUS_STOP_ORIGIN_LOCALIZED = 3;
-    public static final int COL_ROUTE_PER_BUS_STOP_DESTINATION = 4;
-    public static final int COL_ROUTE_PER_BUS_STOP_DESTINATION_LOCALIZED = 5;
-    public static final int COL_ROUTE_PER_BUS_STOP_IS_NEW = 6;
+    public static final int COL_ROUTE_PER_BUS_STOP_NAME = 0;
+    public static final int COL_ROUTE_PER_BUS_STOP_ORIGIN = 1;
+    public static final int COL_ROUTE_PER_BUS_STOP_DESTINATION =2;
 
 
 

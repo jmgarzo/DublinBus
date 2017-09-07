@@ -1,14 +1,19 @@
 package com.jmgarzo.dublinbus;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
@@ -26,20 +31,24 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
+import com.jmgarzo.dublinbus.data.DublinBusProvider;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Route;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
+import com.jmgarzo.dublinbus.utilities.PermissionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.jmgarzo.dublinbus.R.id.map;
 
-public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCallback,
+public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnInfoWindowClickListener,
         GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnMyLocationButtonClickListener,
         LoaderManager.LoaderCallbacks<Cursor> {
 
+    private String NUMBER_BUS_STOP_TAG = "number_bus_stop_tag";
     private GoogleMap mMap;
     boolean mapReady = false;
     private ArrayList<BusStop> mBusStopList;
@@ -47,6 +56,11 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
     private Route mRoute;
 
     private final int BUS_STOPS_LOADER_ID = 223;
+    private final int ROUTES_PER_BUS_STOP = 245;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
+    private boolean mPermissionDenied = false;
+
 
 
     @Override
@@ -59,6 +73,7 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
             mRoute = getIntent().getParcelableExtra(RouteDetailActivityFragment.ROUTE_EXTRA_TAG);
         }
         this.getSupportLoaderManager().initLoader(BUS_STOPS_LOADER_ID, null, this);
+//        this.getSupportLoaderManager().initLoader(ROUTES_PER_BUS_STOP,null,this);
     }
 
     @Override
@@ -67,6 +82,7 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
         mMap = map;
 
         for (BusStop busStop : mBusStopList) {
+
             MarkerOptions newMarker = new MarkerOptions()
                     .position(busStop.getLatLng())
                     .title(busStop.getNumber())
@@ -79,6 +95,8 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
+        mMap.setOnMyLocationButtonClickListener(this);
+        enableMyLocation();
         setupCamera();
     }
 
@@ -90,7 +108,7 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
         }
         LatLngBounds bounds = builder.build();
 
-        int padding = 100; // offset from edges of the map in pixels
+        int padding = 75; // offset from edges of the map in pixels
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         mMap.moveCamera(cu);
         //mMap.moveCamera(CameraUpdateFactory.newCameraPosition(target));
@@ -109,6 +127,16 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
                         new String[]{"0"},
                         DublinBusContract.RouteBusStopEntry.RECORD_ORDER);
             }
+//            case ROUTES_PER_BUS_STOP:{
+//                Uri routesWithBusStopNameUri = DublinBusContract.RouteEntry.
+//                        buildRoutesWithBusStop(args.getString(NUMBER_BUS_STOP_TAG));
+//                return new CursorLoader(this,
+//                        routesWithBusStopNameUri,
+//                        DBUtils.ROUTES_PER_BUS_STOP_COLUMNS,
+//                        DublinBusContract.RouteEntry.IS_NEW + " = ?",
+//                        new String[]{"0"},
+//                        DublinBusContract.RouteEntry.NAME);
+//            }
             default:
                 throw new RuntimeException("Loader Not Implemented: " + id);
         }
@@ -129,6 +157,14 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
                 mapFragment.getMapAsync(this);
                 break;
             }
+//            case ROUTES_PER_BUS_STOP:{
+//                if(null != data && data.moveToFirst()){
+//                    ArrayList<Route>
+//                    do{
+//                        Route route = new Route();
+//                    }while(data.moveToNext());
+//                }
+//            }
         }
     }
 
@@ -147,19 +183,6 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
         return busStopsList;
     }
 
-    private LatLng getCentrer(List<LatLng> points) {
-        double latitude = 0;
-        double longitude = 0;
-        int n = points.size();
-
-        for (LatLng point : points) {
-            latitude += point.latitude;
-            longitude += point.longitude;
-        }
-
-        return new LatLng(latitude / n, longitude / n);
-    }
-
     private ArrayList<LatLng> getLatLngBusStop(ArrayList<BusStop> busStopsList) {
         ArrayList<LatLng> latLngBusStop = null;
         if (null != busStopsList && !busStopsList.isEmpty()) {
@@ -174,6 +197,9 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
     @Override
     public void onInfoWindowClick(Marker marker) {
         String busStopNumber = marker.getTitle();
+        Intent intent = new Intent(this, RealTimeStopActivity.class);
+        intent.putExtra(Intent.EXTRA_TEXT, busStopNumber);
+        this.startActivity(intent);
 
 
     }
@@ -183,6 +209,61 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
         String busStopNumber = marker.getTitle();
 
         return false;
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        return false;
+    }
+
+    /**
+     * Enables the My Location layer if the fine location permission has been granted.
+     */
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the location is missing.
+            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION, true);
+        } else if (mMap != null) {
+            // Access to the location has been granted to the app.
+            mMap.setMyLocationEnabled(true);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+            return;
+        }
+
+        if (PermissionUtils.isPermissionGranted(permissions, grantResults,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // Enable the my location layer if the permission has been granted.
+            enableMyLocation();
+        } else {
+            // Display the missing permission error dialog when the fragments resume.
+            mPermissionDenied = true;
+        }
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        if (mPermissionDenied) {
+            // Permission was not granted, display error dialog.
+            showMissingPermissionError();
+            mPermissionDenied = false;
+        }
+    }
+
+    /**
+     * Displays a dialog with error message explaining that the location permission is missing.
+     */
+    private void showMissingPermissionError() {
+        PermissionUtils.PermissionDeniedDialog
+                .newInstance(true).show(getSupportFragmentManager(), "dialog");
     }
 
     class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
@@ -223,6 +304,7 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
 
 
             ((ImageView) view.findViewById(R.id.badge)).setImageResource(R.drawable.yellow_a700_circle_480x480);
+
             String title = marker.getTitle();
 //            TextView titleUi = ((TextView) view.findViewById(R.id.title));
             TextView textImageBadge = view.findViewById(R.id.text_title_badge);
@@ -239,11 +321,9 @@ public class RouteMapsActivity extends FragmentActivity implements OnMapReadyCal
 
             String snippet = marker.getSnippet();
             TextView snippetUi = view.findViewById(R.id.snippet);
-            if (snippet != null && snippet.length() > 12) {
+
                 snippetUi.setText(snippet);
-            } else {
-                snippetUi.setText("");
-            }
+
         }
     }
 }
