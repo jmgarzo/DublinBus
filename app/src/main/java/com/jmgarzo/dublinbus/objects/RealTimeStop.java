@@ -1,8 +1,10 @@
 package com.jmgarzo.dublinbus.objects;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.jmgarzo.dublinbus.data.DublinBusContract;
+import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 /**
  * Created by jmgarzo on 14/08/2017.
@@ -30,6 +32,7 @@ public class RealTimeStop {
     private String route;
     private String sourceTimestamp;
     private String monitored;
+
 
     public long getId() {
         return id;
@@ -207,4 +210,6 @@ public class RealTimeStop {
 
         return contentValues;
     }
+
+
 }

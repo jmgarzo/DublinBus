@@ -29,6 +29,8 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
+import com.jmgarzo.dublinbus.objects.RealTimeStop;
+import com.jmgarzo.dublinbus.objects.Route;
 import com.jmgarzo.dublinbus.sync.RealTimeSyncUtils;
 import com.jmgarzo.dublinbus.sync.services.AddFavouriteBusStopService;
 import com.jmgarzo.dublinbus.sync.services.DeleteFromFavoriteBusStopService;
@@ -40,11 +42,13 @@ import com.jmgarzo.dublinbus.utilities.NetworkUtilities;
 
 
 public class RealTimeStopFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        SharedPreferences.OnSharedPreferenceChangeListener {
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        RealTimeStopAdapter.RealTimeStopAdapterOnClickHandler{
 
     private static final int ID_REAL_TIME_STOP_LOADER = 16;
     private static final int ID_FAB_FAVOURITE_FAB_LOADER = 34;
     public static final String FAVORITE_BUS_STOP_TAG = "favourite_bus_stop tag";
+
 
 
     private RecyclerView mRecyclerView;
@@ -108,7 +112,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
 
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mRealTimeStopAdapter = new RealTimeStopAdapter(getContext());
+        mRealTimeStopAdapter = new RealTimeStopAdapter(getContext(),this);
 
         mRecyclerView = rootView.findViewById(R.id.recyclerview_real_time_stop);
 
@@ -259,6 +263,13 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         updateEmptyView();
+    }
+
+    @Override
+    public void onClick(RealTimeStop realTimeStop) {
+//        Intent intent = new Intent(getContext(), RouteMapsActivity.class);
+//        intent.putExtra(FAVOURITE_ROUTE_EXTRA_TAG, route);
+//        startActivity(intent);
     }
 
 

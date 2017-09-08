@@ -49,6 +49,7 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private String NUMBER_BUS_STOP_TAG = "number_bus_stop_tag";
+    private String FAVOURITE_ROUTE_EXTRA_TAG = "favourite_route_tag";
     private GoogleMap mMap;
     boolean mapReady = false;
     private ArrayList<BusStop> mBusStopList;
@@ -70,7 +71,14 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
 
         Intent intent = getIntent();
         if (null != intent) {
-            mRoute = getIntent().getParcelableExtra(RouteDetailActivityFragment.ROUTE_EXTRA_TAG);
+            if(null != getIntent().getParcelableExtra(RouteDetailActivityFragment.ROUTE_EXTRA_TAG)){
+                mRoute = getIntent().getParcelableExtra(RouteDetailActivityFragment.ROUTE_EXTRA_TAG);
+                String title = getString(R.string.title_activity_route_maps_label_route) + " "+
+                        getString(R.string.title_activity_route_maps)+" " + mRoute.getName();
+                setTitle(title);
+            }
+
+
         }
         this.getSupportLoaderManager().initLoader(BUS_STOPS_LOADER_ID, null, this);
 //        this.getSupportLoaderManager().initLoader(ROUTES_PER_BUS_STOP,null,this);

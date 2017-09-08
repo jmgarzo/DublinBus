@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="content_authority">com.jmgarzo.dublinbus</string>
-    <string name="title_activity_route">RouteActivity</string>
+    <string name="title_activity_route">Route</string>
 
     <string name="btn_route">Routes</string>
     <string name="btn_real_time">RealTime</string>
@@ -62,7 +62,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_route_maps">Map</string>
+    <string name="title_activity_route_maps">Map: </string>
+    <string name="title_activity_route_maps_label_route">Route </string>
 
     <!--Constants-->
     <string name = "constant_dublin_bus_operator">bac</string>

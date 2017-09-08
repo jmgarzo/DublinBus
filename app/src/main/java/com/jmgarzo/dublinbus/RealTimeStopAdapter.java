@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.jmgarzo.dublinbus.objects.RealTimeStop;
+import com.jmgarzo.dublinbus.objects.Route;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 /**
@@ -23,8 +25,15 @@ public class RealTimeStopAdapter extends RecyclerView.Adapter<RealTimeStopAdapte
 
     private Context mContext;
 
-    public RealTimeStopAdapter(Context context) {
+    private final RealTimeStopAdapterOnClickHandler mClickHandler;
+
+    public  interface RealTimeStopAdapterOnClickHandler {
+        void onClick(RealTimeStop realTimeStop);
+    }
+
+    public RealTimeStopAdapter(Context context,RealTimeStopAdapterOnClickHandler clickHandler) {
         mContext = context;
+        mClickHandler = clickHandler;
     }
 
     @Override
@@ -100,6 +109,9 @@ public class RealTimeStopAdapter extends RecyclerView.Adapter<RealTimeStopAdapte
 
         @Override
         public void onClick(View v) {
+//            int adapterPosition = getAdapterPosition();
+//            RealTimeStop realTimeStop  = new RealTimeStop (mCursor,adapterPosition);
+//            mClickHandler.onClick(route);
 
 
         }
