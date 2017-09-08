@@ -73,8 +73,8 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
         if (null != intent) {
             if(null != getIntent().getParcelableExtra(RouteDetailActivityFragment.ROUTE_EXTRA_TAG)){
                 mRoute = getIntent().getParcelableExtra(RouteDetailActivityFragment.ROUTE_EXTRA_TAG);
-                String title = getString(R.string.title_activity_route_maps_label_route) + " "+
-                        getString(R.string.title_activity_route_maps)+" " + mRoute.getName();
+                String title = getString(R.string.title_activity_route_maps) + " "+
+                        getString(R.string.title_activity_route_maps_label_route)+" " + mRoute.getName();
                 setTitle(title);
             }
 
