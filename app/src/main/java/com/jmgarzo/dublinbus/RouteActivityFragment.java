@@ -132,6 +132,8 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
 
         switch (id) {
             case ID_ROUTES_LOADER: {
+                String orderBy =  DublinBusContract.RouteEntry.NAME +  "*1,"+
+                        DublinBusContract.RouteEntry.NAME + " COLLATE NOCASE ASC ";
                 if (args != null) {
                     String filterArg = args.getString(ROUTE_FILTER_TAG);
                     String selection = DublinBusContract.RouteEntry.IS_NEW + " = ? AND " +
@@ -143,14 +145,14 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
                             DBUtils.ROUTE_COLUMNS,
                             selection,
                             new String[]{"0"},
-                            null);
+                            orderBy);
                 } else {
                     return new CursorLoader(getContext(),
                             DublinBusContract.RouteEntry.CONTENT_URI,
                             DBUtils.ROUTE_COLUMNS,
                             DublinBusContract.RouteEntry.IS_NEW + " = ? ",
                             new String[]{"0"},
-                            null);
+                            orderBy);
                 }
             }
         }
