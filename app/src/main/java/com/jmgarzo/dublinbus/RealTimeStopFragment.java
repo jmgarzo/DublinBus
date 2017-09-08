@@ -49,6 +49,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
 
     private RecyclerView mRecyclerView;
     private RealTimeStopAdapter mRealTimeStopAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private String mBusStopNumber;
     private TextView mError;
     private FloatingActionButton fab;
@@ -66,6 +67,15 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         setHasOptionsMenu(true);
 
         mProgressBar = rootView.findViewById(R.id.progress_bar);
+        mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_real_time);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshData();
+            }
+        });
+        mSwipeRefreshLayout.setRefreshing(true);
+
         showProgressBar();
         mAdView = rootView.findViewById(R.id.ad_view);
         mAdView.loadAd(AdUtils.getAdRequest());
@@ -94,6 +104,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         }
 
         getActivity().setTitle(getString(R.string.real_time_stop_title) + " " + (mBusStopNumber));
+
 
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -181,6 +192,7 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case ID_REAL_TIME_STOP_LOADER: {
+                mSwipeRefreshLayout.setRefreshing(false);
                 mRealTimeStopAdapter.swapCursor(data);
                 if (data != null && data.moveToFirst()) {
                     hideProgressBar();
@@ -213,15 +225,13 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     }
 
     private void showProgressBar() {
-//        mRecyclerView.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
-        //mProgressBar.show();
+        mSwipeRefreshLayout.setRefreshing(true);
     }
 
     private void hideProgressBar() {
         mProgressBar.setVisibility(View.GONE);
-        //mProgressBar.hide();
-//        mRecyclerView.setVisibility(View.VISIBLE);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
 
@@ -250,8 +260,6 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         updateEmptyView();
     }
-
-
 
 
 }
