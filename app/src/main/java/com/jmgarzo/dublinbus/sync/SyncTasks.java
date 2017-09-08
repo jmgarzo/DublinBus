@@ -364,6 +364,7 @@ public class SyncTasks {
             BusStop busStop = new BusStop();
             busStop.cursorToBusStop(cursor);
             busStop.setFavourite(true);
+            busStop.setNew(false);
 
 
             Uri insertResultUri = context.getContentResolver().insert(

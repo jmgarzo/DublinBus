@@ -103,21 +103,24 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
                     String filterArg = args.getString(FILTER_TAG);
 //                    String selection = DublinBusContract.BusStopEntry.NUMBER + " LIKE '"+ filterArg + "%' ";
                     String selection = DublinBusContract.BusStopEntry.IS_NEW + " = ? AND " +
+                            DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? AND (" +
                             DublinBusContract.BusStopEntry.NUMBER + "  LIKE '" + filterArg + "%' " +
-                            " OR " + DublinBusContract.BusStopEntry.SHORT_NAME + " LIKE '" + filterArg + "%' ";
+                            " OR " + DublinBusContract.BusStopEntry.SHORT_NAME + " LIKE '" + filterArg + "%')";
 
                     return new CursorLoader(getContext(),
                             DublinBusContract.BusStopEntry.CONTENT_URI,
                             DBUtils.BUS_STOP_COLUMNS,
                             selection,
-                            new String[]{"0"},
+                            new String[]{"0","0"},
                             null);
                 } else {
+                    String selection = DublinBusContract.BusStopEntry.IS_NEW + " = ? "
+                            +" AND " + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ";
                     return new CursorLoader(getContext(),
                             DublinBusContract.BusStopEntry.CONTENT_URI,
                             DBUtils.BUS_STOP_COLUMNS,
-                            DublinBusContract.BusStopEntry.IS_NEW + " = ?",
-                            new String[]{"0"},
+                            selection,
+                            new String[]{"0","0"},
                             null);
                 }
             }
