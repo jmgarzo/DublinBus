@@ -80,6 +80,32 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
     }
 
     @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
+
+
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(SEARCH_VIEW_TEXT_TAG, searchViewText);
         super.onSaveInstanceState(outState);
@@ -132,7 +158,7 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
 
         switch (id) {
             case ID_ROUTES_LOADER: {
-                String orderBy =  DublinBusContract.RouteEntry.NAME +  "*1,"+
+                String orderBy = DublinBusContract.RouteEntry.NAME + "*1," +
                         DublinBusContract.RouteEntry.NAME + " COLLATE NOCASE ASC ";
                 if (args != null) {
                     String filterArg = args.getString(ROUTE_FILTER_TAG);

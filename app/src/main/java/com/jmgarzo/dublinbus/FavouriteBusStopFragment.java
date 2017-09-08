@@ -34,7 +34,6 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
     private AdView mAdView;
 
 
-
     FavouriteBusStopAdapter mFavouriteBusStopAdapter;
     private RecyclerView mRecyclerView;
 
@@ -47,7 +46,7 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-         View rootView =  inflater.inflate(R.layout.fragment_favourite_bus_stop, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_favourite_bus_stop, container, false);
 
         mAdView = rootView.findViewById(R.id.ad_view);
 
@@ -73,6 +72,29 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
     }
 
     @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public void onClick(BusStop busStop) {
         Intent intent = new Intent(getActivity(), RealTimeStopActivity.class);
         intent.putExtra(Intent.EXTRA_TEXT, busStop.getNumber());
@@ -86,8 +108,8 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
                 return new CursorLoader(getContext(),
                         DublinBusContract.BusStopEntry.CONTENT_URI,
                         DBUtils.BUS_STOP_COLUMNS,
-                        DublinBusContract.BusStopEntry.IS_NEW +" = ? AND " +DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ",
-                        new  String[]{"0","1"},
+                        DublinBusContract.BusStopEntry.IS_NEW + " = ? AND " + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ",
+                        new String[]{"0", "1"},
                         null);
             }
         }
@@ -98,7 +120,7 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case ID_BUS_FAVOURITE_STOP_LOADER: {
-                if(!data.moveToFirst()){
+                if (!data.moveToFirst()) {
                     showErrorMessage(getString(R.string.favorite_empty_error_message));
                     break;
                 }
@@ -109,12 +131,13 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
         }
     }
 
-    private void showErrorMessage(String message){
+    private void showErrorMessage(String message) {
         tvMessageError.setText(message);
         mRecyclerView.setVisibility(View.GONE);
         tvMessageError.setVisibility(View.VISIBLE);
     }
-    private void showRecyclerView(){
+
+    private void showRecyclerView() {
         tvMessageError.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
     }

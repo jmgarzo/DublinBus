@@ -131,22 +131,36 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onResume() {
+        super.onResume();
+
+        if (mAdView != null) {
+            mAdView.resume();
+        }
         getActivity().getSupportLoaderManager().initLoader(ID_REAL_TIME_STOP_LOADER, null, this);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sp.registerOnSharedPreferenceChangeListener(this);
         RealTimeSyncUtils.initialize(getContext(), mBusStopNumber);
-        super.onResume();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sp.unregisterOnSharedPreferenceChangeListener(this);
         RealTimeSyncUtils.cancelDispach();
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
 
     }
 
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
 
     @Override
     public void onStop() {
