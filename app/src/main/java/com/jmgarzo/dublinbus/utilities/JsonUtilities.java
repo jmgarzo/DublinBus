@@ -116,6 +116,9 @@ public class JsonUtilities {
             }
             errorMessage = realTimeStopJson.getString(ERROR_MESSAGE);
             JSONArray realTimeStopArray = realTimeStopJson.getJSONArray(REAL_TIME_STOP_RESULTS);
+            if(null!=realTimeStopArray && realTimeStopArray.length()==0){
+                DBUtils.setRealTimeConnectionStatus(context,DBUtils.REAL_TIME_STATUS_NO_RESULTS);
+            }
             realTimeStopList = new ArrayList<>();
             for (int i = 0; i < realTimeStopArray.length(); i++) {
                 JSONObject jsonRealTimeStop = realTimeStopArray.getJSONObject(i);
