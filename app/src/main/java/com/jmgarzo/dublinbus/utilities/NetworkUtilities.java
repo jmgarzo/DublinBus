@@ -392,7 +392,7 @@ public class NetworkUtilities {
         int status = DBUtils.getRealTimeConnectionStatus(context);
         switch (status) {
             case DBUtils.REAL_TIME_STATUS_NO_RESULTS:
-                message = R.string.empty_real_time_stop_invalid_stop;
+                message = R.string.empty_real_time_stop_server_error;
                 break;
             case DBUtils.REAL_TIME_STATUS_MISSING_PARAMETER:
                 message = empty_real_time_stop_server_down;

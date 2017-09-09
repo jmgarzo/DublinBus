@@ -254,7 +254,8 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
 
 
     private void showError() {
-        mRecyclerView.setVisibility(View.GONE);
+        //mRecyclerView.setVisibility(View.GONE);
+        hideProgressBar();
         mError.setVisibility(View.VISIBLE);
     }
 

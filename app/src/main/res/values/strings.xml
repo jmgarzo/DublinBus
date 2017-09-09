@@ -41,7 +41,7 @@
     <string name="empty_real_time_stop_list">No Bus Stop Information Available</string>
     <string name="empty_real_time_stop_no_network">No Bus Stop Information Available. The network is not available to fetch bus stop data.</string>
     <string name="empty_real_time_stop_server_down">No Bus Stop information available. The server is not returning data.</string>
-    <string name="empty_real_time_stop_server_error">No Bus Stop information available. The server is not returning valid data.</string>
+    <string name="empty_real_time_stop_server_error">No Bus Stop information available. The server is not returning  data.</string>
     <string name="empty_real_time_stop_invalid_stop">No Bus Stop information available. The Bus Stop is not recognized by the server.</string>
 
     <!--route detail-->
