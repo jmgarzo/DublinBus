@@ -11,6 +11,7 @@ import android.util.Log;
 import com.jmgarzo.dublinbus.sync.SyncTasks;
 import com.jmgarzo.dublinbus.sync.UpdateDbJobService;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -224,25 +225,25 @@ public class DublinBusDBHelper extends SQLiteOpenHelper {
 
     private boolean checkDataBase() {
 
-        SQLiteDatabase checkDB = null;
+//        SQLiteDatabase checkDB = null;
+//        try {
+//            String myPath = DB_PATH;
+//            checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+//
+//        } catch (SQLiteException e) {
+//            //database does't exist yet.
+//        }
+//        if (checkDB != null) {
+//            checkDB.close();
+//        }
+//
+//        return checkDB != null ? true : false;
+        return isDatabaseExist();
+    }
 
-        try {
-            String myPath = DB_PATH;
-            checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-
-        } catch (SQLiteException e) {
-
-            //database does't exist yet.
-
-        }
-
-        if (checkDB != null) {
-
-            checkDB.close();
-
-        }
-
-        return checkDB != null ? true : false;
+    private boolean isDatabaseExist() {
+        File dbFile = mContext.getDatabasePath(DB_PATH);
+        return dbFile.exists();
     }
 
 
