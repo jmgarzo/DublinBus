@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DBUtils.setIsAdmodActive(this,true);
         if (savedInstanceState == null) {
             if (!DBUtils.isExistDb(this)) {
                 SyncTasks.copyDbFromAssets(this);

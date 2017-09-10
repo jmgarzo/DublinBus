@@ -437,5 +437,15 @@ public class DBUtils {
         return pref.getBoolean(context.getString(R.string.pref_exist_db), false);
     }
 
+    public static void setIsAdmodActive(Context context, boolean b) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        pref.edit().putBoolean(context.getString(R.string.pref_admod_active), b).apply();
+    }
+
+    public static boolean isAdmodActive(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return pref.getBoolean(context.getString(R.string.pref_admod_active), true);
+    }
+
 
 }

@@ -48,9 +48,11 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_favourite_bus_stop, container, false);
 
-        mAdView = rootView.findViewById(R.id.ad_view);
-
-        mAdView.loadAd(AdUtils.getAdRequest());
+        if(DBUtils.isAdmodActive(getContext())) {
+            mAdView = rootView.findViewById(R.id.ad_view);
+            mAdView.setVisibility(View.VISIBLE);
+            mAdView.loadAd(AdUtils.getAdRequest());
+        }
 
         tvMessageError = rootView.findViewById(R.id.tv_favorite_error_message);
 

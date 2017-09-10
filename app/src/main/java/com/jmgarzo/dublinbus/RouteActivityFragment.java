@@ -53,8 +53,11 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
 
         View rootView = inflater.inflate(R.layout.fragment_route, container, false);
 
-        mAdView = rootView.findViewById(R.id.ad_view);
-        mAdView.loadAd(AdUtils.getAdRequest());
+        if(DBUtils.isAdmodActive(getContext())) {
+            mAdView = rootView.findViewById(R.id.ad_view);
+            mAdView.setVisibility(View.VISIBLE);
+            mAdView.loadAd(AdUtils.getAdRequest());
+        }
 
         if (savedInstanceState != null) {
             searchViewText = savedInstanceState.getString(SEARCH_VIEW_TEXT_TAG);

@@ -45,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:visibility="gone"
             app:adSize="BANNER"
             app:adUnitId="@string/banner_favourite_id"
             app:layout_constraintBottom_toBottomOf="parent"

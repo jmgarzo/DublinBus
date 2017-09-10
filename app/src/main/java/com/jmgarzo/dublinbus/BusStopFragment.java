@@ -58,9 +58,11 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
         }
         View rootView = inflater.inflate(R.layout.fragment_bus_stop, container, false);
 
-        MobileAds.initialize(getActivity(), "ca-app-pub-3940256099942544~3347511713");
-        mAdView = rootView.findViewById(R.id.ad_view);
-        mAdView.loadAd(AdUtils.getAdRequest());
+        if (DBUtils.isAdmodActive(getContext())) {
+            mAdView = rootView.findViewById(R.id.ad_view);
+            mAdView.setVisibility(View.VISIBLE);
+            mAdView.loadAd(AdUtils.getAdRequest());
+        }
 
         setHasOptionsMenu(true);
 
@@ -101,6 +103,7 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
             mAdView.resume();
         }
     }
+
     @Override
     public void onDestroy() {
         if (mAdView != null) {
@@ -122,7 +125,7 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case ID_BUS_STOP_LOADER: {
-                String orderBy = " length(" +DublinBusContract.BusStopEntry.NUMBER +  "), "+
+                String orderBy = " length(" + DublinBusContract.BusStopEntry.NUMBER + "), " +
                         DublinBusContract.BusStopEntry.NUMBER + " COLLATE NOCASE ASC ";
 
                 if (args != null) {
@@ -138,16 +141,16 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
                             DublinBusContract.BusStopEntry.CONTENT_URI,
                             DBUtils.BUS_STOP_COLUMNS,
                             selection,
-                            new String[]{"0","0"},
+                            new String[]{"0", "0"},
                             orderBy);
                 } else {
                     String selection = DublinBusContract.BusStopEntry.IS_NEW + " = ? "
-                            +" AND " + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ";
+                            + " AND " + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ";
                     return new CursorLoader(getContext(),
                             DublinBusContract.BusStopEntry.CONTENT_URI,
                             DBUtils.BUS_STOP_COLUMNS,
                             selection,
-                            new String[]{"0","0"},
+                            new String[]{"0", "0"},
                             orderBy);
                 }
             }

@@ -81,8 +81,11 @@ public class RealTimeStopFragment extends Fragment implements LoaderManager.Load
         mSwipeRefreshLayout.setRefreshing(true);
 
         showProgressBar();
-        mAdView = rootView.findViewById(R.id.ad_view);
-        mAdView.loadAd(AdUtils.getAdRequest());
+        if(DBUtils.isAdmodActive(getContext())) {
+            mAdView = rootView.findViewById(R.id.ad_view);
+            mAdView.setVisibility(View.VISIBLE);
+            mAdView.loadAd(AdUtils.getAdRequest());
+        }
 
         isFavorite = false;
         fab = rootView.findViewById(R.id.fab);

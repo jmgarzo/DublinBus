@@ -54,6 +54,7 @@
     <string name="pref_bus_stop_db">bus_stop_db</string>
     <string name="pref_operator_information">operator_information</string>
     <string name="pref_exist_db">exist_db</string>
+    <string name="pref_admod_active">admod_active</string>
 
 
     <!--Description content -->
