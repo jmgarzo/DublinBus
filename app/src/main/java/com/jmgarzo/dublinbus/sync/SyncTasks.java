@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.util.Log;
 
@@ -74,16 +75,19 @@ public class SyncTasks {
             }
         }
 
-        int routeBusStopInserted = contentResolver.bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
-                routeBusStopContentValues.toArray(new ContentValues[routeBusStopContentValues.size()]));
-        Log.d(LOG_TAG, "Route Bus Stop Inserted: " + routeBusStopInserted);
-
+        try {
+            int routeBusStopInserted = contentResolver.bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
+                    routeBusStopContentValues.toArray(new ContentValues[routeBusStopContentValues.size()]));
+            Log.d(LOG_TAG, "Route Bus Stop Inserted: " + routeBusStopInserted);
+        } catch (SQLiteException e) {
+            Log.e(LOG_TAG, "Error inseting Route Bus Stop: ", e);
+        }
 
         deleteOldValues(context);
         updateNewValues(context);
         setFavouritesBusStop(context);
         numUpdates++;
-        Log.d(LOG_TAG,"NumUpdates: " + numUpdates);
+        Log.d(LOG_TAG, "NumUpdates: " + numUpdates);
 
     }
 
@@ -92,7 +96,7 @@ public class SyncTasks {
         ArrayList<BusStop> oldfavouritesList = getFavouriteBusStop(context);
         int favoritesInserted = 0;
 
-        if(null != oldfavouritesList && !oldfavouritesList.isEmpty()) {
+        if (null != oldfavouritesList && !oldfavouritesList.isEmpty()) {
             String selection = DublinBusContract.BusStopEntry._ID + " = ? AND " +
                     DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ";
             for (BusStop oldFavourite : oldfavouritesList) {
@@ -112,16 +116,14 @@ public class SyncTasks {
                         new String[]{Integer.toString(newFavourite.getId()), "0"});
             }
         }
-        Log.d(LOG_TAG,"Favorites Inserted " +favoritesInserted);
+        Log.d(LOG_TAG, "Favorites Inserted " + favoritesInserted);
     }
-
-
 
 
     private static BusStop getNewFavouriteFromOld(Context context, BusStop oldFavourite) {
         BusStop newFavoriteBusStop = null;
         String selection = DublinBusContract.BusStopEntry.NUMBER + " = ? AND " +
-                DublinBusContract.BusStopEntry.IS_NEW + " = ? " ;
+                DublinBusContract.BusStopEntry.IS_NEW + " = ? ";
         Cursor cursor = context.getContentResolver().query(
                 DublinBusContract.BusStopEntry.CONTENT_URI,
                 DBUtils.BUS_STOP_COLUMNS,
@@ -329,7 +331,7 @@ public class SyncTasks {
         }
     }
 
-    public static void deleteRealTimeBusStop(Context context){
+    public static void deleteRealTimeBusStop(Context context) {
         int deleted = context.getContentResolver().delete(DublinBusContract.RealTimeStopEntry.CONTENT_URI, null, null);
         Log.d(LOG_TAG, "Time real stop bus deleted: " + deleted);
     }
@@ -367,19 +369,20 @@ public class SyncTasks {
             busStop.setNew(false);
 
 
-            Uri insertResultUri = context.getContentResolver().insert(
+            int favoriteUpdates=0;
+            favoriteUpdates = context.getContentResolver().update(
                     DublinBusContract.BusStopEntry.CONTENT_URI,
-                    busStop.getContentValues());
-
-            String newIdBusStop = null;
-            if (insertResultUri != null) {
-                newIdBusStop = insertResultUri.getLastPathSegment();
-                Log.d(LOG_TAG, newIdBusStop + " New Bus Stop inserted");
+                    busStop.getContentValues(),
+                    DublinBusContract.BusStopEntry._ID + " = ? ",
+                    new String[]{Integer.toString(busStop.getId())});
+            if(favoriteUpdates!= 0){
+                Log.d(LOG_TAG,favoriteUpdates +" Favourite Update");
             }
-            cursor.close();
         }
 
+        cursor.close();
     }
+
 
     public static void deleteFavoriteBusStop(Context context, String busStopNumber) {
 

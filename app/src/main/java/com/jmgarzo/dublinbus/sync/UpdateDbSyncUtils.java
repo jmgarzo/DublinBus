@@ -21,8 +21,8 @@ public class UpdateDbSyncUtils {
 
     private static boolean sInitialized;
 
-    private static final int SYNC_INTERVAL_SECONDS = 60 * 60 * 12   ;
-    private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS + (60 * 60);
+    private static final int SYNC_INTERVAL_SECONDS = 60 * 5  ;
+    private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS + (60 * 1);
 
     private static FirebaseJobDispatcher dispatcher;
 
@@ -63,8 +63,8 @@ public class UpdateDbSyncUtils {
 
     public static void startImmediateSync(@NonNull final Context context) {
 
-        Intent intentUpdateDbService = new Intent(context, UpdateDbJobService.class);
-        context.startService(intentUpdateDbService);
+//        Intent intentUpdateDbService = new Intent(context, UpdateDbJobService.class);
+//        context.startService(intentUpdateDbService);
     }
 
 }

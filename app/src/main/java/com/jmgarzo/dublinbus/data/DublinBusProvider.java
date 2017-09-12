@@ -145,7 +145,7 @@ public class DublinBusProvider extends ContentProvider {
             }
 
             case BUS_STOP: {
-                returnCursor = mOpenHelper.getReadableDatabase().query(
+               returnCursor = mOpenHelper.getReadableDatabase().query(
                         DublinBusContract.BusStopEntry.TABLE_NAME,
                         projection,
                         selection,
