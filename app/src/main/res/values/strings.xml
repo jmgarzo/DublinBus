@@ -67,7 +67,7 @@
     <string name="title_activity_route_maps_label_route">Route </string>
 
     <!--Constants-->
-    <string name = "constant_dublin_bus_operator">bac</string>
+    <string name="constant_dublin_bus_operator">bac</string>
 
     <!--Admod-->
     <string name="banner_ad_unit_id">ca-app-pub-9433862228892990/5634404368</string>

@@ -145,12 +145,12 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
                             orderBy);
                 } else {
                     String selection = DublinBusContract.BusStopEntry.IS_NEW + " = ? "
-                            + " AND " + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ";
+                            ;
                     return new CursorLoader(getContext(),
                             DublinBusContract.BusStopEntry.CONTENT_URI,
                             DBUtils.BUS_STOP_COLUMNS,
                             selection,
-                            new String[]{"0", "0"},
+                            new String[]{"0"},
                             orderBy);
                 }
             }

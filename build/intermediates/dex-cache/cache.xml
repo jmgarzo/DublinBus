@@ -2,42 +2,6 @@
 <items version="2" >
 
     <item
-        is-multidex="false"
-        jar="/home/jmgarzo/.android/build-cache/e56b1582582d878660bfbe65fa85f55242f96ddd/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="26.0.1"
-        sha1="e5b429c146094a612134910688d169ec08deeefb">
-        <dex dex="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/pre-dexed/release/classes_e2386bc0fb5a8baf080d5e9f073171a3746fac38.jar" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.1"
-        sha1="78afb73b17e31d880e72560e4cd58005eba1f359">
-        <dex dex="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_bd38ec354aac5251225562f5caf5015fa8528982/classes.dex" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/jmgarzo/.android/build-cache/54fe248e8b2efff297b944d492834daa8ff2bfbc/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="26.0.1"
-        sha1="e1625e48a836779b5fa141d22e5d05563aaccc9a">
-        <dex dex="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/pre-dexed/release/classes_9825112cf7b3396a9c6432d3164cfe36812469c9.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/jmgarzo/.android/build-cache/d3df2112916714b8af201f4ed8a2c64e13126ed1/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="26.0.1"
-        sha1="43e9789bd3240271265ab30ce1be9f224843f5a8">
-        <dex dex="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/pre-dexed/release/classes_dd9e18d8c109b405d4c341970ab88957ab91f964.jar" />
-    </item>
-    <item
         is-multidex="true"
         jar="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
@@ -47,13 +11,13 @@
         <dex dex="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_ea51706b523e1f0114d8a4b7fd704b1f49a13145/classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/home/jmgarzo/.android/build-cache/1c41cc22a890aefd74dc4b5c6eab58e03deccc0e/output/jars/classes.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
         optimize="true"
         revision="26.0.1"
-        sha1="ed87ccdcb70c17d71ba4e6e4ac16afa62d3c49fb">
-        <dex dex="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/pre-dexed/release/classes_ad10e7315d67c2fc3fba6d16b8da4769aab64b3e.jar" />
+        sha1="9ca7f0db1eebb21ec6d9b98d50c2c27cd377a6ac">
+        <dex dex="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_bd38ec354aac5251225562f5caf5015fa8528982/classes.dex" />
     </item>
 
 </items>

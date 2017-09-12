@@ -9,6 +9,8 @@ import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 import com.jmgarzo.dublinbus.sync.SyncTasks;
 
+import java.util.concurrent.Executor;
+
 /**
  * Created by jmgarzo on 24/08/17.
  */
@@ -31,7 +33,7 @@ public class UpdateDbJobService extends JobService {
                 jobFinished(params,false);
             }
         };
-        mUpdateDataBaseTask.execute();
+        mUpdateDataBaseTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         return true;
     }
 

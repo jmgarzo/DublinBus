@@ -34,7 +34,7 @@ public class RealTimeJobService extends JobService {
         };
         Bundle b =params.getExtras();
         String stopId =b.getString(RealTimeSyncUtils.STOP_ID_TAG);
-        mFetchRealTimeDataTask.execute(stopId);
+        mFetchRealTimeDataTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,stopId);
         return true;
     }
 

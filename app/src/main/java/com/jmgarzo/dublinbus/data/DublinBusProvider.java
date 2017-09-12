@@ -275,7 +275,9 @@ public class DublinBusProvider extends ContentProvider {
         Uri returnUri;
 
         switch (sUriMatcher.match(uri)) {
+
             case OPERATOR: {
+
                 long id = db.insert(DublinBusContract.OperatorEntry.TABLE_NAME,
                         null,
                         contentValues);
