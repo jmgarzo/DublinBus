@@ -99,9 +99,8 @@ public class SyncTasks {
         } catch (SQLiteException e) {
             Log.e(LOG_TAG, "Error inserting Route Bus Stop: ", e);
         }
-
-        deleteOldValues(context);
         setFavouritesBusStop(context);
+        deleteOldValues(context);
         updateNewValues(context);
         numUpdates++;
         Log.d(LOG_TAG, "NumUpdates: " + numUpdates);
@@ -110,13 +109,13 @@ public class SyncTasks {
 
     private static void setFavouritesBusStop(Context context) {
 
-        ArrayList<BusStop> oldfavouritesList = getFavouriteBusStop(context);
-        int favoritesInserted = 0;
+        ArrayList<BusStop> oldFavouritesList = getFavouriteBusStop(context);
+        int favoritesUpdated = 0;
 
-        if (null != oldfavouritesList && !oldfavouritesList.isEmpty()) {
+        if (null != oldFavouritesList && !oldFavouritesList.isEmpty()) {
             String selection = DublinBusContract.BusStopEntry._ID + " = ? AND " +
                     DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ";
-            for (BusStop oldFavourite : oldfavouritesList) {
+            for (BusStop oldFavourite : oldFavouritesList) {
 
                 context.getContentResolver().delete(DublinBusContract.BusStopEntry.CONTENT_URI,
                         DublinBusContract.BusStopEntry._ID + " = ? ",
@@ -126,14 +125,14 @@ public class SyncTasks {
                 BusStop newFavourite = getNewFavouriteFromOld(context, oldFavourite);
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(DublinBusContract.BusStopEntry.IS_FAVOURITE, 1);
-                favoritesInserted += context.getContentResolver().update(
+                favoritesUpdated += context.getContentResolver().update(
                         DublinBusContract.BusStopEntry.CONTENT_URI,
                         contentValues,
                         selection,
                         new String[]{Integer.toString(newFavourite.getId()), "0"});
             }
         }
-        Log.d(LOG_TAG, "Favorites Inserted " + favoritesInserted);
+        Log.d(LOG_TAG, "Favorites Updates " + favoritesUpdated);
     }
 
 
@@ -200,8 +199,8 @@ public class SyncTasks {
         Log.d(LOG_TAG, "Operator Deleted: " + operatorsDeleted);
 
         int busStopDeleted = contentResolver.delete(DublinBusContract.BusStopEntry.CONTENT_URI,
-                DublinBusContract.BusStopEntry.IS_NEW + " = ? AND " + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ",
-                new String[]{"0", "0"});
+                DublinBusContract.BusStopEntry.IS_NEW + " = ? ",
+                new String[]{"0"});
         Log.d(LOG_TAG, "Bus Stop Deleted: " + busStopDeleted);
 
 
@@ -416,13 +415,14 @@ public class SyncTasks {
     public static ArrayList<BusStop> getFavouriteBusStop(Context context) {
         ArrayList<BusStop> favouriteList = null;
 
-        String selection = DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ";
+        String selection = DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? AND " +
+                DublinBusContract.BusStopEntry.IS_NEW + " = ? ";
 
         Cursor cursor = context.getContentResolver().query(
                 DublinBusContract.BusStopEntry.CONTENT_URI,
                 DBUtils.BUS_STOP_COLUMNS,
                 selection,
-                new String[]{"1"},
+                new String[]{"1","0"},
                 null
         );
 

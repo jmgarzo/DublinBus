@@ -37,7 +37,7 @@ public class UpdateDbSyncUtils {
                 .setService(UpdateDbJobService.class)
                 .setTag(UPDATE_DB_SYNC_TAG)
                 .setLifetime(Lifetime.FOREVER)
-                .setConstraints(Constraint.DEVICE_CHARGING)
+                .setConstraints(Constraint.ON_ANY_NETWORK)
                 .setRecurring(true)
                 .setTrigger(Trigger.executionWindow(
                         SYNC_INTERVAL_SECONDS,

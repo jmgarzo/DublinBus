@@ -16,7 +16,7 @@
         jumboMode="true"
         optimize="true"
         revision="26.0.1"
-        sha1="9ca7f0db1eebb21ec6d9b98d50c2c27cd377a6ac">
+        sha1="5a6da663435c1e4688df7fd44ae3514838a1b969">
         <dex dex="/home/jmgarzo/Android/Projects/DublinBusProject/DublinBus/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_bd38ec354aac5251225562f5caf5015fa8528982/classes.dex" />
     </item>
 
