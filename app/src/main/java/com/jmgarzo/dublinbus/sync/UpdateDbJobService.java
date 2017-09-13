@@ -33,7 +33,9 @@ public class UpdateDbJobService extends JobService {
                 jobFinished(params,false);
             }
         };
-        mUpdateDataBaseTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        //mUpdateDataBaseTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        mUpdateDataBaseTask.execute();
+
         return true;
     }
 
