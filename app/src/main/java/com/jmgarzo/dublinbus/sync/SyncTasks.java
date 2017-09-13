@@ -114,13 +114,9 @@ public class SyncTasks {
 
         if (null != oldFavouritesList && !oldFavouritesList.isEmpty()) {
             String selection = DublinBusContract.BusStopEntry._ID + " = ? AND " +
-                    DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ";
+                    DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? AND " +
+                    DublinBusContract.BusStopEntry.IS_NEW + " = ? ";
             for (BusStop oldFavourite : oldFavouritesList) {
-
-                context.getContentResolver().delete(DublinBusContract.BusStopEntry.CONTENT_URI,
-                        DublinBusContract.BusStopEntry._ID + " = ? ",
-                        new String[]{Integer.toString(oldFavourite.getId())}
-                );
 
                 BusStop newFavourite = getNewFavouriteFromOld(context, oldFavourite);
                 ContentValues contentValues = new ContentValues();
@@ -129,7 +125,7 @@ public class SyncTasks {
                         DublinBusContract.BusStopEntry.CONTENT_URI,
                         contentValues,
                         selection,
-                        new String[]{Integer.toString(newFavourite.getId()), "0"});
+                        new String[]{Integer.toString(newFavourite.getId()), "0","1"});
             }
         }
         Log.d(LOG_TAG, "Favorites Updates " + favoritesUpdated);
