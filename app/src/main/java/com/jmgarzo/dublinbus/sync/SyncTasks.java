@@ -5,7 +5,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
+import android.support.v4.content.Loader;
 import android.util.Log;
 
 import com.jmgarzo.dublinbus.R;
@@ -36,21 +38,33 @@ public class SyncTasks {
 
         ContentResolver contentResolver = context.getContentResolver();
 
-        ArrayList<ContentValues> operatorContentValues = getSyncOperators(context);
-        int operatorsInserted = contentResolver.bulkInsert(DublinBusContract.OperatorEntry.CONTENT_URI,
-                operatorContentValues.toArray(new ContentValues[operatorContentValues.size()]));
-        Log.d(LOG_TAG, "Operator inserted: " + operatorsInserted);
+        try {
+            ArrayList<ContentValues> operatorContentValues = getSyncOperators(context);
+            int operatorsInserted = contentResolver.bulkInsert(DublinBusContract.OperatorEntry.CONTENT_URI,
+                    operatorContentValues.toArray(new ContentValues[operatorContentValues.size()]));
+            Log.d(LOG_TAG, "Operator inserted: " + operatorsInserted);
+        }catch (SQLiteException e){
+            Log.e(LOG_TAG,e.toString());
+        }
 
-        ArrayList<ContentValues> busStopContententValues = getSyncBusStops(context);
-        int busStopInserted = contentResolver.bulkInsert(DublinBusContract.BusStopEntry.CONTENT_URI,
-                busStopContententValues.toArray(new ContentValues[busStopContententValues.size()]));
-        Log.d(LOG_TAG, "Bus Stop inserted: " + busStopInserted);
+        try {
+            ArrayList<ContentValues> busStopContententValues = getSyncBusStops(context);
+            int busStopInserted = contentResolver.bulkInsert(DublinBusContract.BusStopEntry.CONTENT_URI,
+                    busStopContententValues.toArray(new ContentValues[busStopContententValues.size()]));
+            Log.d(LOG_TAG, "Bus Stop inserted: " + busStopInserted);
+        }catch (SQLiteException e){
+            Log.e(LOG_TAG,e.toString());
+        }
 
 
-        ArrayList<ContentValues> routeInformationContentValues = getSyncRouteInformation(context);
-        int routeInformationInserted = contentResolver.bulkInsert(DublinBusContract.RouteInformationEntry.CONTENT_URI,
-                routeInformationContentValues.toArray(new ContentValues[routeInformationContentValues.size()]));
-        Log.d(LOG_TAG, "Route Information Inserted: " + routeInformationInserted);
+        try {
+            ArrayList<ContentValues> routeInformationContentValues = getSyncRouteInformation(context);
+            int routeInformationInserted = contentResolver.bulkInsert(DublinBusContract.RouteInformationEntry.CONTENT_URI,
+                    routeInformationContentValues.toArray(new ContentValues[routeInformationContentValues.size()]));
+            Log.d(LOG_TAG, "Route Information Inserted: " + routeInformationInserted);
+        }catch (SQLiteException e){
+            Log.e(LOG_TAG,e.toString());
+        }
 
 
         ArrayList<Route> newTotalRoutes = getNewSyncRoute(context);
@@ -59,9 +73,13 @@ public class SyncTasks {
             newRouteContentValues.add(route.getContentValues());
         }
 
-        int routeInserted = contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
-                newRouteContentValues.toArray(new ContentValues[newRouteContentValues.size()]));
-        Log.d(LOG_TAG, "Route Inserted: " + routeInserted);
+        try {
+            int routeInserted = contentResolver.bulkInsert(DublinBusContract.RouteEntry.CONTENT_URI,
+                    newRouteContentValues.toArray(new ContentValues[newRouteContentValues.size()]));
+            Log.d(LOG_TAG, "Route Inserted: " + routeInserted);
+        }catch (SQLiteException e){
+            Log.e(LOG_TAG,e.toString());
+        }
 
 
         //ROUTE BUS STOP
@@ -74,59 +92,55 @@ public class SyncTasks {
             }
         }
 
-        int routeBusStopInserted = contentResolver.bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
-                routeBusStopContentValues.toArray(new ContentValues[routeBusStopContentValues.size()]));
-        Log.d(LOG_TAG, "Route Bus Stop Inserted: " + routeBusStopInserted);
-
-
+        try {
+            int routeBusStopInserted = contentResolver.bulkInsert(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
+                    routeBusStopContentValues.toArray(new ContentValues[routeBusStopContentValues.size()]));
+            Log.d(LOG_TAG, "Route Bus Stop Inserted: " + routeBusStopInserted);
+        } catch (SQLiteException e) {
+            Log.e(LOG_TAG, "Error inserting Route Bus Stop: ", e);
+        }
+        setFavouritesBusStop(context);
         deleteOldValues(context);
         updateNewValues(context);
-        setFavouritesBusStop(context);
         numUpdates++;
-        Log.d(LOG_TAG,"NumUpdates: " + numUpdates);
+        Log.d(LOG_TAG, "NumUpdates: " + numUpdates);
 
     }
 
     private static void setFavouritesBusStop(Context context) {
 
-        ArrayList<BusStop> oldfavouritesList = getFavouriteBusStop(context);
-        int favoritesInserted = 0;
+        ArrayList<BusStop> oldFavouritesList = getFavouriteBusStop(context);
+        int favoritesUpdated = 0;
 
-        if(null != oldfavouritesList && !oldfavouritesList.isEmpty()) {
+        if (null != oldFavouritesList && !oldFavouritesList.isEmpty()) {
             String selection = DublinBusContract.BusStopEntry._ID + " = ? AND " +
-                    DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ";
-            for (BusStop oldFavourite : oldfavouritesList) {
-
-                context.getContentResolver().delete(DublinBusContract.BusStopEntry.CONTENT_URI,
-                        DublinBusContract.BusStopEntry._ID + " = ? ",
-                        new String[]{Integer.toString(oldFavourite.getId())}
-                );
+                    DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? AND " +
+                    DublinBusContract.BusStopEntry.IS_NEW + " = ? ";
+            for (BusStop oldFavourite : oldFavouritesList) {
 
                 BusStop newFavourite = getNewFavouriteFromOld(context, oldFavourite);
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(DublinBusContract.BusStopEntry.IS_FAVOURITE, 1);
-                favoritesInserted += context.getContentResolver().update(
+                favoritesUpdated += context.getContentResolver().update(
                         DublinBusContract.BusStopEntry.CONTENT_URI,
                         contentValues,
                         selection,
-                        new String[]{Integer.toString(newFavourite.getId()), "0"});
+                        new String[]{Integer.toString(newFavourite.getId()), "0","1"});
             }
         }
-        Log.d(LOG_TAG,"Favorites Inserted " +favoritesInserted);
+        Log.d(LOG_TAG, "Favorites Updates " + favoritesUpdated);
     }
-
-
 
 
     private static BusStop getNewFavouriteFromOld(Context context, BusStop oldFavourite) {
         BusStop newFavoriteBusStop = null;
         String selection = DublinBusContract.BusStopEntry.NUMBER + " = ? AND " +
-                DublinBusContract.BusStopEntry.IS_NEW + " = ? " ;
+                DublinBusContract.BusStopEntry.IS_NEW + " = ? ";
         Cursor cursor = context.getContentResolver().query(
                 DublinBusContract.BusStopEntry.CONTENT_URI,
                 DBUtils.BUS_STOP_COLUMNS,
                 selection,
-                new String[]{oldFavourite.getNumber(), "0"},
+                new String[]{oldFavourite.getNumber(), "1"},
                 null);
         if (null != cursor && cursor.moveToFirst()) {
             newFavoriteBusStop = new BusStop();
@@ -181,8 +195,8 @@ public class SyncTasks {
         Log.d(LOG_TAG, "Operator Deleted: " + operatorsDeleted);
 
         int busStopDeleted = contentResolver.delete(DublinBusContract.BusStopEntry.CONTENT_URI,
-                DublinBusContract.BusStopEntry.IS_NEW + " = ? AND " + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ? ",
-                new String[]{"0", "0"});
+                DublinBusContract.BusStopEntry.IS_NEW + " = ? ",
+                new String[]{"0"});
         Log.d(LOG_TAG, "Bus Stop Deleted: " + busStopDeleted);
 
 
@@ -203,7 +217,7 @@ public class SyncTasks {
 
     private static String LOG_TAG = SyncTasks.class.getSimpleName();
 
-    synchronized public static ArrayList<ContentValues> getSyncOperators(Context context) {
+     public static ArrayList<ContentValues> getSyncOperators(Context context) {
         ArrayList<ContentValues> contentValuesList = null;
 
         try {
@@ -225,7 +239,7 @@ public class SyncTasks {
     }
 
 
-    synchronized public static ArrayList<ContentValues> getSyncBusStops(Context context) {
+     public static ArrayList<ContentValues> getSyncBusStops(Context context) {
         ArrayList<ContentValues> busStopCVList = null;
         try {
             ArrayList<BusStop> busStopList = NetworkUtilities.getBusStopInformation();
@@ -243,7 +257,7 @@ public class SyncTasks {
     }
 
 
-    synchronized public static ArrayList<Route> getNewSyncRoute(Context context) {
+     public static ArrayList<Route> getNewSyncRoute(Context context) {
         ArrayList<Route> totalRouteList = new ArrayList<>();
         try {
             String selection = DublinBusContract.RouteInformationEntry.OPERATOR + " = ?  AND " +
@@ -279,7 +293,7 @@ public class SyncTasks {
 
     }
 
-    synchronized public static ArrayList<ContentValues> getSyncRouteInformation(Context context) {
+     public static ArrayList<ContentValues> getSyncRouteInformation(Context context) {
         ArrayList<ContentValues> contentValuesList = null;
         try {
             ArrayList<RouteInformation> routeInformationList = NetworkUtilities.getRouteListInformation(context);
@@ -299,7 +313,7 @@ public class SyncTasks {
     }
 
 
-    synchronized public static void syncRealTimeStop(Context context, String stopId) {
+     public static void syncRealTimeStop(Context context, String stopId) {
         try {
             if (!NetworkUtilities.isNetworkAvailable(context)) {
                 DBUtils.setRealTimeConnectionStatus(context, DBUtils.REAL_TIME_STATUS_NETWORK_NOT_AVAILABLE);
@@ -329,7 +343,7 @@ public class SyncTasks {
         }
     }
 
-    public static void deleteRealTimeBusStop(Context context){
+    public static void deleteRealTimeBusStop(Context context) {
         int deleted = context.getContentResolver().delete(DublinBusContract.RealTimeStopEntry.CONTENT_URI, null, null);
         Log.d(LOG_TAG, "Time real stop bus deleted: " + deleted);
     }
@@ -367,19 +381,20 @@ public class SyncTasks {
             busStop.setNew(false);
 
 
-            Uri insertResultUri = context.getContentResolver().insert(
+            int favoriteUpdates=0;
+            favoriteUpdates = context.getContentResolver().update(
                     DublinBusContract.BusStopEntry.CONTENT_URI,
-                    busStop.getContentValues());
-
-            String newIdBusStop = null;
-            if (insertResultUri != null) {
-                newIdBusStop = insertResultUri.getLastPathSegment();
-                Log.d(LOG_TAG, newIdBusStop + " New Bus Stop inserted");
+                    busStop.getContentValues(),
+                    DublinBusContract.BusStopEntry._ID + " = ? ",
+                    new String[]{Integer.toString(busStop.getId())});
+            if(favoriteUpdates!= 0){
+                Log.d(LOG_TAG,favoriteUpdates +" Favourite Update");
             }
-            cursor.close();
         }
 
+        cursor.close();
     }
+
 
     public static void deleteFavoriteBusStop(Context context, String busStopNumber) {
 
@@ -403,7 +418,7 @@ public class SyncTasks {
                 DublinBusContract.BusStopEntry.CONTENT_URI,
                 DBUtils.BUS_STOP_COLUMNS,
                 selection,
-                new String[]{"1", "0"},
+                new String[]{"1","0"},
                 null
         );
 

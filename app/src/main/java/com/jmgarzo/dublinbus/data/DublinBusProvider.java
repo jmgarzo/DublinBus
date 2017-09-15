@@ -145,7 +145,7 @@ public class DublinBusProvider extends ContentProvider {
             }
 
             case BUS_STOP: {
-                returnCursor = mOpenHelper.getReadableDatabase().query(
+               returnCursor = mOpenHelper.getReadableDatabase().query(
                         DublinBusContract.BusStopEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -275,7 +275,9 @@ public class DublinBusProvider extends ContentProvider {
         Uri returnUri;
 
         switch (sUriMatcher.match(uri)) {
+
             case OPERATOR: {
+
                 long id = db.insert(DublinBusContract.OperatorEntry.TABLE_NAME,
                         null,
                         contentValues);

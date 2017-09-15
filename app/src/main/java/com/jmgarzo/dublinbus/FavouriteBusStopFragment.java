@@ -68,7 +68,6 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
         mFavouriteBusStopAdapter = new FavouriteBusStopAdapter(getContext(), this);
         mRecyclerView.setAdapter(mFavouriteBusStopAdapter);
 
-        getActivity().getSupportLoaderManager().initLoader(ID_BUS_FAVOURITE_STOP_LOADER, null, this);
 
         return rootView;
     }
@@ -78,6 +77,8 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
         if (mAdView != null) {
             mAdView.pause();
         }
+        getActivity().getSupportLoaderManager().destroyLoader(ID_BUS_FAVOURITE_STOP_LOADER);
+
         super.onPause();
     }
 
@@ -87,6 +88,8 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
         if (mAdView != null) {
             mAdView.resume();
         }
+        getActivity().getSupportLoaderManager().initLoader(ID_BUS_FAVOURITE_STOP_LOADER, null, this);
+
     }
     @Override
     public void onDestroy() {
@@ -134,9 +137,10 @@ public class FavouriteBusStopFragment extends Fragment implements LoaderManager.
     }
 
     private void showErrorMessage(String message) {
-        tvMessageError.setText(message);
-        mRecyclerView.setVisibility(View.GONE);
-        tvMessageError.setVisibility(View.VISIBLE);
+            tvMessageError.setText(message);
+            mRecyclerView.setVisibility(View.GONE);
+            tvMessageError.setVisibility(View.VISIBLE);
+
     }
 
     private void showRecyclerView() {

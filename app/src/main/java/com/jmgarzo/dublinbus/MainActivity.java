@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jmgarzo.dublinbus.sync.SyncTasks;
 import com.jmgarzo.dublinbus.sync.UpdateDbSyncUtils;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
@@ -15,6 +16,7 @@ import com.jmgarzo.dublinbus.utilities.DBUtils;
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     //This is our tablayout
     private TabLayout tabLayout;
@@ -26,7 +28,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DBUtils.setIsAdmodActive(this,true);
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        DBUtils.setIsAdmodActive(this,false);
         if (savedInstanceState == null) {
             if (!DBUtils.isExistDb(this)) {
                 SyncTasks.copyDbFromAssets(this);

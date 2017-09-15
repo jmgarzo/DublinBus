@@ -21,8 +21,8 @@ public class UpdateDbSyncUtils {
 
     private static boolean sInitialized;
 
-    private static final int SYNC_INTERVAL_SECONDS = 60 * 60 * 12   ;
-    private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS + (60 * 60);
+    private static final int SYNC_INTERVAL_SECONDS = 60 * 60 * 12  ;
+    private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS + (60 * 60 * 2);
 
     private static FirebaseJobDispatcher dispatcher;
 
@@ -37,7 +37,7 @@ public class UpdateDbSyncUtils {
                 .setService(UpdateDbJobService.class)
                 .setTag(UPDATE_DB_SYNC_TAG)
                 .setLifetime(Lifetime.FOREVER)
-                .setConstraints(Constraint.ON_ANY_NETWORK)
+                .setConstraints(Constraint.DEVICE_CHARGING)
                 .setRecurring(true)
                 .setTrigger(Trigger.executionWindow(
                         SYNC_INTERVAL_SECONDS,
@@ -58,13 +58,15 @@ public class UpdateDbSyncUtils {
         if(sInitialized) return;
         sInitialized= true;
         scheduleFirebaseJobDispatcherSync(context);
+/*
         startImmediateSync(context);
+*/
     }
 
     public static void startImmediateSync(@NonNull final Context context) {
 
-        Intent intentUpdateDbService = new Intent(context, UpdateDbJobService.class);
-        context.startService(intentUpdateDbService);
+//        Intent intentUpdateDbService = new Intent(context, UpdateDbJobService.class);
+//        context.startService(intentUpdateDbService);
     }
 
 }
