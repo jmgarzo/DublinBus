@@ -22,7 +22,7 @@ public class UpdateDbSyncUtils {
     private static boolean sInitialized;
 
     private static final int SYNC_INTERVAL_SECONDS = 60 * 60 * 12  ;
-    private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS + (60 * 2);
+    private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS + (60 * 60 * 2);
 
     private static FirebaseJobDispatcher dispatcher;
 
@@ -37,7 +37,7 @@ public class UpdateDbSyncUtils {
                 .setService(UpdateDbJobService.class)
                 .setTag(UPDATE_DB_SYNC_TAG)
                 .setLifetime(Lifetime.FOREVER)
-                .setConstraints(Constraint.ON_UNMETERED_NETWORK)
+                .setConstraints(Constraint.DEVICE_CHARGING)
                 .setRecurring(true)
                 .setTrigger(Trigger.executionWindow(
                         SYNC_INTERVAL_SECONDS,
