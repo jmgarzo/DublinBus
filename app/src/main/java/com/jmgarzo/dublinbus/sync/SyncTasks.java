@@ -273,7 +273,7 @@ public class SyncTasks {
                     ArrayList<Route> routeList = NetworkUtilities.getRouteInformation(context, cursor.getString(DBUtils.COL_ROUTE_INFORMATION_ROUTE));
                     //TODO: DELETE! JUST FOR DEBUG
                     if (routeList.size() > 2) {
-                        Log.e(LOG_TAG, "Route:" + routeList.get(1).getName() + " Have " + routeList.size() + " results");
+                        Log.d(LOG_TAG, "Route: " + routeList.get(1).getName() + " Have " + routeList.size() + " results");
                     }
                     if (routeList != null && routeList.size() > 1) {
                         for (int i = 0; i < routeList.size() && i < 2; i++) {
