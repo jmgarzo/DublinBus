@@ -290,7 +290,7 @@ public class DBUtils {
 
                 RouteBusStopList.add(cv);
             } else {
-                Log.e(LOG_TAG, "Bus Stop: " + route.getStops().get(i) + "within idRoute: " + idRoute + " Unknown in bus_stop_table ");
+                Log.e(LOG_TAG, "Bus Stop: " + route.getStops().get(i) + " within idRoute: " + idRoute + " Unknown in bus_stop_table ");
 
             }
         }
@@ -342,7 +342,7 @@ public class DBUtils {
 
                 routeBusStopList.add(cv);
             } else {
-                Log.e(LOG_TAG, "Bus Stop: " + route.getStops().get(i) + "within idRoute: " + idRoute + " Unknown in bus_stop_table ");
+                Log.d(LOG_TAG, "Stop: " + route.getStops().get(i) + " within idRoute: " + idRoute + " Unknown in bus_stop_table ");
 
             }
         }

@@ -5,11 +5,14 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 /**
  * Created by jmgarzo on 27/07/17.
@@ -145,7 +148,7 @@ public class DublinBusProvider extends ContentProvider {
             }
 
             case BUS_STOP: {
-               returnCursor = mOpenHelper.getReadableDatabase().query(
+                returnCursor = mOpenHelper.getReadableDatabase().query(
                         DublinBusContract.BusStopEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -272,7 +275,7 @@ public class DublinBusProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        Uri returnUri;
+        Uri returnUri = null;
 
         switch (sUriMatcher.match(uri)) {
 
@@ -314,13 +317,18 @@ public class DublinBusProvider extends ContentProvider {
             }
 
             case ROUTE_BUS_STOP: {
-                long id = db.insert(DublinBusContract.RouteBusStopEntry.TABLE_NAME,
-                        null,
-                        contentValues);
-                if (id > 0) {
-                    returnUri = ContentUris.withAppendedId(DublinBusContract.RouteBusStopEntry.CONTENT_URI, id);
-                } else {
-                    throw new android.database.SQLException("Failed to insert row into: " + uri);
+                try {
+                    long id = db.insertOrThrow(DublinBusContract.RouteBusStopEntry.TABLE_NAME,
+                            null,
+                            contentValues);
+
+                    if (id > 0) {
+                        returnUri = ContentUris.withAppendedId(DublinBusContract.RouteBusStopEntry.CONTENT_URI, id);
+                    } else {
+                        throw new android.database.SQLException("Failed to insert row into: " + uri);
+                    }
+                } catch (SQLiteException e) {
+                    Log.e(LOG_TAG, e.toString());
                 }
                 break;
             }
@@ -563,7 +571,12 @@ public class DublinBusProvider extends ContentProvider {
                         if (value == null) {
                             throw new IllegalArgumentException("Cannot have null content values");
                         }
-                        long id = db.insert(DublinBusContract.RouteBusStopEntry.TABLE_NAME, null, value);
+                        long id = -1;
+                        try {
+                            id = db.insertOrThrow(DublinBusContract.RouteBusStopEntry.TABLE_NAME, null, value);
+                        } catch (SQLiteException e) {
+                            Log.d(LOG_TAG, e.toString());
+                        }
                         if (id != -1) {
                             numInserted++;
                         }
@@ -618,7 +631,11 @@ public class DublinBusProvider extends ContentProvider {
                 return super.bulkInsert(uri, values);
         }
 
-        getContext().getContentResolver().notifyChange(uri, null);
+        getContext().
+
+                getContentResolver().
+
+                notifyChange(uri, null);
 
         return numInserted;
     }
