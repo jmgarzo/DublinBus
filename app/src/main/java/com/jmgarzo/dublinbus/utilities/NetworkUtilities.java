@@ -15,6 +15,8 @@ import com.jmgarzo.dublinbus.objects.RealTimeStop;
 import com.jmgarzo.dublinbus.objects.Route;
 import com.jmgarzo.dublinbus.objects.RouteInformation;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -235,13 +237,12 @@ public class NetworkUtilities {
     //3.4.4 Retrieve Bus Stop Information
     //http://[rtpiserver]/busstopinformation?stopid=[stopid]&stopname=[stopnamestopname]&format=[format]
 
-    public static ArrayList<BusStop> getBusStopInformation() {
+    public static ArrayList<BusStop> getBusStopInformation() throws IOException,JSONException{
 
         String response = "";
         ArrayList<BusStop> busStopList = null;
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(BUS_STOP_INFORMATION_PATH)
-//                .appendQueryParameter(STOP_ID_PARAM, "7025")
                 .appendQueryParameter(OPERATOR_PARAM, DUBLIN_BUS_OPERATOR_PARAM)
                 .appendQueryParameter(FORMAT_PARAM, JSON_VALUE_PARAM)
                 .build();
@@ -250,15 +251,16 @@ public class NetworkUtilities {
         try {
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG,e.toString());
+            throw e;
         }
         try {
             response = getResponseFromHttpUrl(url);
             busStopList = JsonUtilities.getBusStopsFromJson(response);
         } catch (IOException e) {
             Log.e(LOG_TAG, e.toString());
+            throw e;
         }
-
 
         return busStopList;
     }
@@ -322,7 +324,7 @@ public class NetworkUtilities {
     //3.4.6 Operator Information
     //http://[rtpiserver]/operatorinformation?format=[format]
 
-    public static ArrayList<Operator> getOperatorInformation() {
+    public static ArrayList<Operator> getOperatorInformation()throws IOException,JSONException {
         String response = "";
         ArrayList<Operator> operatorList = null;
 
@@ -335,7 +337,8 @@ public class NetworkUtilities {
         try {
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG,e.toString());
+            throw e;
         }
 
         try {
@@ -343,6 +346,9 @@ public class NetworkUtilities {
             operatorList = JsonUtilities.getOperatorsFromJson(response);
         } catch (IOException e) {
             Log.e(LOG_TAG, e.toString());
+            throw e;
+        }catch (JSONException e){
+            throw e;
         }
 
         return operatorList;

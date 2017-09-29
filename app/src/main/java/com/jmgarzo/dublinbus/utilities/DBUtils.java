@@ -447,5 +447,26 @@ public class DBUtils {
         return pref.getBoolean(context.getString(R.string.pref_admod_active), true);
     }
 
+    public static void setIsUpdateDBActive(Context context, boolean b) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        pref.edit().putBoolean(context.getString(R.string.pref_is_update_database_active), b).apply();
+    }
+
+    public static boolean isUpdateDBActive(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return pref.getBoolean(context.getString(R.string.pref_is_update_database_active), false);
+    }
+
+
+    public static void setIsErrorOnUpdateDB(Context context, boolean b) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        pref.edit().putBoolean(context.getString(R.string.pref_is_error_on_update_db), b).apply();
+    }
+
+    public static boolean isErrorOnUpdateDB(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return pref.getBoolean(context.getString(R.string.pref_is_error_on_update_db), false);
+    }
+
 
 }

@@ -155,7 +155,7 @@ public class JsonUtilities {
     }
 
 
-    public static ArrayList<Operator> getOperatorsFromJson(String jsonStr) {
+    public static ArrayList<Operator> getOperatorsFromJson(String jsonStr) throws JSONException {
 
 
         ArrayList<Operator> operatorList = null;
@@ -180,12 +180,13 @@ public class JsonUtilities {
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.toString());
+            throw e;
         }
 
         return operatorList;
     }
 
-    public static ArrayList<BusStop> getBusStopsFromJson(String jsonStr) {
+    public static ArrayList<BusStop> getBusStopsFromJson(String jsonStr) throws JSONException {
 
         ArrayList<BusStop> busStopList = null;
         JSONObject busStopJson = null;
@@ -213,11 +214,10 @@ public class JsonUtilities {
 
                 busStopList.add(busStop);
             }
-
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.toString());
+            throw e;
         }
-
         return busStopList;
     }
 
