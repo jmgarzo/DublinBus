@@ -43,17 +43,17 @@ public class SyncTasks {
             int operatorsInserted = contentResolver.bulkInsert(DublinBusContract.OperatorEntry.CONTENT_URI,
                     operatorContentValues.toArray(new ContentValues[operatorContentValues.size()]));
             Log.d(LOG_TAG, "Operator inserted: " + operatorsInserted);
-        } catch (SQLiteException e) {
+        } catch (Exception e) {
             DBUtils.setIsErrorOnUpdateDB(context, true);
             Log.e(LOG_TAG, e.toString());
         }
 
         try {
-            ArrayList<ContentValues> busStopContententValues = getSyncBusStops(context);
+            ArrayList<ContentValues> busStopContentValues = getSyncBusStops(context);
             int busStopInserted = contentResolver.bulkInsert(DublinBusContract.BusStopEntry.CONTENT_URI,
-                    busStopContententValues.toArray(new ContentValues[busStopContententValues.size()]));
+                    busStopContentValues.toArray(new ContentValues[busStopContentValues.size()]));
             Log.d(LOG_TAG, "Bus Stop inserted: " + busStopInserted);
-        } catch (SQLiteException e) {
+        } catch (Exception e) {
             DBUtils.setIsErrorOnUpdateDB(context, true);
             Log.e(LOG_TAG, e.toString());
         }
@@ -64,7 +64,7 @@ public class SyncTasks {
             int routeInformationInserted = contentResolver.bulkInsert(DublinBusContract.RouteInformationEntry.CONTENT_URI,
                     routeInformationContentValues.toArray(new ContentValues[routeInformationContentValues.size()]));
             Log.d(LOG_TAG, "Route Information Inserted: " + routeInformationInserted);
-        } catch (SQLiteException e) {
+        } catch (Exception e) {
             DBUtils.setIsErrorOnUpdateDB(context, true);
             Log.e(LOG_TAG, e.toString());
         }
@@ -102,10 +102,12 @@ public class SyncTasks {
             Log.d(LOG_TAG, "Route Bus Stop Inserted: " + routeBusStopInserted);
         } catch (SQLiteException e) {
             Log.e(LOG_TAG, "Error inserting Route Bus Stop: ", e);
-            DBUtils.setIsErrorOnUpdateDB(context, true);
+            //TODO: check if we need stop the update
+            //DBUtils.setIsErrorOnUpdateDB(context, true);
         }
         if (DBUtils.isErrorOnUpdateDB(context)) {
             deleteNewValues(context);
+
         } else {
             setFavouritesBusStop(context);
             deleteOldValues(context);
@@ -114,6 +116,7 @@ public class SyncTasks {
             Log.d(LOG_TAG, "NumUpdates: " + numUpdates);
         }
         DBUtils.setIsUpdateDBActive(context,false);
+        DBUtils.setIsErrorOnUpdateDB(context,false);
 
     }
 
@@ -331,13 +334,12 @@ public class SyncTasks {
                             totalRouteList.add(route);
                         }
                     }
-
                 } while (cursor.moveToNext());
                 cursor.close();
-
             }
         } catch (Exception e) {
-            e(LOG_TAG, e.toString());
+            Log.e(LOG_TAG, e.toString());
+            DBUtils.setIsErrorOnUpdateDB(context,true);
         }
         return totalRouteList;
 

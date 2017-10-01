@@ -111,7 +111,7 @@ public class NetworkUtilities {
         try {
             response = getResponseFromHttpUrl(url);
 
-            realTimeStopsList = JsonUtilities.getRealTimeStopFromJson(context,response);
+            realTimeStopsList = JsonUtilities.getRealTimeStopFromJson(context, response);
         } catch (IOException e) {
             Log.e(LOG_TAG, e.toString());
             if (response.equalsIgnoreCase("")) {
@@ -237,7 +237,7 @@ public class NetworkUtilities {
     //3.4.4 Retrieve Bus Stop Information
     //http://[rtpiserver]/busstopinformation?stopid=[stopid]&stopname=[stopnamestopname]&format=[format]
 
-    public static ArrayList<BusStop> getBusStopInformation() throws IOException,JSONException{
+    public static ArrayList<BusStop> getBusStopInformation() throws IOException, JSONException {
 
         String response = "";
         ArrayList<BusStop> busStopList = null;
@@ -251,7 +251,7 @@ public class NetworkUtilities {
         try {
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
-            Log.e(LOG_TAG,e.toString());
+            Log.e(LOG_TAG, e.toString());
             throw e;
         }
         try {
@@ -269,7 +269,7 @@ public class NetworkUtilities {
     //3.4.5 Retrieve Route Information
     //http://[rtpiserver]/routeinformation?routeid=[route]&operator=[operator]&operator=[operator]&format=[format]
 
-    public static ArrayList<Route> getRouteInformation(Context context, String routeName) {
+    public static ArrayList<Route> getRouteInformation(Context context, String routeName) throws IOException, JSONException {
         String response = "";
         ArrayList<Route> routeList = null;
 
@@ -283,18 +283,20 @@ public class NetworkUtilities {
         try {
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.toString());
+            throw e;
         }
         try {
             response = getResponseFromHttpUrl(url);
             routeList = JsonUtilities.getRouteFromJson(context, response);
         } catch (IOException e) {
             Log.e(LOG_TAG, e.toString());
+            throw e;
         }
         return routeList;
     }
 
-    public static ArrayList<Route> getAllRouteInformation(Context context) {
+    public static ArrayList<Route> getAllRouteInformation(Context context) throws IOException, JSONException {
         String response = "";
         ArrayList<Route> routeListPerQuery = null;
         ArrayList<Route> routeListTotal = null;
@@ -324,7 +326,7 @@ public class NetworkUtilities {
     //3.4.6 Operator Information
     //http://[rtpiserver]/operatorinformation?format=[format]
 
-    public static ArrayList<Operator> getOperatorInformation()throws IOException,JSONException {
+    public static ArrayList<Operator> getOperatorInformation() throws IOException, JSONException {
         String response = "";
         ArrayList<Operator> operatorList = null;
 
@@ -337,7 +339,7 @@ public class NetworkUtilities {
         try {
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
-            Log.e(LOG_TAG,e.toString());
+            Log.e(LOG_TAG, e.toString());
             throw e;
         }
 
@@ -347,7 +349,7 @@ public class NetworkUtilities {
         } catch (IOException e) {
             Log.e(LOG_TAG, e.toString());
             throw e;
-        }catch (JSONException e){
+        } catch (JSONException e) {
             throw e;
         }
 
@@ -356,7 +358,7 @@ public class NetworkUtilities {
 
     //3.4.7 Route List Information
     //http://[rtpiserver]/routelistinformation? operator=[operator]&format=[format]
-    public static ArrayList<RouteInformation> getRouteListInformation(Context context) {
+    public static ArrayList<RouteInformation> getRouteListInformation(Context context) throws IOException, JSONException {
 
         ArrayList<RouteInformation> routeInformationList = null;
         String response = "";
@@ -370,7 +372,8 @@ public class NetworkUtilities {
         try {
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.toString());
+            throw e;
         }
 
         try {
@@ -378,8 +381,8 @@ public class NetworkUtilities {
             routeInformationList = JsonUtilities.getRouteInformationFromJson(response);
         } catch (IOException e) {
             Log.e(LOG_TAG, e.toString());
+            throw e;
         }
-
         return routeInformationList;
     }
 

@@ -222,7 +222,7 @@ public class JsonUtilities {
     }
 
 
-    public static ArrayList<Route> getRouteFromJson(Context context, String jsonStr) {
+    public static ArrayList<Route> getRouteFromJson(Context context, String jsonStr) throws JSONException {
 
         final String OPERATOR_RESULTS = "results";
 
@@ -270,13 +270,13 @@ public class JsonUtilities {
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.toString());
+            throw e;
         }
-
         return routeList;
     }
 
 
-    public static ArrayList<RouteInformation> getRouteInformationFromJson(String jsonStr) {
+    public static ArrayList<RouteInformation> getRouteInformationFromJson(String jsonStr) throws JSONException {
         ArrayList<RouteInformation> routeInformationList = null;
         JSONObject routeInformationJson = null;
         try {
@@ -296,6 +296,7 @@ public class JsonUtilities {
             }
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.toString());
+            throw e;
         }
         return routeInformationList;
     }

@@ -343,7 +343,6 @@ public class DBUtils {
                 routeBusStopList.add(cv);
             } else {
                 Log.d(LOG_TAG, "Stop: " + route.getStops().get(i) + " within idRoute: " + idRoute + " Unknown in bus_stop_table ");
-
             }
         }
         return routeBusStopList;
