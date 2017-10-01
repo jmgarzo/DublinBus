@@ -19,14 +19,14 @@ public class UpdateDbSyncUtils {
 
     private static boolean sInitialized;
 
-    private static final int SYNC_INTERVAL_SECONDS = 60 * 14  ;
-    private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS + (60 );
+    private static final int SYNC_INTERVAL_SECONDS = 60 * 60 * 12;
+    private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS + (60 * 60 * 2);
 
     private static FirebaseJobDispatcher dispatcher;
 
-    private static final String UPDATE_DB_SYNC_TAG="database_sync";
+    private static final String UPDATE_DB_SYNC_TAG = "database_sync";
 
-    static void scheduleFirebaseJobDispatcherSync(@NonNull final Context context){
+    static void scheduleFirebaseJobDispatcherSync(@NonNull final Context context) {
         Driver driver = new GooglePlayDriver(context);
         dispatcher = new FirebaseJobDispatcher(driver);
 
@@ -36,6 +36,7 @@ public class UpdateDbSyncUtils {
                 .setTag(UPDATE_DB_SYNC_TAG)
                 .setLifetime(Lifetime.FOREVER)
                 .setConstraints(Constraint.DEVICE_CHARGING)
+                .setConstraints(Constraint.ON_ANY_NETWORK)
                 .setRecurring(true)
                 .setTrigger(Trigger.executionWindow(
                         SYNC_INTERVAL_SECONDS,
@@ -46,15 +47,15 @@ public class UpdateDbSyncUtils {
         dispatcher.schedule(syncUpdateDbJob);
     }
 
-    synchronized public static void cancelDispach(){
-        sInitialized= false;
+    synchronized public static void cancelDispach() {
+        sInitialized = false;
         dispatcher.cancel(UPDATE_DB_SYNC_TAG);
     }
 
 
-    synchronized public static void initialize(@NonNull final Context context){
-        if(sInitialized) return;
-        sInitialized= true;
+    synchronized public static void initialize(@NonNull final Context context) {
+        if (sInitialized) return;
+        sInitialized = true;
         scheduleFirebaseJobDispatcherSync(context);
 /*
         startImmediateSync(context);
