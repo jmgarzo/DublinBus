@@ -45,6 +45,7 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
         GoogleMap.OnMyLocationButtonClickListener,
         LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final String LOG_TAG = RouteMapsActivity.class.getSimpleName();
     private String NUMBER_BUS_STOP_TAG = "number_bus_stop_tag";
     private String FAVOURITE_ROUTE_EXTRA_TAG = "favourite_route_tag";
     private GoogleMap mMap;
@@ -52,16 +53,13 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
     private ArrayList<BusStop> mBusStopList;
     private ArrayList<LatLng> mLatLngBusStop;
     private Route mRoute;
+    private BusStop markerBusStop;
 
     private final int BUS_STOPS_LOADER_ID = 223;
     private final int ROUTES_PER_BUS_STOP = 245;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     private boolean mPermissionDenied = false;
-
-
-
-
 
 
     @Override
@@ -71,10 +69,10 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
 
         Intent intent = getIntent();
         if (null != intent) {
-            if(null != getIntent().getParcelableExtra(RouteDetailActivityFragment.ROUTE_EXTRA_TAG)){
+            if (null != getIntent().getParcelableExtra(RouteDetailActivityFragment.ROUTE_EXTRA_TAG)) {
                 mRoute = getIntent().getParcelableExtra(RouteDetailActivityFragment.ROUTE_EXTRA_TAG);
-                String title = getString(R.string.title_activity_route_maps) + " "+
-                        getString(R.string.title_activity_route_maps_label_route)+" " + mRoute.getName();
+                String title = getString(R.string.title_activity_route_maps) + " " +
+                        getString(R.string.title_activity_route_maps_label_route) + " " + mRoute.getName();
                 setTitle(title);
             }
 
@@ -91,12 +89,15 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
 
         for (BusStop busStop : mBusStopList) {
 
+            String snippet = busStop.getFullName();
+
             MarkerOptions newMarker = new MarkerOptions()
                     .position(busStop.getLatLng())
                     .title(busStop.getNumber())
-                    .snippet(busStop.getFullName())
+                    .snippet(snippet)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_directions_bus_black_24dp));
             mMap.addMarker(newMarker);
+
 
         }
 
@@ -122,17 +123,13 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
         //mMap.moveCamera(CameraUpdateFactory.newCameraPosition(target));
     }
 
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
-
             case BUS_STOPS_LOADER_ID: {
-
                 Uri mUri = DublinBusContract.BusStopsAndRouteEntry.buildBusStopsAndRoutes(Long.toString(mRoute.getId()));
-
-                if ( null != mUri ) {
-                    // Now create and return a CursorLoader that will take care of
-                    // creating a Cursor for the data being displayed.
+                if (null != mUri) {
                     return new CursorLoader(
                             this,
                             mUri,
@@ -142,10 +139,8 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
                             DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry._ID
                     );
                 }
-
             }
 
-//            }
             default:
                 throw new RuntimeException("Loader Not Implemented: " + id);
         }
@@ -155,7 +150,6 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case BUS_STOPS_LOADER_ID: {
-                ArrayList<BusStop> busStopList;
                 if (null != data && data.moveToFirst()) {
                     mBusStopList = getBusStopList(data);
                 }
@@ -167,19 +161,8 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
                 mapFragment.getMapAsync(this);
                 break;
             }
-//            case ROUTES_PER_BUS_STOP:{
-//                if(null != data && data.moveToFirst()){
-//                    ArrayList<Route>
-//                    do{
-//                        Route route = new Route();
-//                    }while(data.moveToNext());
-//                }
-//            }
         }
     }
-
-
-
 
 
     @Override
@@ -187,25 +170,32 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
-    private ArrayList<BusStop>getBusStopList(Cursor data){
+    private ArrayList<BusStop> getBusStopList(Cursor data) {
         ArrayList<BusStop> busStopArrayList = new ArrayList<>();
         int currentBusStopId = -1;
-        if(data.moveToFirst()){
+        if (data.moveToFirst()) {
             BusStop bs = null;
-            do{
-                if(currentBusStopId == data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID) && bs !=null){
-                    bs.getRoutesList().add(getNewRoute(data));
-                }else{
-                    if(bs!=null) {
+            do {
+                if (currentBusStopId == data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID)) {
+                    //grabar bs a la lista
+                    currentBusStopId = data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID);
+                    if (null != bs.getRoutesList()) {
+                        bs.getRoutesList().add(getNewRoute(data));
+                    }
+                } else {
+                    if (bs != null) {
                         busStopArrayList.add(bs);
                     }
-                    currentBusStopId = data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID);
+                    //nueva lista y grabar
 
+                    currentBusStopId = data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID);
                     bs = getNewBusStop(data);
+                    bs.setRoutesList(new ArrayList<Route>());
+                    bs.getRoutesList().add(getNewRoute(data));
+
                 }
 
-
-            }while(data.moveToNext());
+            } while (data.moveToNext());
         }
         return busStopArrayList;
     }
@@ -220,7 +210,7 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
         return busStopsList;
     }
 
-    private BusStop getNewBusStop(Cursor data){
+    private BusStop getNewBusStop(Cursor data) {
         BusStop bs = new BusStop();
         bs.setId(data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID));
         bs.setNumber(data.getString(DBUtils.COL_BUS_AND_ROUTE_STOP_NUMBER));
@@ -241,7 +231,7 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
         return bs;
     }
 
-    private Route getNewRoute(Cursor data){
+    private Route getNewRoute(Cursor data) {
         Route route = new Route();
 
         route.setId(data.getInt(DBUtils.COL_BUS_AND_ROUTE_ROUTE_ID));
@@ -276,13 +266,18 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
         intent.putExtra(Intent.EXTRA_TEXT, busStopNumber);
         this.startActivity(intent);
 
-
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        markerBusStop = null;
         String busStopNumber = marker.getTitle();
-
+        for (BusStop bs : mBusStopList) {
+            if (bs.getNumber().equalsIgnoreCase(busStopNumber)) {
+                markerBusStop = bs;
+                break;
+            }
+        }
         return false;
     }
 
@@ -341,7 +336,7 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
     }
 
-    class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         // These are both viewgroups containing an ImageView with id "badge" and two TextViews with id
         // "title" and "snippet".
@@ -397,7 +392,17 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
             String snippet = marker.getSnippet();
             TextView snippetUi = view.findViewById(R.id.snippet);
 
-                snippetUi.setText(snippet);
+            snippetUi.setText(snippet);
+
+            TextView tvRoutes = view.findViewById(R.id.tv_routes);
+
+            if (markerBusStop != null) {
+                String routes = "";
+                for (Route rt : markerBusStop.getRoutesList()) {
+                    routes = routes + "\n" + rt.getName();
+                }
+                tvRoutes.setText(routes);
+            }
 
         }
     }

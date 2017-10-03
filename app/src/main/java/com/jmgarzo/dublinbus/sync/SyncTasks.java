@@ -141,6 +141,7 @@ public class SyncTasks {
             deleteNewValues(context);
 
         } else {
+            DBUtils.setIsFirstStartDB(context,false);
             setFavouritesBusStop(context);
             deleteOldValues(context);
             updateNewValues(context);

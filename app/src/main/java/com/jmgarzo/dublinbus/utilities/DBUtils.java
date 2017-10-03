@@ -519,5 +519,15 @@ public class DBUtils {
         return pref.getBoolean(context.getString(R.string.pref_is_error_on_update_db), false);
     }
 
+    public static void setIsFirstStartDB(Context context, boolean b) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        pref.edit().putBoolean(context.getString(R.string.pref_is_first_start_db), b).apply();
+    }
+
+    public static boolean isFirstStartDB(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return pref.getBoolean(context.getString(R.string.pref_is_first_start_db), true);
+    }
+
 
 }

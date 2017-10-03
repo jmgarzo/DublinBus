@@ -11,14 +11,15 @@
         android:id="@+id/badge"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
 
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/yellow_a700_circle_480x480"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="32dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="18dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintVertical_bias="0.352" />
 
     <TextView
         android:id="@+id/text_title_badge"
@@ -30,26 +31,44 @@
         android:text="TextView"
         app:layout_constraintTop_toTopOf="@+id/badge"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/badge"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="@+id/badge"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="@+id/badge" />
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="@+id/badge"
+        app:layout_constraintBottom_toBottomOf="@+id/badge"
+        android:layout_marginBottom="8dp" />
 
     <TextView
         android:id="@+id/snippet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textStyle="bold"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="8dp"
         android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/badge"
-        android:layout_marginLeft="8dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Name BusStop" />
+
+    <TextView
+        android:id="@+id/tv_routes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp" />
+        app:layout_constraintLeft_toLeftOf="@+id/snippet"
+        app:layout_constraintTop_toBottomOf="@+id/snippet"
+        tools:text="Routes"
+        android:layout_marginRight="8dp"
+        app:layout_constraintVertical_bias="0.214"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
 </android.support.constraint.ConstraintLayout>
 
 <!--<?xml version="1.0" encoding="utf-8"?>-->

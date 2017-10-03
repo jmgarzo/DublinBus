@@ -1,6 +1,7 @@
 package com.jmgarzo.dublinbus.sync;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.firebase.jobdispatcher.Constraint;
@@ -10,6 +11,8 @@ import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.Trigger;
+import com.jmgarzo.dublinbus.sync.services.SyncDatabaseService;
+import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 /**
  * Created by jmgarzo on 24/08/17.
@@ -57,15 +60,16 @@ public class UpdateDbSyncUtils {
         if (sInitialized) return;
         sInitialized = true;
         scheduleFirebaseJobDispatcherSync(context);
-/*
-        startImmediateSync(context);
-*/
+        if(DBUtils.isFirstStartDB(context)) {
+            startImmediateSync(context);
+
+        }
     }
 
     public static void startImmediateSync(@NonNull final Context context) {
 
-//        Intent intentUpdateDbService = new Intent(context, UpdateDbJobService.class);
-//        context.startService(intentUpdateDbService);
+        Intent intentUpdateDbService = new Intent(context, SyncDatabaseService.class);
+        context.startService(intentUpdateDbService);
     }
 
 }

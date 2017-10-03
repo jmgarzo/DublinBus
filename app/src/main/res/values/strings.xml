@@ -57,6 +57,8 @@
     <string name="pref_admod_active" translatable="false">admod_active</string>
     <string name="pref_is_update_database_active" translatable="false">update_database_active</string>
     <string name="pref_is_error_on_update_db" translatable="false">error_on_update_db</string>
+    <string name="pref_is_first_start_db" translatable="false">is_first_start_db</string>
+
 
 
 
