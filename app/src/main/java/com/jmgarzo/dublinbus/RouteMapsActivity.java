@@ -336,12 +336,12 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
     }
 
+
     private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         // These are both viewgroups containing an ImageView with id "badge" and two TextViews with id
         // "title" and "snippet".
         private final View mWindow;
-
 
         CustomInfoWindowAdapter() {
             mWindow = getLayoutInflater().inflate(R.layout.custom_info_map_window, null);
@@ -394,14 +394,23 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
 
             snippetUi.setText(snippet);
 
-            TextView tvRoutes = view.findViewById(R.id.tv_routes);
+            TextView tvRoutesNumber = view.findViewById(R.id.tv_routes_number);
+            TextView tvRoutesInfo = view.findViewById(R.id.tv_routes_info);
 
             if (markerBusStop != null) {
-                String routes = "";
+                String routesNumber = "";
+                String routesInfo = "";
                 for (Route rt : markerBusStop.getRoutesList()) {
-                    routes = routes + "\n" + rt.getName();
+                    if (routesNumber.equalsIgnoreCase("")) {
+                        routesNumber = routesNumber + rt.getName();
+                        routesInfo = routesInfo + rt.getOrigin() + " - " + rt.getDestination();
+                    } else {
+                        routesNumber = routesNumber + "\n" + rt.getName();
+                        routesInfo = routesInfo + "\n" + rt.getOrigin() + " - " + rt.getDestination();
+                    }
                 }
-                tvRoutes.setText(routes);
+                tvRoutesNumber.setText(routesNumber);
+                tvRoutesInfo.setText(routesInfo);
             }
 
         }

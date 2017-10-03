@@ -88,4 +88,7 @@
     <string name="permission_rationale_location">Access to the location service is required run the \'Route in google maps\' feature, which shows your current location on the map.</string>
     <string name="permission_required_toast">Location permission is required for this layer.</string>
 
+    <string name="routes_label">Routes:</string>
+
+
 </resources>
