@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
@@ -31,14 +30,12 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
-import com.jmgarzo.dublinbus.data.DublinBusProvider;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.objects.Route;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 import com.jmgarzo.dublinbus.utilities.PermissionUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.jmgarzo.dublinbus.R.id.map;
 
@@ -61,6 +58,9 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     private boolean mPermissionDenied = false;
+
+
+
 
 
 
@@ -125,25 +125,26 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
+
             case BUS_STOPS_LOADER_ID: {
-                Uri stopBusWithRouteIdUri = DublinBusContract.BusStopEntry.buildBusStopWithRouteId(
-                        Long.toString(mRoute.getId()));
-                return new CursorLoader(this,
-                        stopBusWithRouteIdUri,
-                        DBUtils.BUS_STOP_COLUMNS,
-                        DublinBusContract.BusStopEntry.IS_NEW + " = ?",
-                        new String[]{"0"},
-                        DublinBusContract.RouteBusStopEntry.RECORD_ORDER);
+
+                Uri mUri = DublinBusContract.BusStopsAndRouteEntry.buildBusStopsAndRoutes(Long.toString(mRoute.getId()));
+
+                if ( null != mUri ) {
+                    // Now create and return a CursorLoader that will take care of
+                    // creating a Cursor for the data being displayed.
+                    return new CursorLoader(
+                            this,
+                            mUri,
+                            DBUtils.BUS_STOP_AND_ROUTES_COLUMNS,
+                            null,
+                            null,
+                            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry._ID
+                    );
+                }
+
             }
-//            case ROUTES_PER_BUS_STOP:{
-//                Uri routesWithBusStopNameUri = DublinBusContract.RouteEntry.
-//                        buildRoutesWithBusStop(args.getString(NUMBER_BUS_STOP_TAG));
-//                return new CursorLoader(this,
-//                        routesWithBusStopNameUri,
-//                        DBUtils.ROUTES_PER_BUS_STOP_COLUMNS,
-//                        DublinBusContract.RouteEntry.IS_NEW + " = ?",
-//                        new String[]{"0"},
-//                        DublinBusContract.RouteEntry.NAME);
+
 //            }
             default:
                 throw new RuntimeException("Loader Not Implemented: " + id);
@@ -154,8 +155,9 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case BUS_STOPS_LOADER_ID: {
+                ArrayList<BusStop> busStopList;
                 if (null != data && data.moveToFirst()) {
-                    mBusStopList = cursorToBusStopList(data);
+                    mBusStopList = getBusStopList(data);
                 }
                 mLatLngBusStop = getLatLngBusStop(mBusStopList);
 
@@ -176,9 +178,36 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
+
+
+
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    private ArrayList<BusStop>getBusStopList(Cursor data){
+        ArrayList<BusStop> busStopArrayList = new ArrayList<>();
+        int currentBusStopId = -1;
+        if(data.moveToFirst()){
+            BusStop bs = null;
+            do{
+                if(currentBusStopId == data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID) && bs !=null){
+                    bs.getRoutesList().add(getNewRoute(data));
+                }else{
+                    if(bs!=null) {
+                        busStopArrayList.add(bs);
+                    }
+                    currentBusStopId = data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID);
+
+                    bs = getNewBusStop(data);
+                }
+
+
+            }while(data.moveToNext());
+        }
+        return busStopArrayList;
     }
 
     private ArrayList<BusStop> cursorToBusStopList(Cursor data) {
@@ -189,6 +218,44 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
             busStopsList.add(busStop);
         } while (data.moveToNext());
         return busStopsList;
+    }
+
+    private BusStop getNewBusStop(Cursor data){
+        BusStop bs = new BusStop();
+        bs.setId(data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID));
+        bs.setNumber(data.getString(DBUtils.COL_BUS_AND_ROUTE_STOP_NUMBER));
+        bs.setDisplayStopId(data.getString(DBUtils.COL_BUS_AND_ROUTE_STOP_DISPLAY_STOP_ID));
+        bs.setShortName(data.getString(DBUtils.COL_BUS_AND_ROUTE_STOP_SHORTNAME));
+        bs.setShortNameLocalized(data.getString(DBUtils.COL_BUS_AND_ROUTE_STOP_SHORT_NAME_LOCALIZED));
+        bs.setFullName(data.getString(DBUtils.COL_BUS_AND_ROUTE_STOP_FULL_NAME));
+        bs.setFullNameLocalized(data.getString(DBUtils.COL_BUS_AND_ROUTE_STOP_FULL_NAME_LOCALIZED));
+        bs.setLatitude(data.getString(DBUtils.COL_BUS_AND_ROUTE_STOP_LATITUDE));
+        bs.setLongitude(data.getString(DBUtils.COL_BUS_AND_ROUTE_STOP_LONGITUDE));
+        bs.setLastUpdated(data.getString(DBUtils.COL_BUS_AND_ROUTE_STOP_LAST_UPDATED));
+        bs.setFavourite(data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_IS_FAVORITE) != 0);
+        bs.setAlias(data.getString(DBUtils.COL_BUS_AND_ROUTE_STOP_IS_ALIAS));
+        bs.setNew(data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_IS_NEW) != 0);
+
+        bs.setRoutesList(new ArrayList<Route>());
+
+        return bs;
+    }
+
+    private Route getNewRoute(Cursor data){
+        Route route = new Route();
+
+        route.setId(data.getInt(DBUtils.COL_BUS_AND_ROUTE_ROUTE_ID));
+        route.setTimestamp(data.getString(DBUtils.COL_BUS_AND_ROUTE_ROUTE_TIMESTAMP));
+        route.setName(data.getString(DBUtils.COL_BUS_AND_ROUTE_ROUTE_NAME));
+        route.setOperator(data.getLong(DBUtils.COL_BUS_AND_ROUTE_ROUTE_OPERATOR));
+        route.setOrigin(data.getString(DBUtils.COL_BUS_AND_ROUTE_ROUTE_ORIGIN));
+        route.setOriginLocalized(data.getString(DBUtils.COL_BUS_AND_ROUTE_ROUTE_ORIGIN_LOCALIZED));
+        route.setDestination(data.getString(DBUtils.COL_BUS_AND_ROUTE_ROUTE_DESTINATION));
+        route.setDestinationLocalized(data.getString(DBUtils.COL_BUS_AND_ROUTE_ROUTE_DESTINATION_LOCALIZED));
+        route.setLastUpdated(data.getString(DBUtils.COL_BUS_AND_ROUTE_ROUTE_LAST_UPDATE));
+        route.setNew(data.getInt(DBUtils.COL_BUS_AND_ROUTE_ROUTE_IS_NEW) != 0);
+
+        return route;
     }
 
     private ArrayList<LatLng> getLatLngBusStop(ArrayList<BusStop> busStopsList) {

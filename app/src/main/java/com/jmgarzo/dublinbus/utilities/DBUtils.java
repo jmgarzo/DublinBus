@@ -131,16 +131,15 @@ public class DBUtils {
 //    public static final int COL_ROUTE_PER_BUS_STOP_IS_NEW = 6;
 
     public static final String[] ROUTES_PER_BUS_STOP_COLUMNS = {
-            DublinBusContract.RouteEntry.TABLE_NAME+"."+ DublinBusContract.RouteEntry.NAME,
-            DublinBusContract.RouteEntry.TABLE_NAME+"."+ DublinBusContract.RouteEntry.ORIGIN,
-            DublinBusContract.RouteEntry.TABLE_NAME+"."+ DublinBusContract.RouteEntry.DESTINATION
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.NAME,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.ORIGIN,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.DESTINATION
 
     };
 
     public static final int COL_ROUTE_PER_BUS_STOP_NAME = 0;
     public static final int COL_ROUTE_PER_BUS_STOP_ORIGIN = 1;
-    public static final int COL_ROUTE_PER_BUS_STOP_DESTINATION =2;
-
+    public static final int COL_ROUTE_PER_BUS_STOP_DESTINATION = 2;
 
 
     public static final String[] REAL_TIME_STOP_COLUMNS = {
@@ -198,6 +197,59 @@ public class DBUtils {
     public static final int REAL_TIME_STATUS_SERVER_INVALID = 7;
     public static final int REAL_TIME_STATUS_UNKNOWN = 8;
     public static final int REAL_TIME_STATUS_NETWORK_NOT_AVAILABLE = 9;
+
+
+    public static final String[] BUS_STOP_AND_ROUTES_COLUMNS = {
+            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry._ID,
+            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.NUMBER,
+            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.DISPLAY_STOP_ID,
+            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.SHORT_NAME,
+            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.SHORT_NAME_LOCALIZED,
+            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.FULL_NAME,
+            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.FULL_NAME_LOCALIZED,
+            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.LATITUDE,
+            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.LONGITUDE,
+            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.LAST_UPDATED,
+            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.IS_FAVOURITE,
+            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.ALIAS,
+            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.IS_NEW,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry._ID,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.TIMESTAMP,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." +  DublinBusContract.RouteEntry.NAME,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.OPERATOR,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.ORIGIN,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.ORIGIN_LOCALIZED,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." +  DublinBusContract.RouteEntry.DESTINATION,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.DESTINATION_LOCALIZED,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.LAST_UPDATED,
+            DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.IS_NEW
+
+
+    };
+
+    public static final int COL_BUS_AND_ROUTE_STOP_ID = 0;
+    public static final int COL_BUS_AND_ROUTE_STOP_NUMBER = 1;
+    public static final int COL_BUS_AND_ROUTE_STOP_DISPLAY_STOP_ID = 2;
+    public static final int COL_BUS_AND_ROUTE_STOP_SHORTNAME = 3;
+    public static final int COL_BUS_AND_ROUTE_STOP_SHORT_NAME_LOCALIZED = 4;
+    public static final int COL_BUS_AND_ROUTE_STOP_FULL_NAME = 5;
+    public static final int COL_BUS_AND_ROUTE_STOP_FULL_NAME_LOCALIZED = 6;
+    public static final int COL_BUS_AND_ROUTE_STOP_LATITUDE = 7;
+    public static final int COL_BUS_AND_ROUTE_STOP_LONGITUDE = 8;
+    public static final int COL_BUS_AND_ROUTE_STOP_LAST_UPDATED = 9;
+    public static final int COL_BUS_AND_ROUTE_STOP_IS_FAVORITE = 10;
+    public static final int COL_BUS_AND_ROUTE_STOP_IS_ALIAS = 11;
+    public static final int COL_BUS_AND_ROUTE_STOP_IS_NEW = 12;
+    public static final int COL_BUS_AND_ROUTE_ROUTE_ID = 13;
+    public static final int COL_BUS_AND_ROUTE_ROUTE_TIMESTAMP = 14;
+    public static final int COL_BUS_AND_ROUTE_ROUTE_NAME = 15;
+    public static final int COL_BUS_AND_ROUTE_ROUTE_OPERATOR = 16;
+    public static final int COL_BUS_AND_ROUTE_ROUTE_ORIGIN = 17;
+    public static final int COL_BUS_AND_ROUTE_ROUTE_ORIGIN_LOCALIZED = 18;
+    public static final int COL_BUS_AND_ROUTE_ROUTE_DESTINATION = 19;
+    public static final int COL_BUS_AND_ROUTE_ROUTE_DESTINATION_LOCALIZED = 20;
+    public static final int COL_BUS_AND_ROUTE_ROUTE_LAST_UPDATE = 21;
+    public static final int COL_BUS_AND_ROUTE_ROUTE_IS_NEW = 22;
 
 
     public static long getOperator(Context contect, String operatorReference) {

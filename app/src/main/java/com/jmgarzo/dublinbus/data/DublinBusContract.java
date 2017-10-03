@@ -4,9 +4,6 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.jmgarzo.dublinbus.objects.Route;
-import com.jmgarzo.dublinbus.objects.RouteBusStop;
-
 /**
  * Created by jmgarzo on 27/07/17.
  */
@@ -24,6 +21,8 @@ public class DublinBusContract {
     public static final String PATH_ROUTE_INFORMATION = "route_information";
     public static final String PATH_REAL_TIME_STOP = "real_time_stop";
     public static final String PATH_ROUTE_PER_BUS_STOP = "route_per_bus_stop";
+    public static final String PATH_BUS_STOP_AND_ROUTES = "route_and_stop_per_bus_stop";
+
 
 
     public static final class OperatorEntry implements BaseColumns {
@@ -166,5 +165,12 @@ public class DublinBusContract {
 
     }
 
+    public static final class BusStopsAndRouteEntry implements BaseColumns {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_BUS_STOP_AND_ROUTES).build();
 
+
+        public static Uri buildBusStopsAndRoutes(String routeId) {
+            return CONTENT_URI.buildUpon().appendPath(routeId).build();
+        }
+    }
 }

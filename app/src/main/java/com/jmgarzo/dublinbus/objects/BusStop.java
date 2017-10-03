@@ -29,7 +29,7 @@ public class BusStop implements Parcelable {
     private boolean isFavourite;
     private String alias;
     private boolean isNew;
-    private ArrayList<String> routesList;
+    private ArrayList<Route> routesList;
 
     public BusStop(){}
 
@@ -135,11 +135,11 @@ public class BusStop implements Parcelable {
         this.alias = alias;
     }
 
-    public ArrayList<String> getRoutesList() {
+    public ArrayList<Route> getRoutesList() {
         return routesList;
     }
 
-    public void setRoutesList(ArrayList<String> routesList) {
+    public void setRoutesList(ArrayList<Route> routesList) {
         this.routesList = routesList;
     }
 
@@ -219,7 +219,7 @@ public class BusStop implements Parcelable {
         dest.writeByte(this.isFavourite ? (byte) 1 : (byte) 0);
         dest.writeString(this.alias);
         dest.writeByte(this.isNew ? (byte) 1 : (byte) 0);
-        dest.writeStringList(this.routesList);
+        dest.writeTypedList(this.routesList);
     }
 
     protected BusStop(Parcel in) {
@@ -236,7 +236,7 @@ public class BusStop implements Parcelable {
         this.isFavourite = in.readByte() != 0;
         this.alias = in.readString();
         this.isNew = in.readByte() != 0;
-        this.routesList = in.createStringArrayList();
+        this.routesList = in.createTypedArrayList(Route.CREATOR);
     }
 
     public static final Creator<BusStop> CREATOR = new Creator<BusStop>() {
