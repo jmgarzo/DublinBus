@@ -129,6 +129,9 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
         switch (id) {
             case BUS_STOPS_LOADER_ID: {
                 Uri mUri = DublinBusContract.BusStopsAndRouteEntry.buildBusStopsAndRoutes(Long.toString(mRoute.getId()));
+                String orderBy = DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry._ID +
+                        ", " + DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.NAME + " *1, " +
+                        DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.NAME + " COLLATE NOCASE ASC ";
                 if (null != mUri) {
                     return new CursorLoader(
                             this,
@@ -136,7 +139,7 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
                             DBUtils.BUS_STOP_AND_ROUTES_COLUMNS,
                             null,
                             null,
-                            DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry._ID
+                            orderBy//DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry._ID
                     );
                 }
             }
