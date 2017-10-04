@@ -487,8 +487,12 @@ public class SyncTasks {
                 + DublinBusContract.BusStopEntry.IS_FAVOURITE + " = ?";
         String[] selectionArgs = {busStopNumber, "1"};
 
-        context.getContentResolver().delete(
+        ContentValues cv = new ContentValues();
+        cv.put(DublinBusContract.BusStopEntry.IS_FAVOURITE,0);
+
+        context.getContentResolver().update(
                 DublinBusContract.BusStopEntry.CONTENT_URI,
+                cv,
                 selection,
                 selectionArgs);
     }
