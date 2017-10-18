@@ -54,7 +54,6 @@ public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopA
 
             holder.mBusStopName.setText(mCursor.getString(DBUtils.COL_BUS_STOP_NUMBER));
             holder.mBusStopShortName.setText(mCursor.getString(DBUtils.COL_BUS_STOP_SHORTNAME));
-            holder.mBusStopShortNameLocalized.setText(mCursor.getString(DBUtils.COL_BUS_STOP_SHORT_NAME_LOCALIZED));
 
         }
     }
@@ -77,14 +76,11 @@ public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopA
 //        public final ImageView mBusStopImageView;
         public final TextView mBusStopName;
         public final TextView mBusStopShortName;
-        public final TextView mBusStopShortNameLocalized;
 
         public BusStopAdapterViewHolder(View view) {
             super(view);
-//            mBusStopImageView = view.findViewById(R.id.list_item_bus_stop_imageview);
             mBusStopName = view.findViewById(R.id.list_item_bus_stop_name);
             mBusStopShortName = view.findViewById(R.id.list_item_bus_stop_short_name);
-            mBusStopShortNameLocalized = view.findViewById(R.id.list_item_bus_stop_short_name_localized);
             view.setOnClickListener(this);
         }
 
