@@ -144,6 +144,12 @@ public class RouteActivityFragment extends Fragment implements LoaderManager.Loa
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if(newText.contains("'")){
+                    newText = newText.replace("'", "");
+                }
+                if(newText.contains("%")){
+                    newText = newText.replace("%", "");
+                }
                 onQueryTextChanged(newText);
                 return false;
             }

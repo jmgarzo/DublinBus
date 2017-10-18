@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.utilities.AdUtils;
@@ -199,7 +198,6 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
             searchView.setActivated(true);
             searchView.setQueryHint(getString(R.string.bus_stop_search_hint));
-
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -208,6 +206,12 @@ public class BusStopFragment extends Fragment implements LoaderManager.LoaderCal
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
+                    if(newText.contains("'")){
+                       newText = newText.replace("'", "");
+                    }
+                    if(newText.contains("%")){
+                        newText = newText.replace("%", "");
+                    }
                     onQueryTextChanged(newText);
                     return false;
                 }
