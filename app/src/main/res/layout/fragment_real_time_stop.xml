@@ -18,8 +18,6 @@
             tools:showIn="@layout/activity_route">
 
 
-
-
             <com.google.android.gms.ads.AdView
                 android:id="@+id/ad_view"
                 android:layout_width="wrap_content"
@@ -34,19 +32,7 @@
                 app:layout_constraintRight_toRightOf="parent" />
 
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="@dimen/fab_margin"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="8dp"
-                android:src="@drawable/ic_favorite_white_24px"
-                app:elevation="4dp"
-                app:layout_constraintBottom_toTopOf="@+id/ad_view"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginEnd="8dp" />
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview_real_time_stop"
@@ -82,6 +68,20 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_favorite_white_24px"
+                app:elevation="4dp"
+                app:layout_constraintBottom_toTopOf="@+id/ad_view"
+                app:layout_constraintRight_toRightOf="parent" />
 
 
         </android.support.constraint.ConstraintLayout>
