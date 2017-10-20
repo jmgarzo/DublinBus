@@ -35,7 +35,8 @@ public class DublinBusProvider extends ContentProvider {
 
     static final int REAL_TIME_STOP = 600;
 
-    static final int BUS_STOP_AND_ROUTES_WITH_ROUTE_ID = 700;
+    static final int BUS_STOP_AND_ROUTES = 700;
+    static final int BUS_STOP_AND_ROUTES_WITH_ROUTE_ID = 701;
 
 
     private DublinBusDBHelper mOpenHelper;
@@ -113,6 +114,29 @@ public class DublinBusProvider extends ContentProvider {
         );
     }
 
+    public  Cursor getStopsAndRoutes(Uri uri,String[] projection,String selection, String[] selectionArgs, String sortOrder) {
+
+//        String selection =
+//                DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry._ID + " IN ( " +
+//                        " SELECT " + DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry._ID +
+//                        " FROM " + DublinBusContract.RouteEntry.TABLE_NAME +
+//                        " INNER JOIN " + DublinBusContract.RouteBusStopEntry.TABLE_NAME +
+//                        " ON " + DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry._ID +
+//                        " = " + DublinBusContract.RouteBusStopEntry.TABLE_NAME + "." + DublinBusContract.RouteBusStopEntry.ROUTE_ID +
+//                        " AND " + DublinBusContract.BusStopEntry.TABLE_NAME + "."+ DublinBusContract.BusStopEntry._ID +
+//                        " = " + DublinBusContract.RouteBusStopEntry.TABLE_NAME + "." + DublinBusContract.RouteBusStopEntry.BUS_STOP_ID +
+//                        "  ) ";
+
+        return sStopsAndRoutesByRouteQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+    }
+
     public  Cursor getStopsAndRoutesByRoute(Uri uri,String[] projection, String sortOrder) {
 
         String selection =
@@ -126,14 +150,6 @@ public class DublinBusProvider extends ContentProvider {
                         " = " + DublinBusContract.RouteBusStopEntry.TABLE_NAME + "." + DublinBusContract.RouteBusStopEntry.BUS_STOP_ID +
                         " WHERE " + DublinBusContract.RouteEntry.TABLE_NAME +"."+ DublinBusContract.RouteEntry._ID  + " =  ? ) ";
 
-//        String selection = DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.NUMBER + " = ? ";
-//        String[] projection2 = new String[]{
-//                DublinBusContract.BusStopEntry.TABLE_NAME + "." + DublinBusContract.BusStopEntry.NUMBER,
-//                DublinBusContract.RouteEntry.TABLE_NAME + "." + DublinBusContract.RouteEntry.NAME};
-
-
-
-//        String[] selectionArgs = new String[]{DublinBusContract.RouteEntry.getBusNumberFromUri(uri)};
         return sStopsAndRoutesByRouteQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 selection,
@@ -165,6 +181,8 @@ public class DublinBusProvider extends ContentProvider {
         matcher.addURI(DublinBusContract.CONTENT_AUTHORITY, DublinBusContract.PATH_ROUTE_INFORMATION, ROUTE_INFORMATION);
 
         matcher.addURI(DublinBusContract.CONTENT_AUTHORITY, DublinBusContract.PATH_REAL_TIME_STOP, REAL_TIME_STOP);
+
+        matcher.addURI(DublinBusContract.CONTENT_AUTHORITY, DublinBusContract.PATH_BUS_STOP_AND_ROUTES , BUS_STOP_AND_ROUTES);
 
         matcher.addURI(DublinBusContract.CONTENT_AUTHORITY, DublinBusContract.PATH_BUS_STOP_AND_ROUTES + "/*", BUS_STOP_AND_ROUTES_WITH_ROUTE_ID);
 
@@ -227,19 +245,14 @@ public class DublinBusProvider extends ContentProvider {
 
             }
 
+            case BUS_STOP_AND_ROUTES: {
+                returnCursor = getStopsAndRoutes(uri,projection,selection,selectionArgs,sortOrder);
+                break;
+            }
+
             case BUS_STOP_AND_ROUTES_WITH_ROUTE_ID: {
-//                returnCursor = mOpenHelper.getReadableDatabase().query(
-//                        DublinBusContract.BusStopEntry.TABLE_NAME,
-//                        projection,
-//                        selection,
-//                        selectionArgs,
-//                        null,
-//                        null,
-//                        sortOrder
-//                );
                 returnCursor = getStopsAndRoutesByRoute(uri,projection,sortOrder);
                 break;
-
             }
 
             case ROUTE: {

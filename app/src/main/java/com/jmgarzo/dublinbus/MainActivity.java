@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_access_time_white_24px));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_directions_bus_white_24px));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_favorite_white_24px));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_map_white_24px));
+
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         //Initializing viewPager
@@ -109,6 +111,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 break;
             case 2:
                 this.setTitle(getString(R.string.favourite_bus_stop_title));
+                break;
+            case 3:
+                this.setTitle(getString(R.string.bus_stop_near_title));
                 break;
         }
     }
