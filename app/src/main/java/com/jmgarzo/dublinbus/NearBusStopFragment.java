@@ -20,10 +20,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.algo.GridBasedAlgorithm;
+import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
+import com.google.maps.android.clustering.algo.PreCachingAlgorithmDecorator;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
@@ -42,7 +44,7 @@ public class NearBusStopFragment extends Fragment implements
         OnMapReadyCallback,
         GoogleMap.OnCameraIdleListener,
         GoogleMap.OnMarkerClickListener,
-        ClusterManager.OnClusterItemClickListener<MyItem>{
+        ClusterManager.OnClusterItemClickListener<MyItem> {
 
 
     private String LOG_TAG = StopsNearFragment.class.getSimpleName();
@@ -123,8 +125,11 @@ public class NearBusStopFragment extends Fragment implements
             mClusterManager = new ClusterManager<MyItem>(getContext(), mMap);
         }
         mClusterManager.setOnClusterItemClickListener(this);
+        GridBasedAlgorithm<MyItem> gridAlgorithm = new GridBasedAlgorithm<MyItem>();
+        NonHierarchicalDistanceBasedAlgorithm nonHierarchicalDistanceBasedAlgorithm = new NonHierarchicalDistanceBasedAlgorithm();
+        mClusterManager.setAlgorithm(new PreCachingAlgorithmDecorator<MyItem>(gridAlgorithm));
         googleMap.setOnMarkerClickListener(this);
-        mClusterManager.setRenderer(new BusStopRenderer(getContext(),mMap,mClusterManager));
+//        mClusterManager.setRenderer(new BusStopRenderer(getContext(), mMap, mClusterManager));
 
         mMap.setOnCameraIdleListener(this);
         readItems();
@@ -136,18 +141,18 @@ public class NearBusStopFragment extends Fragment implements
 
     private void readItems() {
 
-        LatLngBounds bounds = this.mMap.getProjection().getVisibleRegion().latLngBounds;
+//        LatLngBounds bounds = this.mMap.getProjection().getVisibleRegion().latLngBounds;
 
         if (null != mBusStopList && !mBusStopList.isEmpty()) {
             ArrayList<MyItem> items = new ArrayList<>();
             BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_directions_bus_black_24dp);
             mClusterManager.clearItems();
             for (BusStop busStop : mBusStopList) {
-                if (bounds.contains(busStop.getLatLng())) {
-                    MyItem myItem = new MyItem(Double.valueOf(busStop.getLatitude()), Double.valueOf(busStop.getLongitude()), busStop.getNumber(), busStop.getFullName(), icon);
-                    items.add(myItem);
-                    mClusterManager.addItem(myItem);
-                }
+//                if (bounds.contains(busStop.getLatLng())) {
+                MyItem myItem = new MyItem(Double.valueOf(busStop.getLatitude()), Double.valueOf(busStop.getLongitude()), busStop.getNumber(), busStop.getFullName(), icon);
+                items.add(myItem);
+                mClusterManager.addItem(myItem);
+//                }
             }
             mClusterManager.cluster();
         }
@@ -155,7 +160,7 @@ public class NearBusStopFragment extends Fragment implements
 
     @Override
     public boolean onClusterItemClick(MyItem myItem) {
-        Toast.makeText(getContext(),"Click Item ",Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Click Item ", Toast.LENGTH_LONG).show();
         return false;
     }
 
@@ -167,7 +172,7 @@ public class NearBusStopFragment extends Fragment implements
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(getContext(),"Click Item ",Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Click Item ", Toast.LENGTH_LONG).show();
 
         return false;
     }
@@ -182,10 +187,10 @@ public class NearBusStopFragment extends Fragment implements
 
         @Override
         protected void onBeforeClusterItemRendered(MyItem myItem, MarkerOptions markerOptions) {
-                markerOptions.position(myItem.getPosition())
-                        .title(myItem.getTitle())
-                        .snippet(myItem.getSnippet())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_directions_bus_black_24dp));
+            markerOptions.position(myItem.getPosition())
+                    .title(myItem.getTitle())
+                    .snippet(myItem.getSnippet())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_directions_bus_black_24dp));
             super.onBeforeClusterItemRendered(myItem, markerOptions);
 
         }
