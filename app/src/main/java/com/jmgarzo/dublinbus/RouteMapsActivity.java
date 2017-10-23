@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -200,6 +197,7 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
 
     @Override
     public boolean onMyLocationButtonClick() {
+
         return false;
     }
 

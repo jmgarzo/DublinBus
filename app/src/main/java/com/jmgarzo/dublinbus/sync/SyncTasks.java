@@ -228,36 +228,7 @@ public class SyncTasks {
     }
 
     private static void deleteOldValues(Context context) {
-//        ContentResolver contentResolver = context.getContentResolver();
-//
-//        int routeBusStopDeleted = contentResolver.delete(DublinBusContract.RouteBusStopEntry.CONTENT_URI,
-//                DublinBusContract.RouteBusStopEntry.IS_NEW + " = ? ",
-//                new String[]{"0"});
-//        Log.d(LOG_TAG, "Route Bus Stop Deleted: " + routeBusStopDeleted);
-//
-//        int operatorsDeleted = contentResolver.delete(DublinBusContract.OperatorEntry.CONTENT_URI,
-//                DublinBusContract.OperatorEntry.IS_NEW + " = ? ",
-//                new String[]{"0"});
-//        Log.d(LOG_TAG, "Operator Deleted: " + operatorsDeleted);
-//
-//        int busStopDeleted = contentResolver.delete(DublinBusContract.BusStopEntry.CONTENT_URI,
-//                DublinBusContract.BusStopEntry.IS_NEW + " = ? ",
-//                new String[]{"0"});
-//        Log.d(LOG_TAG, "Bus Stop Deleted: " + busStopDeleted);
-//
-//
-//        int routeInformationDeleted = contentResolver.delete(DublinBusContract.RouteInformationEntry.CONTENT_URI,
-//                DublinBusContract.RouteInformationEntry.IS_NEW + " = ? ",
-//                new String[]{"0"});
-//        Log.d(LOG_TAG, "Route Information Deleted: " + routeInformationDeleted);
-//
-//
-//        int routeDeleted = contentResolver.delete(DublinBusContract.RouteEntry.CONTENT_URI,
-//                DublinBusContract.RouteEntry.IS_NEW + " = ? ",
-//                new String[]{"0"});
-//        Log.d(LOG_TAG, "Route Deleted: " + routeDeleted);
         deleteValuesDB(context, 0);
-
     }
 
     private static void deleteNewValues(Context context) {
