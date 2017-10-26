@@ -30,10 +30,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.algo.GridBasedAlgorithm;
+import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
@@ -56,8 +60,8 @@ public class NearBusStopFragment extends Fragment implements
         OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener,
         GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnInfoWindowClickListener,
-        ClusterManager.OnClusterItemClickListener<MyItem> {
+        GoogleMap.OnInfoWindowClickListener
+        {
 
 
     private String LOG_TAG = StopsNearFragment.class.getSimpleName();
@@ -139,17 +143,36 @@ public class NearBusStopFragment extends Fragment implements
 
 
         mClusterManager = new ClusterManager<MyItem>(getContext(), mMap);
+
+
+        NonHierarchicalDistanceBasedAlgorithm nonHierarchicalDistanceBasedAlgorithm = new NonHierarchicalDistanceBasedAlgorithm();
+        GridBasedAlgorithm<MyItem> gridAlgorithm = new GridBasedAlgorithm<MyItem>();
+        mClusterManager.setAlgorithm(gridAlgorithm);
+
         mClusterManager.setRenderer(new BusStopRenderer(getContext(), mMap, mClusterManager));
         mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(
                 new MyCustomAdapterForItems());
 
         mMap.setOnMarkerClickListener(this);
-        mMap.setOnCameraIdleListener(mClusterManager);
+//        mMap.setOnCameraIdleListener(mClusterManager);
+        final CameraPosition[] mPreviousCameraPosition = {null};
+        googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                CameraPosition position = mMap.getCameraPosition();
+                if(mPreviousCameraPosition[0] == null || mPreviousCameraPosition[0].zoom != position.zoom) {
+                    mPreviousCameraPosition[0] = mMap.getCameraPosition();
+                    readItems();
+                    mClusterManager.cluster();
+                }
+            }
+        });
         mMap.setOnMyLocationButtonClickListener(this);
+
         enableMyLocation();
 
         if (getLocation() != null) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getLocation(), 17));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getLocation(), 16));
         } else {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(53.3464, -6.2618), 17));
         }
@@ -162,22 +185,27 @@ public class NearBusStopFragment extends Fragment implements
     }
 
     private void readItems() {
+
+        LatLngBounds bounds = this.mMap.getProjection().getVisibleRegion().latLngBounds;
+
         if (null != mBusStopList && !mBusStopList.isEmpty()) {
             ArrayList<MyItem> items = new ArrayList<>();
             BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_directions_bus_black_24dp);
             mClusterManager.clearItems();
             for (BusStop busStop : mBusStopList) {
+                if (bounds.contains(busStop.getLatLng())) {
                 MyItem myItem = new MyItem(Double.valueOf(busStop.getLatitude()), Double.valueOf(busStop.getLongitude()), busStop.getNumber(), busStop.getFullName(), icon);
                 items.add(myItem);
                 mClusterManager.addItem(myItem);
+                }
             }
         }
     }
 
-    @Override
-    public boolean onClusterItemClick(MyItem myItem) {
-        return false;
-    }
+//    @Override
+//    public boolean onClusterItemClick(MyItem myItem) {
+//        return false;
+//    }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
@@ -252,6 +280,8 @@ public class NearBusStopFragment extends Fragment implements
         }
     }
 
+
+
     /**
      * Displays a dialog with error message explaining that the location permission is missing.
      */
@@ -296,6 +326,12 @@ public class NearBusStopFragment extends Fragment implements
         protected void onClusterItemRendered(MyItem clusterItem, Marker marker) {
             super.onClusterItemRendered(clusterItem, marker);
         }
+
+//        @Override
+//        protected boolean shouldRenderAsCluster(Cluster<MyItem> cluster) {
+//
+//            return cluster.getSize() > 15;
+//        }
     }
 
     private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
