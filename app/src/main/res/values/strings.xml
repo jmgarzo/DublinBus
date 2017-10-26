@@ -60,7 +60,7 @@
     <string name="pref_is_first_start_db" translatable="false">is_first_start_db</string>
 
     <!--Bus Stop Near-->
-    <string name="bus_stop_near_title">Bus Stop Near</string>
+    <string name="bus_stop_near_title">Bus Stops Map</string>
 
 
     <!--Description content -->

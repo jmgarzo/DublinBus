@@ -81,6 +81,7 @@ public class NearBusStopFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_near_bus_stop, container, false);
+        getActivity().setTitle(R.string.bus_stop_near_title);
 
         getActivity().getSupportLoaderManager().initLoader(ID_BUS_STOP_LOADER, null, this);
 
