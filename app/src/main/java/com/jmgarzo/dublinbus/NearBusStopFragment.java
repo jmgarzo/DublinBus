@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.GridBasedAlgorithm;
 import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
@@ -58,10 +59,10 @@ import static android.content.Context.LOCATION_SERVICE;
 public class NearBusStopFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor>,
         OnMapReadyCallback,
-        GoogleMap.OnMarkerClickListener,
+//        GoogleMap.OnMarkerClickListener,
+        ClusterManager.OnClusterItemClickListener,
         GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnInfoWindowClickListener
-        {
+        GoogleMap.OnInfoWindowClickListener {
 
 
     private String LOG_TAG = StopsNearFragment.class.getSimpleName();
@@ -72,6 +73,7 @@ public class NearBusStopFragment extends Fragment implements
     private static final int ID_BUS_STOP_LOADER = 47;
     private ArrayList<BusStop> mBusStopList;
     private BusStop markerBusStop;
+    boolean isClusterItemClick = false;
 
 
     private GoogleMap mMap;
@@ -138,8 +140,9 @@ public class NearBusStopFragment extends Fragment implements
             return;
         }
         mMap = googleMap;
-        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
-        mMap.setOnInfoWindowClickListener(this);
+//        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+
+//        mMap.setOnInfoWindowClickListener(this);
 
 
         mClusterManager = new ClusterManager<MyItem>(getContext(), mMap);
@@ -152,19 +155,50 @@ public class NearBusStopFragment extends Fragment implements
         mClusterManager.setRenderer(new BusStopRenderer(getContext(), mMap, mClusterManager));
         mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(
                 new MyCustomAdapterForItems());
+        mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
+        mClusterManager
+                .setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MyItem>() {
+                    @Override
+                    public boolean onClusterItemClick(MyItem item) {
+                        //        markerBusStop = null;
+                        isClusterItemClick = true;
+                        String busStopNumber = item.getTitle();
+                        for (BusStop bs : mBusStopList) {
+                            if (bs.getNumber().equalsIgnoreCase(busStopNumber)) {
+                                markerBusStop = bs;
+                                break;
+                            }
+                        }
+                        return false;
+                    }
+                });
 
-        mMap.setOnMarkerClickListener(this);
+
+//        mMap.setOnMarkerClickListener(this);
 //        mMap.setOnCameraIdleListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mMap.setOnInfoWindowClickListener(this);
+//        mClusterManager.setOnClusterItemInfoWindowClickListener(new ClusterManager.OnClusterItemInfoWindowClickListener<MyItem>() {
+//            @Override
+//            public void onClusterItemInfoWindowClick(MyItem myItem) {
+//                String busStopNumber = myItem.getTitle();
+//                Intent intent = new Intent(getActivity(), RealTimeStopActivity.class);
+//                intent.putExtra(Intent.EXTRA_TEXT, busStopNumber);
+//                getContext().startActivity(intent);
+//            }
+//        });
         final CameraPosition[] mPreviousCameraPosition = {null};
         googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
                 CameraPosition position = mMap.getCameraPosition();
-                if(mPreviousCameraPosition[0] == null || mPreviousCameraPosition[0].zoom != position.zoom) {
+//                if (mPreviousCameraPosition[0] == null || mPreviousCameraPosition[0].zoom != position.zoom) {
+                if(!isClusterItemClick) {
                     mPreviousCameraPosition[0] = mMap.getCameraPosition();
                     readItems();
                     mClusterManager.cluster();
                 }
+                isClusterItemClick = false;
             }
         });
         mMap.setOnMyLocationButtonClickListener(this);
@@ -186,7 +220,7 @@ public class NearBusStopFragment extends Fragment implements
 
     private void readItems() {
 
-        LatLngBounds bounds = this.mMap.getProjection().getVisibleRegion().latLngBounds;
+        LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
 
         if (null != mBusStopList && !mBusStopList.isEmpty()) {
             ArrayList<MyItem> items = new ArrayList<>();
@@ -194,9 +228,9 @@ public class NearBusStopFragment extends Fragment implements
             mClusterManager.clearItems();
             for (BusStop busStop : mBusStopList) {
                 if (bounds.contains(busStop.getLatLng())) {
-                MyItem myItem = new MyItem(Double.valueOf(busStop.getLatitude()), Double.valueOf(busStop.getLongitude()), busStop.getNumber(), busStop.getFullName(), icon);
-                items.add(myItem);
-                mClusterManager.addItem(myItem);
+                    MyItem myItem = new MyItem(Double.valueOf(busStop.getLatitude()), Double.valueOf(busStop.getLongitude()), busStop.getNumber(), busStop.getFullName(), icon);
+                    items.add(myItem);
+                    mClusterManager.addItem(myItem);
                 }
             }
         }
@@ -207,18 +241,18 @@ public class NearBusStopFragment extends Fragment implements
 //        return false;
 //    }
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        markerBusStop = null;
-        String busStopNumber = marker.getTitle();
-        for (BusStop bs : mBusStopList) {
-            if (bs.getNumber().equalsIgnoreCase(busStopNumber)) {
-                markerBusStop = bs;
-                break;
-            }
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onMarkerClick(Marker marker) {
+//        markerBusStop = null;
+//        String busStopNumber = marker.getTitle();
+//        for (BusStop bs : mBusStopList) {
+//            if (bs.getNumber().equalsIgnoreCase(busStopNumber)) {
+//                markerBusStop = bs;
+//                break;
+//            }
+//        }
+//        return false;
+//    }
 
     @Override
     public boolean onMyLocationButtonClick() {
@@ -281,7 +315,6 @@ public class NearBusStopFragment extends Fragment implements
     }
 
 
-
     /**
      * Displays a dialog with error message explaining that the location permission is missing.
      */
@@ -300,6 +333,35 @@ public class NearBusStopFragment extends Fragment implements
         }
     }
 
+//    @Override
+//    public void onInfoWindowClick(Marker marker) {
+//        String busStopNumber = marker.getTitle();
+//        Intent intent = new Intent(getActivity(), RealTimeStopActivity.class);
+//        intent.putExtra(Intent.EXTRA_TEXT, busStopNumber);
+//        this.startActivity(intent);
+//    }
+
+    @Override
+    public boolean onClusterItemClick(ClusterItem clusterItem) {
+        markerBusStop = null;
+        String busStopNumber = clusterItem.getTitle();
+        for (BusStop bs : mBusStopList) {
+            if (bs.getNumber().equalsIgnoreCase(busStopNumber)) {
+                markerBusStop = bs;
+                break;
+            }
+        }
+        return false;
+    }
+
+//    @Override
+//    public void onClusterItemInfoWindowClick(MyItem myItem) {
+//        String busStopNumber = myItem.getTitle();
+//        Intent intent = new Intent(getActivity(), RealTimeStopActivity.class);
+//        intent.putExtra(Intent.EXTRA_TEXT, busStopNumber);
+//        this.startActivity(intent);
+//    }
+
     @Override
     public void onInfoWindowClick(Marker marker) {
         String busStopNumber = marker.getTitle();
@@ -307,6 +369,7 @@ public class NearBusStopFragment extends Fragment implements
         intent.putExtra(Intent.EXTRA_TEXT, busStopNumber);
         this.startActivity(intent);
     }
+
 
     private class BusStopRenderer extends DefaultClusterRenderer<MyItem> {
         public BusStopRenderer(Context context, GoogleMap map, ClusterManager<MyItem> clusterManager) {
@@ -322,6 +385,7 @@ public class NearBusStopFragment extends Fragment implements
             super.onBeforeClusterItemRendered(myItem, markerOptions);
         }
 
+
         @Override
         protected void onClusterItemRendered(MyItem clusterItem, Marker marker) {
             super.onClusterItemRendered(clusterItem, marker);
@@ -334,73 +398,73 @@ public class NearBusStopFragment extends Fragment implements
 //        }
     }
 
-    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
-        // These are both viewgroups containing an ImageView with id "badge" and two TextViews with id
-        // "title" and "snippet".
-        private final View mWindow;
-
-        CustomInfoWindowAdapter() {
-            mWindow = getActivity().getLayoutInflater().inflate(R.layout.custom_info_map_window, null);
-        }
-
-        @Override
-        public View getInfoWindow(Marker marker) {
-
-            render(marker, mWindow);
-            return mWindow;
-        }
-
-        @Override
-        public View getInfoContents(Marker marker) {
-            render(marker, mWindow);
-            return mWindow;
-        }
-
-        private void render(Marker marker, View view) {
-
-
-            ((ImageView) view.findViewById(R.id.badge)).setImageResource(R.drawable.yellow_a700_circle_480x480);
-
-            String title = marker.getTitle();
-//            TextView titleUi = ((TextView) view.findViewById(R.id.title));
-            TextView textImageBadge = view.findViewById(R.id.text_title_badge);
-            if (title != null) {
-                textImageBadge.setText(title);
-                // Spannable string allows us to edit the formatting of the text.
-                SpannableString titleText = new SpannableString(title);
-                titleText.setSpan(new ForegroundColorSpan(Color.RED), 0, titleText.length(), 0);
-//                titleUi.setText(titleText);
-            } else {
-//                titleUi.setText("");
-                textImageBadge.setText("");
-            }
-
-            String snippet = marker.getSnippet();
-            TextView snippetUi = view.findViewById(R.id.snippet);
-
-            snippetUi.setText(snippet);
-
-            TextView tvRoutesNumber = view.findViewById(R.id.tv_routes_number);
-            TextView tvRoutesInfo = view.findViewById(R.id.tv_routes_info);
-
-            if (markerBusStop != null) {
-                String routesNumber = "";
-                String routesInfo = "";
-                for (Route rt : markerBusStop.getRoutesList()) {
-                    if (routesNumber.equalsIgnoreCase("")) {
-                        routesNumber = routesNumber + rt.getName();
-                        routesInfo = routesInfo + rt.getOrigin() + " - " + rt.getDestination();
-                    } else {
-                        routesNumber = routesNumber + "\n" + rt.getName();
-                        routesInfo = routesInfo + "\n" + rt.getOrigin() + " - " + rt.getDestination();
-                    }
-                }
-                tvRoutesNumber.setText(routesNumber);
-                tvRoutesInfo.setText(routesInfo);
-            }
-
-        }
-    }
+//    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+//        // These are both viewgroups containing an ImageView with id "badge" and two TextViews with id
+//        // "title" and "snippet".
+//        private final View mWindow;
+//
+//        CustomInfoWindowAdapter() {
+//            mWindow = getActivity().getLayoutInflater().inflate(R.layout.custom_info_map_window, null);
+//        }
+//
+//        @Override
+//        public View getInfoWindow(Marker marker) {
+//
+//            render(marker, mWindow);
+//            return mWindow;
+//        }
+//
+//        @Override
+//        public View getInfoContents(Marker marker) {
+//            render(marker, mWindow);
+//            return mWindow;
+//        }
+//
+//        private void render(Marker marker, View view) {
+//
+//
+//            ((ImageView) view.findViewById(R.id.badge)).setImageResource(R.drawable.yellow_a700_circle_480x480);
+//
+//            String title = marker.getTitle();
+////            TextView titleUi = ((TextView) view.findViewById(R.id.title));
+//            TextView textImageBadge = view.findViewById(R.id.text_title_badge);
+//            if (title != null) {
+//                textImageBadge.setText(title);
+//                // Spannable string allows us to edit the formatting of the text.
+//                SpannableString titleText = new SpannableString(title);
+//                titleText.setSpan(new ForegroundColorSpan(Color.RED), 0, titleText.length(), 0);
+////                titleUi.setText(titleText);
+//            } else {
+////                titleUi.setText("");
+//                textImageBadge.setText("");
+//            }
+//
+//            String snippet = marker.getSnippet();
+//            TextView snippetUi = view.findViewById(R.id.snippet);
+//
+//            snippetUi.setText(snippet);
+//
+//            TextView tvRoutesNumber = view.findViewById(R.id.tv_routes_number);
+//            TextView tvRoutesInfo = view.findViewById(R.id.tv_routes_info);
+//
+//            if (markerBusStop != null) {
+//                String routesNumber = "";
+//                String routesInfo = "";
+//                for (Route rt : markerBusStop.getRoutesList()) {
+//                    if (routesNumber.equalsIgnoreCase("")) {
+//                        routesNumber = routesNumber + rt.getName();
+//                        routesInfo = routesInfo + rt.getOrigin() + " - " + rt.getDestination();
+//                    } else {
+//                        routesNumber = routesNumber + "\n" + rt.getName();
+//                        routesInfo = routesInfo + "\n" + rt.getOrigin() + " - " + rt.getDestination();
+//                    }
+//                }
+//                tvRoutesNumber.setText(routesNumber);
+//                tvRoutesInfo.setText(routesInfo);
+//            }
+//
+//        }
+//    }
 
     public class MyCustomAdapterForItems implements GoogleMap.InfoWindowAdapter {
 
