@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Autobuses de Dublin</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="title_activity_route">Ruta</string>
+    <string name="btn_route">Rutas</string>
+    <string name="btn_real_time">Tiempo Real</string>
+    <string name="label_search">Buscar</string>
+    <string name="route_title">Rutas</string>
+    <string name="label_from">Desde:</string>
+    <string name="label_towards">Hacia:</string>
+    <string name="route_search_hint">Ruta, p. ej. 39a</string>
+    <string name="bus_stop_title">Paradas</string>
+    <string name="bus_stop_search_hint">Parada p. ej. 4747</string>
+    <string name="bus_stop_label">Parada</string>
+    <string name="favourite_bus_stop_title">Paradas Favoritas</string>
+    <string name="favorite_empty_error_message">La lista de paradas favoritas está vacía.</string>
+    <string name="list_label_from">Desde</string>
+    <string name="list_label_to">"a "</string>
+    <string name="real_time_stop_title">Parada:</string>
+    <string name="real_time_stop_minutes_label">min</string>
+    <string name="empty_real_time_stop_list">No hay información disponible de esta parada.</string>
+    <string name="empty_real_time_stop_no_network">No hay información disponible de esta parada. La red no está disponible para recuperar los datos.</string>
+    <string name="empty_real_time_stop_server_down">No hay información disponible de esta parada. El servidor no devuelve datos.</string>
+    <string name="empty_real_time_stop_server_error">No hay información disponible de esta parada. El servidor no devuelve datos.</string>
+    <string name="empty_real_time_stop_invalid_stop">No hay información disponible de esta parada. La parada no es reconocida en el servidor.</string>
+    <string name="route_detail_activity_fragment_title">Paradas para la ruta:</string>
+    <string name="route_label">Ruta</string>
+    <string name="bus_stop_near_title">Mapa de paradas</string>
+    <string name="description_arrow_right">flecha a la derecha</string>
+    <string name="title_activity_route_detail">De</string>
+    <string name="title_activity_route_maps">Mapa</string>
+    <string name="title_activity_route_maps_label_route">Ruta</string>
+    <string name="location_permission_denied">Autobuses en Dublin necesita activar los permisos de ubicación para la función de mapa. Por favor, conceda permisos de ubicación. Si los permisos han sido denegados de forma permanente, los puede habilitar en Ajustes del sistema-> Aplicaciones -> Autobuses en Dublin->Permisos</string>
+    <string name="permission_required_toast">Los permisos de Ubicación son necesarios para esta pantalla.</string>
+    <string name="routes_label">Rutas:</string>
+</resources>

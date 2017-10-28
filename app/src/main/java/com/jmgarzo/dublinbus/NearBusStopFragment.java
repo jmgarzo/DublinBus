@@ -36,8 +36,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
-import com.google.maps.android.clustering.algo.GridBasedAlgorithm;
-import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.objects.BusStop;
@@ -136,9 +134,9 @@ public class NearBusStopFragment extends Fragment implements
 
         mClusterManager = new ClusterManager<MyItem>(getContext(), mMap);
 
-        NonHierarchicalDistanceBasedAlgorithm nonHierarchicalDistanceBasedAlgorithm = new NonHierarchicalDistanceBasedAlgorithm();
-        GridBasedAlgorithm<MyItem> gridAlgorithm = new GridBasedAlgorithm<MyItem>();
-        mClusterManager.setAlgorithm(gridAlgorithm);
+//        NonHierarchicalDistanceBasedAlgorithm nonHierarchicalDistanceBasedAlgorithm = new NonHierarchicalDistanceBasedAlgorithm();
+//        GridBasedAlgorithm<MyItem> gridAlgorithm = new GridBasedAlgorithm<MyItem>();
+//        mClusterManager.setAlgorithm(gridAlgorithm);
 
         mClusterManager.setRenderer(new BusStopRenderer(getContext(), mMap, mClusterManager));
         mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(
