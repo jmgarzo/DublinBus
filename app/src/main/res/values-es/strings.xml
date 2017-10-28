@@ -32,6 +32,8 @@
     <string name="title_activity_route_maps">Mapa</string>
     <string name="title_activity_route_maps_label_route">Ruta</string>
     <string name="location_permission_denied">Autobuses en Dublin necesita activar los permisos de ubicación para la función de mapa. Por favor, conceda permisos de ubicación. Si los permisos han sido denegados de forma permanente, los puede habilitar en Ajustes del sistema-> Aplicaciones -> Autobuses en Dublin->Permisos</string>
+    <string name="permission_rationale_location">Conceder permisos de ubicación es necesario para lanzar la función de Mapa, que muestra tu localización en el mapa.</string>
+
     <string name="permission_required_toast">Los permisos de Ubicación son necesarios para esta pantalla.</string>
     <string name="routes_label">Rutas:</string>
 </resources>
