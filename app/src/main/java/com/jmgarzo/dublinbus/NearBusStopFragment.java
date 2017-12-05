@@ -18,6 +18,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -189,7 +190,12 @@ public class NearBusStopFragment extends Fragment implements
     }
 
     private void setUpMap() {
-        ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.near_bus_stops_map)).getMapAsync(this);
+
+        try {
+            ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.near_bus_stops_map)).getMapAsync(this);
+        } catch (IllegalStateException e) {
+            Log.e(LOG_TAG,e.toString());
+        }
     }
 
     private void readItems() {
