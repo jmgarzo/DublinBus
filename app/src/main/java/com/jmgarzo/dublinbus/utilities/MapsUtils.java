@@ -1,6 +1,7 @@
 package com.jmgarzo.dublinbus.utilities;
 
 import android.database.Cursor;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.jmgarzo.dublinbus.objects.BusStop;
@@ -14,7 +15,9 @@ import java.util.ArrayList;
 
 public class MapsUtils {
 
-    public static  ArrayList<LatLng> getLatLngBusStop(ArrayList<BusStop> busStopsList) {
+    private static final String LOG_TAG = MapsUtils.class.getSimpleName();
+
+    public static ArrayList<LatLng> getLatLngBusStop(ArrayList<BusStop> busStopsList) {
         ArrayList<LatLng> latLngBusStop = null;
         if (null != busStopsList && !busStopsList.isEmpty()) {
             latLngBusStop = new ArrayList<>();
@@ -26,27 +29,32 @@ public class MapsUtils {
     }
 
 
-     public static ArrayList<BusStop> getBusStopListFromBusStopsAndRoute(Cursor data) {
+    public static ArrayList<BusStop> getBusStopListFromBusStopsAndRoute(Cursor data) {
         ArrayList<BusStop> busStopArrayList = new ArrayList<>();
         int currentBusStopId = -1;
-        if (data.moveToFirst()) {
-            BusStop bs = null;
-            do {
-                if (currentBusStopId == data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID)) {
-                    currentBusStopId = data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID);
-                    if (null != bs.getRoutesList()) {
+
+        try {
+            if (data.moveToFirst()) {
+                BusStop bs = null;
+                do {
+                    if (currentBusStopId == data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID)) {
+                        currentBusStopId = data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID);
+                        if (null != bs.getRoutesList()) {
+                            bs.getRoutesList().add(getNewRoute(data));
+                        }
+                    } else {
+                        if (bs != null) {
+                            busStopArrayList.add(bs);
+                        }
+                        currentBusStopId = data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID);
+                        bs = getNewBusStop(data);
+                        bs.setRoutesList(new ArrayList<Route>());
                         bs.getRoutesList().add(getNewRoute(data));
                     }
-                } else {
-                    if (bs != null) {
-                        busStopArrayList.add(bs);
-                    }
-                    currentBusStopId = data.getInt(DBUtils.COL_BUS_AND_ROUTE_STOP_ID);
-                    bs = getNewBusStop(data);
-                    bs.setRoutesList(new ArrayList<Route>());
-                    bs.getRoutesList().add(getNewRoute(data));
-                }
-            } while (data.moveToNext());
+                } while (data.moveToNext());
+            }
+        } catch (IllegalStateException e) {
+            Log.e(LOG_TAG, e.toString());
         }
         return busStopArrayList;
     }
