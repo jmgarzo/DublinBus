@@ -1,4 +1,4 @@
-package com.jmgarzo.dublinbus;
+package com.jmgarzo.dublinbus.Adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.jmgarzo.dublinbus.R;
 import com.jmgarzo.dublinbus.model.Route;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
@@ -75,7 +76,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteAdapter
         return mCursor.getCount();
     }
 
-    void swapCursor(Cursor newCursor) {
+    public void swapCursor(Cursor newCursor) {
         mCursor = newCursor;
         notifyDataSetChanged();
     }

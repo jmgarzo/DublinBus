@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.ads.AdView;
+import com.jmgarzo.dublinbus.Adapter.RouteAdapter;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.model.Route;
 import com.jmgarzo.dublinbus.utilities.AdUtils;

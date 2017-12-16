@@ -1,8 +1,13 @@
-package com.jmgarzo.dublinbus;
+package com.jmgarzo.dublinbus.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.jmgarzo.dublinbus.BusStopFragment;
+import com.jmgarzo.dublinbus.FavouriteBusStopFragment;
+import com.jmgarzo.dublinbus.NearBusStopFragment;
+import com.jmgarzo.dublinbus.RouteActivityFragment;
 
 /**
  * Created by jmgarzo on 18/08/2017.

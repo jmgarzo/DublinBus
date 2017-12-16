@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.jmgarzo.dublinbus.Adapter.ViewPagerAdapter;
 import com.jmgarzo.dublinbus.sync.SyncTasks;
 import com.jmgarzo.dublinbus.sync.UpdateDbSyncUtils;
 import com.jmgarzo.dublinbus.utilities.DBUtils;

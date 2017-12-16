@@ -1,4 +1,4 @@
-package com.jmgarzo.dublinbus;
+package com.jmgarzo.dublinbus.Adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jmgarzo.dublinbus.R;
 import com.jmgarzo.dublinbus.model.BusStop;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 

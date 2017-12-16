@@ -23,8 +23,8 @@ android {
         applicationId "com.jmgarzo.dublinbus"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 38
-        versionName "1.38"
+        versionCode 39
+        versionName "1.39"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
