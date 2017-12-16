@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,8 +31,9 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
-import com.jmgarzo.dublinbus.objects.BusStop;
-import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.model.BusStop;
+import com.jmgarzo.dublinbus.model.Route;
+import com.jmgarzo.dublinbus.utilities.AdUtils;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 import com.jmgarzo.dublinbus.utilities.MapsUtils;
 import com.jmgarzo.dublinbus.utilities.PermissionUtils;
@@ -54,6 +56,9 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
     private Route mRoute;
     private BusStop markerBusStop;
 
+    private AdView mAdView;
+
+
     private final int BUS_STOPS_LOADER_ID = 223;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
@@ -64,6 +69,12 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_maps);
+
+        if(DBUtils.isAdmodActive(this)) {
+            mAdView = findViewById(R.id.ad_view);
+            mAdView.setVisibility(View.VISIBLE);
+            mAdView.loadAd(AdUtils.getAdRequest());
+        }
 
         Intent intent = getIntent();
         if (null != intent) {

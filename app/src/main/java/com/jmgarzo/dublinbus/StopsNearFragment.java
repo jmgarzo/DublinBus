@@ -30,9 +30,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
-import com.jmgarzo.dublinbus.objects.BusStop;
-import com.jmgarzo.dublinbus.objects.MyItem;
-import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.model.BusStop;
+import com.jmgarzo.dublinbus.model.MyItem;
+import com.jmgarzo.dublinbus.model.Route;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 import com.jmgarzo.dublinbus.utilities.MapsUtils;
 

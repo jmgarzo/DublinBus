@@ -4,9 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
-import com.jmgarzo.dublinbus.BusStopFragment;
 import com.jmgarzo.dublinbus.RealTimeStopFragment;
-import com.jmgarzo.dublinbus.objects.BusStop;
 import com.jmgarzo.dublinbus.sync.SyncTasks;
 
 /**

@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.jmgarzo.dublinbus.R;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
-import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.model.Route;
 
 import java.util.ArrayList;
 

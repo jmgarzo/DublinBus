@@ -11,8 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.jmgarzo.dublinbus.objects.RealTimeStop;
-import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.model.RealTimeStop;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 /**

@@ -3,11 +3,11 @@ package com.jmgarzo.dublinbus.utilities;
 import android.content.Context;
 import android.util.Log;
 
-import com.jmgarzo.dublinbus.objects.BusStop;
-import com.jmgarzo.dublinbus.objects.Operator;
-import com.jmgarzo.dublinbus.objects.RealTimeStop;
-import com.jmgarzo.dublinbus.objects.Route;
-import com.jmgarzo.dublinbus.objects.RouteInformation;
+import com.jmgarzo.dublinbus.model.BusStop;
+import com.jmgarzo.dublinbus.model.Operator;
+import com.jmgarzo.dublinbus.model.RealTimeStop;
+import com.jmgarzo.dublinbus.model.Route;
+import com.jmgarzo.dublinbus.model.RouteInformation;
 
 import org.json.JSONArray;
 import org.json.JSONException;

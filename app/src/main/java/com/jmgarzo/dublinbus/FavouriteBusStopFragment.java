@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdView;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
-import com.jmgarzo.dublinbus.objects.BusStop;
+import com.jmgarzo.dublinbus.model.BusStop;
 import com.jmgarzo.dublinbus.utilities.AdUtils;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 

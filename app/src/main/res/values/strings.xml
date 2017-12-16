@@ -81,6 +81,8 @@
     <string name="banner_route_detail_id" translatable="false">ca-app-pub-9433862228892990/3951455909</string>
     <string name="banner_favourite_id" translatable="false">ca-app-pub-9433862228892990/8324502109</string>
     <string name="banner_real_time_id" translatable="false">ca-app-pub-9433862228892990/1567522066</string>
+    <string name="banner_route_map_id" translatable="false">ca-app-pub-9433862228892990/5587442258</string>
+
 
     <!--maps-->
     <string name="location_permission_denied">Dublin Bus requires location permission to enable the \'maps\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'Dublin Bus\'.</string>

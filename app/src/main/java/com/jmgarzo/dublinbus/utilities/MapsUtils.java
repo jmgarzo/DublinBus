@@ -4,8 +4,8 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.jmgarzo.dublinbus.objects.BusStop;
-import com.jmgarzo.dublinbus.objects.Route;
+import com.jmgarzo.dublinbus.model.BusStop;
+import com.jmgarzo.dublinbus.model.Route;
 
 import java.util.ArrayList;
 

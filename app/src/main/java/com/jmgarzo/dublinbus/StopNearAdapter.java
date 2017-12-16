@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jmgarzo.dublinbus.objects.BusStop;
+import com.jmgarzo.dublinbus.model.BusStop;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 
 /**
