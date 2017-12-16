@@ -1,5 +1,6 @@
 package com.jmgarzo.dublinbus;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -14,6 +15,7 @@ import com.jmgarzo.dublinbus.Adapter.ViewPagerAdapter;
 import com.jmgarzo.dublinbus.sync.SyncTasks;
 import com.jmgarzo.dublinbus.sync.UpdateDbSyncUtils;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
+
 import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
@@ -98,8 +100,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_settings:
+                break;
+            case R.id.action_about: {
+                Intent intent = new Intent(this, AboutActivity.class);
+                this.startActivity(intent);
+                break;
+            }
         }
 
         return super.onOptionsItemSelected(item);

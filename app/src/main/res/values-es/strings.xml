@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Autobuses de Dublin</string>
     <string name="action_settings">Ajustes</string>
+    <string name="action_about">Acerca de</string>
     <string name="title_activity_route">Ruta</string>
     <string name="btn_route">Rutas</string>
     <string name="btn_real_time">Tiempo Real</string>
