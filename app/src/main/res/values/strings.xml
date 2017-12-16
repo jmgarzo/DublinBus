@@ -95,8 +95,7 @@
     <string name="routes_label">Routes:</string>
 
 
-
-<!--    About Activity-->
+    <!--    About Activity-->
 
     <string name="about_title">About</string>
     <string name="description_label">Description</string>
@@ -113,8 +112,9 @@
 \n\nThis application is not created or affiliated to Dublin Bus.</string>
     <string name="contact_email" translatable="false">jmgarzo.developer@gmail.com</string>
 
-    <string name="data_information">Dublin Bus for Android use a Creative Common 4.0 API. Dublin Bus for Android is not responsible in the event of any data inconsistency.
-You can take a look here.</string>
+    <string name="data_information">Dublin Bus for Android use a Creative Common 4.0 API. Dublin Bus for
+        Android is not responsible in the event of any data inconsistency.
+    </string>
 
 
 </resources>

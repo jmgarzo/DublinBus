@@ -1,4 +1,4 @@
-package com.jmgarzo.dublinbus.Adapter;
+package com.jmgarzo.dublinbus.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -21,7 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdView;
-import com.jmgarzo.dublinbus.Adapter.RealTimeStopAdapter;
+import com.jmgarzo.dublinbus.adapter.RealTimeStopAdapter;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.model.RealTimeStop;
 import com.jmgarzo.dublinbus.sync.RealTimeSyncUtils;

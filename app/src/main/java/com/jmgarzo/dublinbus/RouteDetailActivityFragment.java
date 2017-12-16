@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.ads.AdView;
-import com.jmgarzo.dublinbus.Adapter.BusStopAdapter;
+import com.jmgarzo.dublinbus.adapter.BusStopAdapter;
 import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.model.BusStop;
 import com.jmgarzo.dublinbus.model.Route;

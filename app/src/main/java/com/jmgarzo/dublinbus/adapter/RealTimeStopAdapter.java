@@ -1,4 +1,4 @@
-package com.jmgarzo.dublinbus.Adapter;
+package com.jmgarzo.dublinbus.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
