@@ -94,8 +94,27 @@
 
     <string name="routes_label">Routes:</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+<!--    About Activity-->
+
+    <string name="about_title">About</string>
+    <string name="description_label">Description</string>
+    <string name="contact_label">Contact</string>
+
+    <string name="app_description">Essential day to day aplication.
+        \n\nYou will be able to know all the arrivals of buses in real time.
+        \n\nAlso you can add your frequently stops to your favorite list.
+\n\nThe application menu is very simple, you can:\n
+\n\t- Receive real time information.
+\n\t- Manage your favorite stops.
+\n\t- Direct access to search by stops, route number and address.
+\n\t- Map support features to find your stop and directions from your current location.
+\n\nThis application is not created or affiliated to Dublin Bus.</string>
+    <string name="contact_email" translatable="false">jmgarzo.developer@gmail.com</string>
+
+    <string name="data_information">Dublin Bus for Android use a Creative Common 4.0 API. Dublin Bus for Android is not responsible in the event of any data inconsistency.
+You can take a look here.</string>
 
 
 </resources>
