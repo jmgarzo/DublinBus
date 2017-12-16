@@ -92,6 +92,30 @@ public class RouteMapsActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     @Override
+    protected void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public void onMapReady(GoogleMap map) {
         mapReady = true;
         mMap = map;

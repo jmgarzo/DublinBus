@@ -82,6 +82,9 @@
     <string name="banner_favourite_id" translatable="false">ca-app-pub-9433862228892990/8324502109</string>
     <string name="banner_real_time_id" translatable="false">ca-app-pub-9433862228892990/1567522066</string>
     <string name="banner_route_map_id" translatable="false">ca-app-pub-9433862228892990/5587442258</string>
+    <string name="banner_near_bus_stop_id" translatable="false">ca-app-pub-9433862228892990/3117191585</string>
+
+
 
 
     <!--maps-->

@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,6 +43,7 @@ import com.jmgarzo.dublinbus.data.DublinBusContract;
 import com.jmgarzo.dublinbus.model.BusStop;
 import com.jmgarzo.dublinbus.model.MyItem;
 import com.jmgarzo.dublinbus.model.Route;
+import com.jmgarzo.dublinbus.utilities.AdUtils;
 import com.jmgarzo.dublinbus.utilities.DBUtils;
 import com.jmgarzo.dublinbus.utilities.MapsUtils;
 import com.jmgarzo.dublinbus.utilities.PermissionUtils;
@@ -72,6 +74,9 @@ public class NearBusStopFragment extends Fragment implements
     private GoogleMap mMap;
     private ClusterManager<MyItem> mClusterManager;
 
+    private AdView mAdView;
+
+
     public NearBusStopFragment() {
         // Required empty public constructor
     }
@@ -80,12 +85,22 @@ public class NearBusStopFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_near_bus_stop, container, false);
+        if(DBUtils.isAdmodActive(getContext())) {
+            mAdView = rootView.findViewById(R.id.ad_view);
+            mAdView.setVisibility(View.VISIBLE);
+            mAdView.loadAd(AdUtils.getAdRequest());
+        }
+
         getActivity().setTitle(R.string.bus_stop_near_title);
 
         getActivity().getSupportLoaderManager().initLoader(ID_BUS_STOP_LOADER, null, this);
 
         return rootView;
     }
+
+
+
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -284,14 +299,33 @@ public class NearBusStopFragment extends Fragment implements
                 .newInstance(true).show(getActivity().getSupportFragmentManager(), "dialog");
     }
 
+
+    @Override
+    public void onStart() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onStart();
+    }
     @Override
     public void onResume() {
         super.onResume();
+
+        if (mAdView != null) {
+            mAdView.resume();
+        }
         if (mPermissionDenied) {
             // Permission was not granted, display error dialog.
             showMissingPermissionError();
             mPermissionDenied = false;
         }
+    }
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
     }
 
     @Override

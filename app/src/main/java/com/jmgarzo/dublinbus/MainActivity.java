@@ -33,7 +33,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         setContentView(R.layout.activity_main);
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        //configure admob
         DBUtils.setIsAdmodActive(this,true);
+
         if (savedInstanceState == null) {
             if (!DBUtils.isExistDb(this)) {
                 SyncTasks.copyDbFromAssets(this);
